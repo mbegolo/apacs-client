@@ -7,8 +7,9 @@ import { User } from '../_models';
 export class UserService {
     constructor(private http: HttpClient) { }
 
-    getAll() {
-        return this.http.get<User[]>("");
+    getAllExams(id: string) {
+        var url = "https://web.math.unipd.it/apacs/esames?user="+id;
+        return this.http.get(url);
     }
 
     getById(id: number) {
@@ -16,7 +17,7 @@ export class UserService {
     }
 
     register(user: User) {
-        alert(""+user);
+        alert("user.service.ts: \n"+user);
         return this.http.post('https://web.math.unipd.it/apacs/auth/local/register', user);
     }
 

@@ -17,11 +17,22 @@ import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import {MatExpansionModule} from '@angular/material/expansion';
+
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+
+
+
 @NgModule({
     imports: [
         BrowserModule,
         ReactiveFormsModule,
         HttpClientModule,
+        MatExpansionModule,
+        BrowserAnimationsModule,
+        AngularFontAwesomeModule,
         AppRoutingModule
     ],
     declarations: [

@@ -8,6 +8,7 @@ import { UserService } from '../_services';
 export class HomeComponent implements OnInit {
     currentUser: User;
     users: User[] = [];
+    exams;
 
     constructor(private userService: UserService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -16,22 +17,33 @@ export class HomeComponent implements OnInit {
         this.currentUser.username = localUsrData["user"]["username"];
         this.currentUser.email = localUsrData["user"]["email"];
         this.currentUser.token = localUsrData["jwt"];
-        alert(JSON.stringify(this.currentUser.username));
+        console.log("User logged in: "+JSON.stringify(this.currentUser.username));
     }
 
     ngOnInit() {
-        this.loadAllUsers();
+        this.exams = this.loadAllExams();
     }
 
-    deleteUser(id: number) {
-        this.userService.delete(id).pipe(first()).subscribe(() => { 
-            this.loadAllUsers() 
-        });
+    print() {
+        console.log(this.exams);
     }
 
-    private loadAllUsers() {
-        this.userService.getAll().pipe(first()).subscribe(users => { 
-            this.users = users; 
+    private loadAllExams() {
+        var out = this.userService.getAllExams(this.currentUser.id).subscribe(data => {
+            console.log("dentro subscribe");
+            console.log(data);
+            this.exams = data;
+            this.transformDate();
+            return data
         });
+        this.print();
+    }
+
+    private transformDate() {
+        for (var i in this.exams) {
+            var date = new Date(this.exams[i]["createdAt"]);
+            var ita_date = date.getUTCDate() + "/" + (date.getUTCMonth() + 1) + "/" + date.getUTCFullYear();
+            this.exams[i]["createdAt"] = ita_date;
+        }
     }
 }
