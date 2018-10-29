@@ -21,9 +21,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatExpansionModule} from '@angular/material/expansion';
 
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
+import { NavbarComponent } from './navbar/navbar.component';
 
+library.add(fas);
+/*
+lista icone
+https://fontawesome.com/icons?d=gallery&q=menu&s=solid&m=free
+*/
 
 @NgModule({
     imports: [
@@ -32,7 +40,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
         HttpClientModule,
         MatExpansionModule,
         BrowserAnimationsModule,
-        AngularFontAwesomeModule,
+        FontAwesomeModule,
         AppRoutingModule
     ],
     declarations: [
@@ -40,7 +48,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
         AlertComponent,
         HomeComponent,
         LoginComponent,
-        RegisterComponent
+        RegisterComponent,
+        NavbarComponent
     ],
     providers: [
         AuthGuard,

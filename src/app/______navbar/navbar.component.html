@@ -1,0 +1,33 @@
+<div id="main-nav" class="sidenav">
+	<nav>
+		<div class="sidebar-header">
+			<h3>APACS - Interview</h3>
+			<a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+		</div>
+		<ul class="list-unstyled">
+			<li class="nav-item" [routerLinkActive]="['active']" (click)="closeNav()">
+				<a class="nav-link" [routerLink]="['home']">Home</a>
+			</li>
+			<li class="nav-item" [routerLinkActive]="['active']" (click)="closeNav()">
+				<a class="nav-link" [routerLink]="['anagrafica']">Anagrafica</a>
+			</li>
+			<li class="nav-item" [routerLinkActive]="['active']" (click)="closeNav()">
+				<a class="nav-link" [routerLink]="['intervista']">Intervista</a>
+			</li>
+			<li class="nav-item" [routerLinkActive]="['active']" (click)="closeNav()">
+				<a class="nav-link" [routerLink]="['resume']">Resume</a>
+			</li>
+			<li class="nav-item" [routerLinkActive]="['active']" (click)="closeNav()">
+				<a class="nav-link" [routerLink]="['icone']">Lista icone</a>
+			</li>
+		</ul>
+	</nav>
+</div>
+<div id="sidenav-external" (click)="closeNav()">
+</div>
+
+<div id="top-bar">
+	<div id="sidebarCollapse">
+		<fa size="2x" name="navicon" (click)="openNav()"></fa>
+	</div>
+</div>
