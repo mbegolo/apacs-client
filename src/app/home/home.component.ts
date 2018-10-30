@@ -4,6 +4,7 @@ import { first } from 'rxjs/operators';
 import { User } from '../_models';
 import { UserService } from '../_services';
 
+
 @Component({templateUrl: 'home.component.html'})
 export class HomeComponent implements OnInit {
     currentUser: User;
@@ -30,8 +31,6 @@ export class HomeComponent implements OnInit {
 
     private loadAllExams() {
         var out = this.userService.getAllExams(this.currentUser.id).subscribe(data => {
-            console.log("dentro subscribe");
-            console.log(data);
             this.exams = data;
             this.transformDate();
             return data
@@ -46,4 +45,5 @@ export class HomeComponent implements OnInit {
             this.exams[i]["createdAt"] = ita_date;
         }
     }
+
 }

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router } from '@angular/router';
 
+import { Exam } from '../_models';
+import { User } from '../_models';
+import { UserService } from '../_services';
+
 import * as $ from 'jquery';
 
 @Component({
@@ -9,11 +13,26 @@ import * as $ from 'jquery';
 	styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-	//isHandset: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.Handset);
-	//constructor(private breakpointObserver: BreakpointObserver) {};
-	constructor(private router: Router) {}
+	currentUser: User;
+	currentExam: Exam;
+	selected = false;
+
+    constructor(private userService: UserService) { }
 
 	ngOnInit() {
+		this.currentExam = new Exam();
+		this.currentExam.selected = false;
+		this.currentExam = JSON.parse(localStorage.getItem('currentExam'));
+		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+		var localUsrData = JSON.parse(localStorage.getItem('currentUser'));
+        this.currentUser.id = localUsrData["user"]["_id"];
+        this.currentUser.username = localUsrData["user"]["username"];
+        this.currentUser.email = localUsrData["user"]["email"];
+        this.currentUser.token = localUsrData["jwt"];
+	}
+
+	loadCurrentExam() {
+		this.userService.getExamById(this.currentExam.id);
 	}
 
 	openNav() {

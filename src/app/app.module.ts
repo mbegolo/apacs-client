@@ -16,16 +16,18 @@ import { AlertService, AuthenticationService, UserService } from './_services';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
+import { NavbarComponent } from './navbar/navbar.component';
+import { ExamListComponent } from './exam-list/exam-list.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import {MatExpansionModule} from '@angular/material/expansion';
+import { FormsModule } from '@angular/forms';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
-import { NavbarComponent } from './navbar/navbar.component';
+import { NglModule } from 'ng-lightning/ng-lightning';
 
 library.add(fas);
 /*
@@ -41,6 +43,8 @@ https://fontawesome.com/icons?d=gallery&q=menu&s=solid&m=free
         MatExpansionModule,
         BrowserAnimationsModule,
         FontAwesomeModule,
+        NglModule.forRoot(),
+        FormsModule,
         AppRoutingModule
     ],
     declarations: [
@@ -49,7 +53,8 @@ https://fontawesome.com/icons?d=gallery&q=menu&s=solid&m=free
         HomeComponent,
         LoginComponent,
         RegisterComponent,
-        NavbarComponent
+        NavbarComponent,
+        ExamListComponent
     ],
     providers: [
         AuthGuard,

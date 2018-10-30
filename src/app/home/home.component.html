@@ -1,6 +1,4 @@
-﻿<navbar></navbar>
-
-<div class="container">
+﻿<div class="container">
   <div class="row">
     <div class="col-sm">
       <div class="card" style="width: 18rem;">
@@ -20,13 +18,11 @@
 </div>
 
 
-	<button type="button" class="btn btn-primary">
-		<fa-icon icon="plus"></fa-icon>
-    Inizia un nuovo esame
-	</button>
-
-
-
+<button type="button" class="btn btn-primary">
+	<fa-icon icon="plus"></fa-icon>
+  Inizia un nuovo esame
+</button>
+<!--
 <mat-accordion>
   <mat-expansion-panel (opened)="panelOpenState = true"
                        (closed)="panelOpenState = false">
@@ -59,8 +55,8 @@
   </mat-expansion-panel>
 </mat-accordion>
 
+-->
 
 
-
-
-<p><a [routerLink]="['/login']">Logout</a></p>
+<exam-list></exam-list>
+  
