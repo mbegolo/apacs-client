@@ -33,9 +33,9 @@ export class HomeComponent implements OnInit {
         var out = this.userService.getAllExams(this.currentUser.id).subscribe(data => {
             this.exams = data;
             this.transformDate();
+            localStorage.setItem('usersExams', JSON.stringify(this.exams));
             return data
         });
-        this.print();
     }
 
     private transformDate() {

@@ -1,62 +1,9 @@
-﻿<div class="container">
-  <div class="row">
-    <div class="col-sm">
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">I tuoi dati</h5>
-          <p class="card-text">Benvenuto {{currentUser.username}}</p>
-        </div>
-      </div>
-		</div>
-    <div class="col-sm">
-      One of three columns
-    </div>
-    <div class="col-sm">
-      One of three columns
-    </div>
-  </div>
-</div>
-
-
-<button type="button" class="btn btn-primary">
+﻿<button type="button" class="btn btn-primary">
 	<fa-icon icon="plus"></fa-icon>
   Inizia un nuovo esame
 </button>
-<!--
-<mat-accordion>
-  <mat-expansion-panel (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <h4>I tuoi esami</h4>
-      </mat-panel-title>
-      <mat-panel-description>
-        <p style="text-align: right; width: 100%; margin:0;">
-        	{{panelOpenState ? 'nascondi' : 'mostra'}}
-        </p>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-		<table class="table exam-table">
-		  <thead class="thead-dark">
-		    <tr>
-		      <th scope="col">Nome</th>
-		      <th scope="col">Data</th>
-		      <th scope="col">ID</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		    <tr *ngFor="let exam of exams">
-		    	<td>{{exam["Nome"]}}</td>
-		    	<td>{{exam["createdAt"]}}</td>
-		    	<td>{{exam["id"]}}</td>
-		    </tr>
-		  </tbody>
-		</table>
-  </mat-expansion-panel>
-</mat-accordion>
 
--->
-
+<h3>I tuoi esami</h3>
 
 <exam-list></exam-list>
   

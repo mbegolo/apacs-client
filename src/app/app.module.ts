@@ -10,7 +10,7 @@ import { AppComponent }  from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AlertComponent } from './_directives';
-import { AuthGuard } from './_guards';
+import { AuthGuard, ExamGuard } from './_guards';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AlertService, AuthenticationService, UserService } from './_services';
 import { HomeComponent } from './home';
@@ -28,6 +28,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
 import { NglModule } from 'ng-lightning/ng-lightning';
+import { EditExamViewComponent } from './edit-exam-view/edit-exam-view.component';
 
 library.add(fas);
 /*
@@ -54,10 +55,12 @@ https://fontawesome.com/icons?d=gallery&q=menu&s=solid&m=free
         LoginComponent,
         RegisterComponent,
         NavbarComponent,
-        ExamListComponent
+        ExamListComponent,
+        EditExamViewComponent
     ],
     providers: [
         AuthGuard,
+        ExamGuard,
         AlertService,
         AuthenticationService,
         UserService,

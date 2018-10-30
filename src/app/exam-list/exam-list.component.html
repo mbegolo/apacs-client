@@ -1,15 +1,23 @@
 <link rel="stylesheet" href="https://unpkg.com/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css">
 
-<table ngl-datatable [data]="data" trackByKey="rank" [loading]="loading" [(sort)]="sort" (sortChange)="onSort($event)"
+
+<table ngl-datatable [data]="exams" trackByKey="id" [loading]="loading" [(sort)]="sort" (sortChange)="onSort($event)"
   (onRowClick)="onRowClick($event)" class="slds-max-medium-table--stacked-horizontal">
-  <ngl-datatable-column heading="Rank" key="rank" sortable></ngl-datatable-column>
-  <ngl-datatable-column heading="Name" key="name" *ngIf="!hideName" cellClass="slds-truncate" sortable></ngl-datatable-column>
-  <ngl-datatable-column heading="Surname" key="surname" cellClass="slds-truncate" sortable>
-    <ng-template nglDatatableCell let-row="row"><b>{{row.surname}}</b></ng-template>
+  <ngl-datatable-column heading="#" key="id" sortable></ngl-datatable-column>
+  <ngl-datatable-column heading="Nome" key="Nome" *ngIf="!hideName" cellClass="slds-truncate" sortable></ngl-datatable-column>
+  <ngl-datatable-column heading="Data" key="createdAt" cellClass="slds-truncate" sortable>
+    <!--<ng-template nglDatatableCell let-row="row"><b>{{row.surname}}</b></ng-template>-->
   </ngl-datatable-column>
-  <ngl-datatable-column heading="Points" key="points">
-    <ng-template nglDatatableHeading><strong>Points</strong></ng-template>
-    <ng-template nglDatatableCell let-value><ngl-badge>{{value | number}}</ngl-badge></ng-template>
+  <ngl-datatable-column heading="Punteggio" key="points" sortable>
+    <!--
+    <ng-template nglDatatableHeading><strong>Punteggio</strong></ng-template>
+  -->
+    <ng-template nglDatatableCell let-value>1</ng-template>
+  </ngl-datatable-column>
+  <ngl-datatable-column heading="Modifica">
+    <ng-template nglDatatableCell>
+      <a href="./editExam" (click)="editExam($event)">Modifica</a>
+    </ng-template>
   </ngl-datatable-column>
 
   <!-- Loading overlay -->
@@ -18,11 +26,11 @@
   </ng-template>
 
   <!-- No rows overlay -->
-  <ng-template nglNoRowsOverlay>No data available in table!</ng-template>
+  <ng-template nglNoRowsOverlay>Non esistono esami. <a href="#">Creane uno</a></ng-template>
 </table>
 
 <div class="pagination-box">
-    <div class="slds-text-title--caps-normal slds-m-bottom--x-small">Showing {{pagination.start}} - {{pagination.end}} of {{total}}</div>
+    <div class="slds-text-title--caps-normal slds-m-bottom--x-small">Visualizzati {{pagination.start}} - {{pagination.end}} di {{total}}</div>
     <ngl-pagination
       [(page)]="page"
       [total]="total"
@@ -37,7 +45,6 @@
     </ngl-pagination>
 </div>
 
-
-<ngl-form-element label="Input Label" [error]="hasError ? error : null" class="slds-m-top--small">
-  Elementi per pagina: <input nglFormControl type="number" [(ngModel)]="elem" value={{elem}} [ngModelOptions]="{standalone: true}" (change)="changeDisplayElem()">
-</ngl-form-element>
+<div class="select-number-of-elements">
+<ngl-form-element label="Elementi per pagina:" [error]="hasError ? error : null" class="slds-m-top--small"><input nglFormControl type="number" [(ngModel)]="elem" value={{elem}} [ngModelOptions]="{standalone: true}" (change)="changeDisplayElem()"></ngl-form-element>
+</div>
