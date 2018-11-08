@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Exam } from '../_models';
+import { Exam, Patient, User } from '../_models';
+
+import { DataService } from '../_services';
 
 @Component({
   selector: 'app-edit-exam-view',
@@ -7,14 +9,28 @@ import { Exam } from '../_models';
   styleUrls: ['./edit-exam-view.component.scss']
 })
 export class EditExamViewComponent implements OnInit {
-  actualExam: Exam;
+  selectedExam: Exam;
+  currentUser: User;
+  actualPatient: Patient;
 
-  constructor() { 
-    this.actualExam = JSON.parse(localStorage.getItem('selectedExam'));
+  anagrafica: string;
+  username: string;
+  patientName: string;
+  examDate: string;
+  examScore: string;
+
+  constructor(private dataService:DataService) {
+    this.selectedExam = this.dataService.getSelectedExam();
+    this.currentUser = this.dataService.getCurrentUser();
+    this.actualPatient = this.dataService.getActualPatient();
   }
 
   ngOnInit() {
-    this.actualExam = JSON.parse(localStorage.getItem('selectedExam'));
+    this.selectedExam = this.dataService.getSelectedExam();
+    this.currentUser = this.dataService.getCurrentUser();
+    this.actualPatient = this.dataService.getActualPatient();
+    console.log(this.selectedExam);
+    console.log(this.dataService.getSelectedExam());
   }
 
 }

@@ -48,3 +48,10 @@
 <div class="select-number-of-elements">
 <ngl-form-element label="Elementi per pagina:" [error]="hasError ? error : null" class="slds-m-top--small"><input nglFormControl type="number" [(ngModel)]="elem" value={{elem}} [ngModelOptions]="{standalone: true}" (change)="changeDisplayElem()"></ngl-form-element>
 </div>
+
+
+<div>
+  <p>
+    {{out}}
+  </p>
+</div>

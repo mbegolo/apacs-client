@@ -12,7 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AlertComponent } from './_directives';
 import { AuthGuard, ExamGuard } from './_guards';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
-import { AlertService, AuthenticationService, UserService } from './_services';
+import { AlertService, AuthenticationService, UserService, ExamService, DataService } from './_services';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
@@ -64,6 +64,8 @@ https://fontawesome.com/icons?d=gallery&q=menu&s=solid&m=free
         AlertService,
         AuthenticationService,
         UserService,
+        ExamService,
+        DataService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 

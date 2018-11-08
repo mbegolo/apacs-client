@@ -1,49 +1,33 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { first } from 'rxjs/operators';
+//import { first } from 'rxjs/operators';
 
-import { User } from '../_models';
-import { UserService } from '../_services';
-
+import { User, Exam, Patient } from '../_models';
+import { DataService } from '../_services';
 
 @Component({templateUrl: 'home.component.html'})
 export class HomeComponent implements OnInit {
     currentUser: User;
-    users: User[] = [];
-    exams;
+    selectedExam: Exam;
+    usersExams: Exam[];
 
-    constructor(private userService: UserService) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        var localUsrData = JSON.parse(localStorage.getItem('currentUser'));
-        this.currentUser.id = localUsrData["user"]["_id"];
-        this.currentUser.username = localUsrData["user"]["username"];
-        this.currentUser.email = localUsrData["user"]["email"];
-        this.currentUser.token = localUsrData["jwt"];
-        console.log("User logged in: "+JSON.stringify(this.currentUser.username));
+    constructor(private dataService: DataService) { }
+
+    ngOnInit() { }
+
+    printUser() {
+        console.log(this.dataService.getCurrentUser());
     }
 
-    ngOnInit() {
-        this.exams = this.loadAllExams();
+    printExams() {
+        console.log(this.dataService.getAllExams());
     }
 
-    print() {
-        console.log(this.exams);
+    printExam() {
+        console.log(this.dataService.getSelectedExam());
     }
 
     private loadAllExams() {
-        var out = this.userService.getAllExams(this.currentUser.id).subscribe(data => {
-            this.exams = data;
-            this.transformDate();
-            localStorage.setItem('usersExams', JSON.stringify(this.exams));
-            return data
-        });
-    }
-
-    private transformDate() {
-        for (var i in this.exams) {
-            var date = new Date(this.exams[i]["createdAt"]);
-            var ita_date = date.getUTCDate() + "/" + (date.getUTCMonth() + 1) + "/" + date.getUTCFullYear();
-            this.exams[i]["createdAt"] = ita_date;
-        }
+        //this.usersExams = this.dataService.getAllExams();
     }
 
 }

@@ -1,10 +1,8 @@
 import {Component, OnInit, NgModule} from '@angular/core';
 import {INglDatatableSort, INglDatatableRowClick} from 'ng-lightning/ng-lightning';
 
-import { User } from '../_models';
-import { Exam } from '../_models';
-import { UserService } from '../_services';
-
+import { User, Exam, Patient } from '../_models';
+import { DataService } from '../_services';
 
 @Component({
   selector: 'exam-list',
@@ -12,15 +10,18 @@ import { UserService } from '../_services';
 })
 
 export class ExamListComponent implements OnInit {
-
+  currentUser: User;
+  selectedExam: Exam;
   pageDefault: number;
   pageBoundary: number;
   page: number;
   elem = 10;
-  actualExam: Exam;
+  
   loadedData: any; 
   total: any;
-  exams: any;
+  exams: Exam[];
+
+  out: string;
 
   // Initial sort
   sort: INglDatatableSort = { key: 'rank', order: 'asc' };
@@ -31,11 +32,11 @@ export class ExamListComponent implements OnInit {
   // Toggle name column
   hideName = false;
 
+  constructor(private dataService: DataService) { }
+
   ngOnInit() {
-    this.loadedData = JSON.parse(localStorage.getItem('usersExams'));
-    console.log(this.loadedData);
-    this.total = this.loadedData.length;
-    this.exams = this.loadedData.slice(0,this.elem);
+    this.currentUser = this.dataService.getCurrentUser();
+    this.exams = this.dataService.getAllExams();
   }
 
   // Custom sort function
@@ -53,17 +54,19 @@ export class ExamListComponent implements OnInit {
 
   editExam($event) {
     if (localStorage.getItem('selectedExam'))
-      console.log(this.actualExam);
+      console.log(this.selectedExam);
   }
-
+/*
   toggleData() {
     this.exams = this.exams ? null : DATA;
   }
+  */
 
   onRowClick($event: INglDatatableRowClick) {
     this.refreshData();
-    this.actualExam = $event.data;
-    localStorage.setItem('selectedExam', JSON.stringify(this.actualExam));
+    this.dataService.loadExamById($event.data["_id"]);
+    this.selectedExam = this.dataService.getSelectedExam();
+    console.log(this.selectedExam);
   }
 
   onChangePage($event) {

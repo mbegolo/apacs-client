@@ -12,14 +12,6 @@ export class UserService {
 
     constructor(private http: HttpClient) { }
 
-    getAllExams(id: string) {
-        var url = "https://web.math.unipd.it/apacs/esames?user="+id;
-        return this.http.get(url);
-    }
-    getExamById(id: string) {
-        var url = "https://web.math.unipd.it/apacs/esames?id="+id;
-        return this.http.get(url);
-    }
     getById(id: number) {
         return this.http.get("https://web.math.unipd.it/apacs/auth/local/" + id);
     }
@@ -29,11 +21,32 @@ export class UserService {
         return this.http.post('https://web.math.unipd.it/apacs/auth/local/register', user);
     }
 
+    getActualUser() {
+        /*
+        if (this.actualUser!=null) return this.actualUser;
+        return false;
+        */
+        return this.actualUser;
+    }
+
+    userLogged() {
+        if (this.actualUser!=null) return true;
+        return false;
+    }
+
     update(user: User) {
+        /* TODO
         return this.http.put("" + user.id, user);
+        */
+        console.log("TODO");
+        return false
     }
 
     delete(id: number) {
+        /* TODO
         return this.http.delete("" + id);
+        */
+        console.log("TODO");
+        return false
     }
 }
