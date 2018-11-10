@@ -29,6 +29,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 
 import { NglModule } from 'ng-lightning/ng-lightning';
 import { EditExamViewComponent } from './edit-exam-view/edit-exam-view.component';
+import { PatientDataViewComponent } from './patient-data-view/patient-data-view.component';
 
 library.add(fas);
 /*
@@ -56,7 +57,8 @@ https://fontawesome.com/icons?d=gallery&q=menu&s=solid&m=free
         RegisterComponent,
         NavbarComponent,
         ExamListComponent,
-        EditExamViewComponent
+        EditExamViewComponent,
+        PatientDataViewComponent
     ],
     providers: [
         AuthGuard,

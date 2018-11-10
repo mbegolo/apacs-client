@@ -19,18 +19,13 @@ export class EditExamViewComponent implements OnInit {
   examDate: string;
   examScore: string;
 
-  constructor(private dataService:DataService) {
-    this.selectedExam = this.dataService.getSelectedExam();
-    this.currentUser = this.dataService.getCurrentUser();
-    this.actualPatient = this.dataService.getActualPatient();
-  }
+  constructor(private dataService:DataService) { }
 
   ngOnInit() {
+    this.dataService.loadSelectedExam();
     this.selectedExam = this.dataService.getSelectedExam();
     this.currentUser = this.dataService.getCurrentUser();
-    this.actualPatient = this.dataService.getActualPatient();
-    console.log(this.selectedExam);
-    console.log(this.dataService.getSelectedExam());
+    this.actualPatient = this.dataService.getPatientData();
   }
 
 }

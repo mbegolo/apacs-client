@@ -6,13 +6,14 @@
   Se ti trovi in quest'area significa che vuoi modificare un esame già sostenuto o crearne uno nuovo. L'esame è il seguente:
 </p>
 <ul>
-  <li>nome paziente: {{patientName}}</li>
-  <li>data esame: {{examDate}}</li>
+  <li>nome paziente: {{actualPatient.Nome}} {{actualPatient.Cognome}}</li>
+  <li>data esame: {{actualPatient.data}}</li>
   <li>punteggio: {{examScore}}</li>
 </ul>
 <p>
-  Dati paziente: <strong>{{anagrafica}}</strong>
+  Dati paziente: <strong>{{actualPatient}}</strong>
 </p>
+
 
 <h1>------</h1>
 <h3>selectedExam</h3>

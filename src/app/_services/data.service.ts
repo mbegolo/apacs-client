@@ -3,17 +3,27 @@ import { HttpClient } from '@angular/common/http';
 
 import { UserService } from '../_services/user.service'
 import { ExamService } from '../_services/exam.service'
+import { AlertService } from '../_services/alert.service'
 
 import { User, Exam, Patient } from '../_models';
+
+declare var require: any;
 
 @Injectable() 
 export class DataService {
   currentUser: User;
   selectedExam: Exam;
   usersExams: Exam[];
+  diagnosi;
+  scolarita;
 
 
-  constructor(private userService: UserService, private examService: ExamService) { }
+  constructor(
+    private userService: UserService, 
+    private examService: ExamService, 
+    private alertService: AlertService ) {
+    this.loadSettings();
+  }
 
   loadUser() {
     var localUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -47,13 +57,16 @@ export class DataService {
       if (exam["id"] == id) {
         this.selectedExam = exam;
         localStorage.setItem('selectedExam', JSON.stringify(this.selectedExam));
+        //alert("change selected exam: \n"+JSON.stringify(this.selectedExam));
       }
-    });
+    }
     return this.selectedExam;
   }
 
   loadSelectedExam() {
     var localExam = JSON.parse(localStorage.getItem('selectedExam'));
+    if (localExam != null) 
+      this.selectedExam = localExam as Exam;
   }
 
   getCurrentUser() {
@@ -66,7 +79,7 @@ export class DataService {
     return this.currentUser.username;
   }
 
-  getCurrentlId() {
+  getCurrentId() {
     this.loadUser();
     return this.currentUser.id;
   }
@@ -82,8 +95,12 @@ export class DataService {
     return this.selectedExam;
   }
 
+  getPatient() {
+    return this.selectedExam["anagrafica"] as Patient;
+  }
+
   getPatientName() {
-    return this.selectedExam["anagrafica"]["Nome"] + " " + this.selectedExam["anagrafica"]["Cognome"];
+    return this.selectedExam["anagrafica"]["nome"] + " " + this.selectedExam["anagrafica"]["cognome"];
   }
 
   getExamDate() {
@@ -92,5 +109,51 @@ export class DataService {
 
   getExamScore() {
     return this.selectedExam["punteggi"];
+  }
+
+  getPatientData() {
+    var p = this.selectedExam["anagrafica"];// as Patient;
+    console.log(p);
+    return p;
+  }
+
+  hasSelectedExam() {
+    return (this.selectedExam != null);
+  }
+
+  loadScolarita() {
+    var file = require('../config-files/anni_scol.json');
+    return file;
+  }
+
+  loadDiagnosi() {
+    var file = require('../config-files/diagnosi.json');
+    return file;
+  }
+
+  loadSettings() {
+    this.scolarita = this.loadScolarita();
+    this.diagnosi = this.loadDiagnosi();
+  }
+
+  savePatient(p: Patient) {
+    // TODO save on server
+    this.selectedExam["anagrafica"] = p;
+    console.log("voglio salvare l'esame", this.selectedExam);
+    var response = this.examService.saveExam(this.selectedExam);
+    if (response) {
+      this.alertService.success("Esame salvato correttamente");
+      localStorage.setItem('selectedExam', JSON.stringify(this.selectedExam));
+      return true;
+    }
+    else return false;
+  }
+
+  newExam() {
+    console.log("make a new exam");
+    var exam = new Exam();
+    exam.user = this.getCurrentId();
+    return this.examService.newExam(exam);
+    // Crere un nuovo esame vuoto, poi impostarlo a selezionato, infine salvarlo
   }
 } 

@@ -1,6 +1,8 @@
 import {Component, OnInit, NgModule} from '@angular/core';
 import {INglDatatableSort, INglDatatableRowClick} from 'ng-lightning/ng-lightning';
 
+import { Router } from '@angular/router';
+
 import { User, Exam, Patient } from '../_models';
 import { DataService } from '../_services';
 
@@ -16,6 +18,7 @@ export class ExamListComponent implements OnInit {
   pageBoundary: number;
   page: number;
   elem = 10;
+  edit_clicked: boolean;
   
   loadedData: any; 
   total: any;
@@ -32,7 +35,7 @@ export class ExamListComponent implements OnInit {
   // Toggle name column
   hideName = false;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit() {
     this.currentUser = this.dataService.getCurrentUser();
@@ -53,20 +56,25 @@ export class ExamListComponent implements OnInit {
   }
 
   editExam($event) {
-    if (localStorage.getItem('selectedExam'))
-      console.log(this.selectedExam);
+    this.edit_clicked = true;
   }
-/*
-  toggleData() {
-    this.exams = this.exams ? null : DATA;
-  }
-  */
 
   onRowClick($event: INglDatatableRowClick) {
+    var edit_clicked = false;
+    if (this.edit_clicked) {
+      this.edit_clicked = false;
+      edit_clicked = true;
+    }
+    console.log("function onRowClick()");
     this.refreshData();
     this.dataService.loadExamById($event.data["_id"]);
     this.selectedExam = this.dataService.getSelectedExam();
     console.log(this.selectedExam);
+    console.log($event);
+    if (edit_clicked) {
+      alert("Edit " + $event.data["_id"]);
+      this.router.navigate(['./editExam']);
+    }
   }
 
   onChangePage($event) {

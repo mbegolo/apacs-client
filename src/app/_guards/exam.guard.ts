@@ -9,8 +9,9 @@ export class ExamGuard implements CanActivate {
     constructor(private router: Router, private dataService:DataService) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        /*
-        alert(this.dataService.getSelectedExam());
+
+        //alert(this.dataService.getSelectedExam());
+        
         if ( this.dataService.getSelectedExam() != null ) {
             // logged in so return true
             return true;
@@ -18,7 +19,5 @@ export class ExamGuard implements CanActivate {
 
         this.router.navigate(['/home'], { queryParams: { returnUrl: state.url }});
         return false;
-        */
-        return true;
     }
 }
