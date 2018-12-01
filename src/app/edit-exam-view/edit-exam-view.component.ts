@@ -22,7 +22,7 @@ export class EditExamViewComponent implements OnInit {
   constructor(private dataService:DataService) { }
 
   ngOnInit() {
-    this.dataService.loadSelectedExam();
+    //this.dataService.loadSelectedExam();
     this.selectedExam = this.dataService.getSelectedExam();
     this.currentUser = this.dataService.getCurrentUser();
     this.actualPatient = this.dataService.getPatientData();

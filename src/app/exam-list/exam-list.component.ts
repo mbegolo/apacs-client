@@ -1,4 +1,4 @@
-import {Component, OnInit, NgModule} from '@angular/core';
+import {Component, OnInit, OnChanges, NgModule} from '@angular/core';
 import {INglDatatableSort, INglDatatableRowClick} from 'ng-lightning/ng-lightning';
 
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { DataService } from '../_services';
   templateUrl: './exam-list.component.html',
 })
 
-export class ExamListComponent implements OnInit {
+export class ExamListComponent implements OnInit, OnChanges {
   currentUser: User;
   selectedExam: Exam;
   pageDefault: number;
@@ -19,6 +19,7 @@ export class ExamListComponent implements OnInit {
   page: number;
   elem = 10;
   edit_clicked: boolean;
+  delete_clicked: boolean;
   
   loadedData: any; 
   total: any;
@@ -38,8 +39,11 @@ export class ExamListComponent implements OnInit {
   constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit() {
-    this.currentUser = this.dataService.getCurrentUser();
-    this.exams = this.dataService.getAllExams();
+    this.reload();
+  }
+
+  ngOnChanges() {
+    this.reload();
   }
 
   // Custom sort function
@@ -48,6 +52,13 @@ export class ExamListComponent implements OnInit {
     this.exams.sort((a: any, b: any) => {
       return (key === 'rank' ? b[key] - a[key] : b[key].localeCompare(a[key])) * (order === 'desc' ? 1 : -1);
     });
+  }
+
+  reload() {
+    this.currentUser = this.dataService.getCurrentUser();
+    this.exams = this.dataService.getAllExams();
+    this.refreshData();
+    this.total = this.exams.length;
   }
 
   refreshData() {
@@ -61,9 +72,14 @@ export class ExamListComponent implements OnInit {
 
   onRowClick($event: INglDatatableRowClick) {
     var edit_clicked = false;
+    var delete_clicked = false;
     if (this.edit_clicked) {
-      this.edit_clicked = false;
       edit_clicked = true;
+      this.edit_clicked = false;
+    }
+    if (this.delete_clicked) {
+      delete_clicked = true;
+      this.delete_clicked = false;
     }
     console.log("function onRowClick()");
     this.refreshData();
@@ -72,8 +88,13 @@ export class ExamListComponent implements OnInit {
     console.log(this.selectedExam);
     console.log($event);
     if (edit_clicked) {
-      alert("Edit " + $event.data["_id"]);
+      //alert("Edit " + $event.data["_id"]);
       this.router.navigate(['./editExam']);
+    }
+    if (delete_clicked) {
+      alert("sicuro?");
+      this.dataService.deleteExam($event.data["id"]);
+      this.router.navigate(['./']);
     }
   }
 
@@ -83,5 +104,9 @@ export class ExamListComponent implements OnInit {
 
   changeDisplayElem() {
       this.onChangePage(null);
+  }
+
+  deleteExam($event) {
+    this.delete_clicked = true;
   }
 }

@@ -24,18 +24,24 @@ export class PatientDataViewComponent implements OnInit {
   constructor(private  dataService: DataService) {}
 
   ngOnInit() {
-    $('[data-toggle="tooltip"]').tooltip();
+    //$('[data-toggle="tooltip"]').tooltip();
     this.currentUser = this.dataService.getCurrentUser();
     this.selectedExam = this.dataService.getSelectedExam();
     this.model = this.dataService.getPatient();
     this.anni_scol = this.dataService.scolarita;
     this.diagnosi = this.dataService.diagnosi;
+    if (this.model.esaminatore == "") 
+      this.model.esaminatore = this.dataService.getCurrentUsername();
+    if (this.model.data ==  null) {
+      var d = new Date();
+      this.model.data = d.getFullYear() +'-'+ (d.getMonth()+1) +'-'+ d.getUTCDate();
+      console.log(this.model.data);
+    }
   }
 
   onSubmit() {
     this.submitted = true;
-    //this.dataService.savePatient(this.model);
-    return this.dataService.savePatient(this.model);
+    this.dataService.savePatient(this.model);
   }
 
   newExam() {

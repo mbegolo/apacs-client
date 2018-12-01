@@ -161,7 +161,7 @@
         Per procedere, risolvere i problemi relativi alla compilazione dei dati
       </button>
       <button type="button" class="btn btn-success" [disabled]="!patientForm.valid" data-toggle="modal" data-target="#confirm-save-modal">
-        Salva dati paziente
+        {{ this.dataService.isNewExam == true ? 'Crea nuovo paziente' : 'Salva dati paziente' }}
       </button>
     </div>
 
@@ -178,7 +178,7 @@
             Stai per salvare i dati relativi a questo paziente. Sei sicuro di voler continuare?
           </div>
           <div class="modal-footer">
-            <button type="button" id="close-modal" class="btn btn-secondary" (click)="asdfg()" data-dismiss="modal">Annulla</button>
+            <button type="button" id="close-save-modal" class="btn btn-secondary" (click)="close()" data-dismiss="modal">Annulla</button>
             <button type="submit" class="btn btn-success" [disabled]="!patientForm.valid">Salva dati</button>
           </div>
         </div>
@@ -188,5 +188,3 @@
   </form>
 
 </div>
-
-<button (click)="newExam()">Aggiungi nuovo</button>

@@ -4,16 +4,20 @@ import { HttpClient } from '@angular/common/http';
 import { UserService } from '../_services/user.service'
 import { ExamService } from '../_services/exam.service'
 import { AlertService } from '../_services/alert.service'
+import { Router } from '@angular/router';
 
 import { User, Exam, Patient } from '../_models';
 
 declare var require: any;
+
+declare var $: any;
 
 @Injectable() 
 export class DataService {
   currentUser: User;
   selectedExam: Exam;
   usersExams: Exam[];
+  isNewExam: boolean;
   diagnosi;
   scolarita;
 
@@ -21,8 +25,10 @@ export class DataService {
   constructor(
     private userService: UserService, 
     private examService: ExamService, 
-    private alertService: AlertService ) {
+    private alertService: AlertService,
+    private router: Router ) {
     this.loadSettings();
+    this.isNewExam = false;
   }
 
   loadUser() {
@@ -38,7 +44,7 @@ export class DataService {
   }
 
   loadAllExams() {
-    this.loadUser();
+    //this.loadUser();
     var localUsersExams = JSON.parse(localStorage.getItem('usersExams'));
     if ( (localUsersExams == null) || ((localUsersExams as any[]).length == 0) ) {
       this.usersExams = this.examService.getAllExams(this.currentUser.id);
@@ -47,6 +53,11 @@ export class DataService {
     else {
       this.usersExams = localUsersExams;
     }
+  }
+  forceReloadAllExams() {
+    //this.usersExams = null;
+    localStorage.removeItem('usersExams');
+    this.loadAllExams();
   }
 
   loadExamById(id: string) {
@@ -69,6 +80,11 @@ export class DataService {
       this.selectedExam = localExam as Exam;
   }
 
+  setSelectedExam(exam: Exam) {
+    this.selectedExam = exam;
+    localStorage.setItem('selectedExam', JSON.stringify(this.selectedExam));
+  }
+
   getCurrentUser() {
     this.loadUser();
     return this.currentUser;
@@ -84,6 +100,16 @@ export class DataService {
     return this.currentUser.id;
   }
 
+  getExamById(id) {
+    var e: any;
+    for (e in this.usersExams) {
+      if (e.id == id) {
+        return e;
+      }
+    }
+    return null;
+  }
+
   getAllExams() {
     if (this.usersExams == null)
       this.loadAllExams();
@@ -96,6 +122,7 @@ export class DataService {
   }
 
   getPatient() {
+    console.log("data.service:125",this.selectedExam);
     return this.selectedExam["anagrafica"] as Patient;
   }
 
@@ -137,23 +164,73 @@ export class DataService {
   }
 
   savePatient(p: Patient) {
-    // TODO save on server
-    this.selectedExam["anagrafica"] = p;
-    console.log("voglio salvare l'esame", this.selectedExam);
-    var response = this.examService.saveExam(this.selectedExam);
-    if (response) {
-      this.alertService.success("Esame salvato correttamente");
-      localStorage.setItem('selectedExam', JSON.stringify(this.selectedExam));
-      return true;
+    if (this.isNewExam) {
+      this.saveNewExam(p);
+      this.isNewExam = false;
+      alert("save new exam");
     }
-    else return false;
+    else {
+      this.selectedExam["anagrafica"] = p;
+      if ( (this.selectedExam["Nome"] == '')||(this.selectedExam["Nome"] == null)) {
+        this.selectedExam["Nome"] = p.nome + ' ' + p.cognome;
+        localStorage.setItem('selectedExam', JSON.stringify(this.selectedExam));
+        console.log(this.selectedExam["Nome"]);
+      }
+      console.log("voglio salvare l'esame", this.selectedExam["Nome"]);
+      var response = this.examService.saveExam(this.selectedExam);
+      $('#close-save-modal').click();
+      if (response) {
+        console.log(response);
+        this.alertService.success("Esame salvato correttamente");
+        localStorage.setItem('selectedExam', JSON.stringify(this.selectedExam));
+        //this.forceReloadAllExams();
+        return true;
+      }
+      else return false;
+    }
   }
 
   newExam() {
-    console.log("make a new exam");
-    var exam = new Exam();
-    exam.user = this.getCurrentId();
-    return this.examService.newExam(exam);
-    // Crere un nuovo esame vuoto, poi impostarlo a selezionato, infine salvarlo
+    this.isNewExam = true;
+    this.selectedExam = new Exam();
+    this.selectedExam.anagrafica = new Patient();
+    localStorage.removeItem('selectedExam');
+    this.router.navigate(['./editExam']);
+    console.log(this.selectedExam);
   }
+
+  saveNewExam(a: Patient) {
+    //var new_pat = this.examService.newAnagrafica();
+    var new_pat = this.examService.newAnagrafica(a);
+    var new_exam = this.examService.newExam(this.currentUser);
+    new_exam["Nome"] = a.nome + ' ' + a.cognome;
+    new_pat.subscribe(
+      _pat => {
+        var pat = _pat as Patient;
+        new_exam.subscribe(
+          _exam => {
+            var exam = _exam as Exam;
+            exam.anagrafica = pat;
+            pat.esame = exam.id;
+            this.setSelectedExam(exam);
+            console.log("OK OK");
+            this.router.navigate(['./editExam']);
+            this.savePatient(this.selectedExam.anagrafica);
+          }
+        );
+      }
+    );
+  }
+
+  deleteExam(id) {
+    var exam_to_del = this.loadExamById(id) as Exam;
+    var pat_to_del = exam_to_del.anagrafica as Patient;
+    console.log("DELETE EXAM"+JSON.stringify(exam_to_del));
+    console.log("DELETE Patient"+JSON.stringify(pat_to_del));
+    this.examService.deleteAnagrafica(pat_to_del);
+    this.examService.deleteExam(exam_to_del);
+    localStorage.removeItem('usersExams');
+    window.location.reload();
+  }
+
 } 

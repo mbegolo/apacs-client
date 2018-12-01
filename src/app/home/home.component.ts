@@ -26,6 +26,10 @@ export class HomeComponent implements OnInit {
         console.log(this.dataService.getSelectedExam());
     }
 
+    newExam() {
+        this.dataService.newExam();
+    }
+
     private loadAllExams() {
         //this.usersExams = this.dataService.getAllExams();
     }
