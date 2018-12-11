@@ -57,13 +57,13 @@ export class ExamListComponent implements OnInit, OnChanges {
   reload() {
     this.currentUser = this.dataService.getCurrentUser();
     this.exams = this.dataService.getAllExams();
-    this.refreshData();
     this.total = this.exams.length;
+    this.refreshData();
   }
 
   refreshData() {
     this.loadedData = JSON.parse(localStorage.getItem('usersExams'));
-    //console.log(this.loadedData);
+    this.router.navigate(['./']);
   }
 
   editExam($event) {

@@ -122,7 +122,6 @@ export class DataService {
   }
 
   getPatient() {
-    console.log("data.service:125",this.selectedExam);
     return this.selectedExam["anagrafica"] as Patient;
   }
 

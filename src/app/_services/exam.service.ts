@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 import { User, Exam, Patient } from '../_models';
 
@@ -9,7 +10,7 @@ export class ExamService {
     actualUser: User;
     usersExams: Exam[];
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private router: Router) {
         this.usersExams = [];
     }
 
@@ -26,6 +27,7 @@ export class ExamService {
             this.transformDate();
             localStorage.setItem('usersExams', JSON.stringify(this.usersExams));
             console.log("exam service: ", this.usersExams[0]["anagrafica"].data);
+            this.router.navigate(['./']);
             return this.usersExams;
         });
         return this.usersExams;
