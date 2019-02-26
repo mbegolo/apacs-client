@@ -1,0 +1,9 @@
+[
+	{"name": "3 elementare" , "years": 3},
+	{"name": "5 elementare" , "years": 5},
+	{"name": "3 media" , "years": 8},
+	{"name": "3 superiore (prof)" , "years": 11},
+	{"name": "5 superiore" , "years": 13},
+	{"name": "Università Triennale" , "years": 16},
+	{"name": "Università Magistrale" , "years": 18}
+]

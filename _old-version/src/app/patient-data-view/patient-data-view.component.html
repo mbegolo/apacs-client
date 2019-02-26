@@ -1,0 +1,190 @@
+<div class="wrapper">
+
+  <form #patientForm="ngForm" (ngSubmit)="onSubmit()" >
+
+    <div class="row">
+      <div class="form-group form-esaminatore">
+        <fieldset>
+          <legend>Esaminatore</legend>
+          <div class="form-element">
+            <label for="esaminatore">Esaminatore: </label>
+            <input id="esaminatore" name="esaminatore" type="text" class="form-control" required [(ngModel)]="model.esaminatore" #esaminatore="ngModel" data-toggle="tooltip" data-placement="bottom" title="Nome dell'esaminatore">
+            <div [hidden]="esaminatore.valid" class="alert alert-danger">
+              Nome esaminatore richiesto
+            </div>
+          </div>
+          <div class="form-element">
+            <label for="data">Data: </label>
+            <input id="data" name="data" type="date" class="form-control" required [(ngModel)]="model.data" #data="ngModel" data-toggle="tooltip" data-placement="bottom" title="Data dell'esame" value="1999-01-01">
+            <div [hidden]="data.valid" class="alert alert-danger">
+              Il campo <em>Data</em> non è valido. Si prega di inserire la data nel formato <em>gg/mm/aaaa</em>
+            </div>
+            <div *ngIf="data.errors?.required" class="alert alert-danger">
+              Il campo <em>Data</em> non può essere lasciato vuoto
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group form-personale">
+        <fieldset>
+          <legend>Dati Personali</legend>
+          <div class="form-element">
+              <label for="nome">Nome:</label>
+              <input id="nome" type="text" name="nome" class="form-control" required [(ngModel)]="model.nome" #nome="ngModel" pattern="[a-zA-Z]*" data-toggle="tooltip" data-placement="top" title="Nome del paziente (solo caratteri alfabetici)">
+            <div *ngIf="nome.errors?.required" class="alert alert-danger">
+              Il campo <em>{{nome.name}}</em> non può essere vuoto
+            </div>
+            <div *ngIf="nome.errors?.pattern" class="alert alert-danger">
+              Il campo <em>{{nome.name}}</em> può contenere solo lettere, tutti gli altri caratteri sono vietati
+            </div>
+          </div>
+
+          <div class="form-element">
+            <label for="cognome">Cognome:</label>
+            <input id="cognome" type="text" name="cognome" class="form-control" required [(ngModel)]="model.cognome" #cognome="ngModel" pattern="[a-zA-Z]*" data-toggle="tooltip" data-placement="top" title="Cognome del paziente (solo caratteri alfabetici)">
+            <div *ngIf="cognome.errors?.required" class="alert alert-danger">
+              Il campo <em>{{cognome.name}}</em> non può essere vuoto
+            </div>
+            <div *ngIf="cognome.errors?.pattern" class="alert alert-danger">
+              Il campo <em>{{cognome.name}}</em> può contenere solo lettere, tutti gli altri caratteri sono vietati
+            </div>
+          </div>
+
+          <div class="form-element">
+            <label for="sesso">Sesso:</label>
+            <input name="sesso" type="radio" class="form-radio" required [(ngModel)]="model.sesso" value="M" #sesso="ngModel" data-toggle="tooltip" data-placement="top" data-html="true" title="Paziente di sesso <em>Maschile</em>">M
+            <input name="sesso" type="radio" class="form-radio" required [(ngModel)]="model.sesso" value="F" #sesso="ngModel" data-toggle="tooltip" data-placement="top" data-html="true" title="Paziente di sesso <em>Femminile</em>">F
+            <div *ngIf="sesso.errors?.required" class="alert alert-danger">
+              Il campo <em>{{sesso.name}}</em> non può essere vuoto
+            </div>
+          </div>
+
+          <div class="form-element">
+            <label for="eta_num">Età:</label>
+            <input type="number" name="eta_num" class="form-control form-number" value="model.eta" required [(ngModel)]="model.eta" #eta_num="ngModel" pattern="[0-9]*" data-toggle="tooltip" data-placement="top" title="Età del paziente (solo numeri)">
+            <div *ngIf="eta_num.errors?.required" class="alert alert-danger">
+              Il campo <em>Età</em> non può essere vuoto
+            </div>
+            <div *ngIf="eta_num.errors?.pattern" class="alert alert-danger">
+              Il campo <em>Età</em> può contenere solo cifre, tutti gli altri caratteri sono vietati
+            </div>
+          </div>
+
+          <div class="form-element">
+            <label for="nascita">Luogo di nascita:</label>
+            <input id="nascita" name="nascita" type="text" class="form-control" required [(ngModel)]="model.luogo_nascita" #nascita="ngModel" data-toggle="tooltip" data-placement="top" title="Luogo di nascita del paziente">
+            <div *ngIf="nascita.errors?.required" class="alert alert-danger">
+              Il campo <em>Luogo di nascita</em> non può essere vuoto
+            </div>
+          </div>
+
+          <div class="form-element">
+            <label for="professione">Professione:</label>
+            <input id="professione" name="professione" type="text" class="form-control" required [(ngModel)]="model.professione" #professione="ngModel" data-toggle="tooltip" data-placement="top" title="Professione del paziente">
+            <div *ngIf="professione.errors?.required" class="alert alert-danger">
+              Il campo <em>Professione</em> non può essere vuoto
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="form-group form-clinico">
+        <fieldset>
+          <legend>Dati Clinici</legend>
+          <div class="clinical-data">
+            <div class="form-element">
+              <label for="lateralita">Lateralità:</label>
+              <span data-toggle="tooltip" data-placement="top" data-html="true" title="Paziente <em>Mancino</em>">
+                <input name="lateralita" type="radio" class="form-radio" required [(ngModel)]="model.lateralita" value="SX" #lateralita="ngModel">SX</span>
+              <span data-toggle="tooltip" data-placement="top" data-html="true" title="Paziente <em>Destrimano</em>">
+                <input name="lateralita" type="radio" class="form-radio" required [(ngModel)]="model.lateralita" value="DX" #lateralita="ngModel">DX</span>
+              <div *ngIf="lateralita.errors?.required" class="alert alert-danger">
+                Il campo <em>Lateralità</em> non può essere vuoto
+              </div>
+            </div>
+
+            <div class="form-element">
+              <label for="lingua">Lingua:</label>
+              <input id="lingua" name="lingua" type="text" class="form-control" required [(ngModel)]="model.lingua" #lingua="ngModel" data-toggle="tooltip" data-placement="top" data-html="true" title="Lingua madre del paziente (o lingua in cui si svolge l'intervista?)">
+              <div *ngIf="lingua.errors?.required" class="alert alert-danger">
+                Il campo <em>Lingua</em> non può essere vuoto
+              </div>
+            </div>
+
+
+            <div class="form-element">
+              <label for="scolarita_num">Scolarità:</label>
+              <input type="number" name="scolarita_num" class="form-control form-number" value="model.scolarita" required [(ngModel)]="model.scolarizzazione" #scolarita_num="ngModel" data-toggle="tooltip" data-placement="top" data-html="true" title="Anni di studio del paziente">
+
+              <select name="scolarita_select" class="form-control scolarita-select" [(ngModel)]="model.scolarizzazione" data-toggle="tooltip" data-placement="top" title="Massimo titolo di studio posseduto dal paziente">
+                <option *ngFor="let opt of anni_scol" [value]="opt.years">
+                  {{opt.name}}
+                </option>
+              </select>
+              <div *ngIf="scolarita_num.errors?.required" class="alert alert-danger">
+                Il campo <em>Scolarità</em> non può essere vuoto
+              </div>
+            </div>
+
+            <div class="form-element">
+              <label for="diagnosi_select">Diagnosi:</label>
+              <select name="diagnosi_select" class="form-control form-select" required [(ngModel)]="model.diagnosi_select" data-toggle="tooltip" data-placement="top" data-html="true" title="Precedenti diagnosi confermate">
+                <option *ngFor="let opt of diagnosi" [value]="opt.name">
+                  {{opt.name}}
+                </option>
+              </select>
+              <div *ngIf="!model.diagnosi_select" class="alert alert-danger">
+                Il campo <em>Diagnosi</em> non può essere vuoto
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="form-group form-note">
+        <fieldset>
+          <legend>Note</legend>
+          <div class="form-element" data-toggle="tooltip" data-placement="top" data-html="true" title="Informazioni aggiuntive">
+            <label for="dati_clinici">Altre informazioni: </label>
+            <textarea id="dati_clinici" name="dati_clinici" rows="8" class="form-control" [(ngModel)]="model.dati_clinici" #dati_clinici="ngModel">
+              {{model.dati_clinici}}
+            </textarea>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="confirm-button">
+      <button type="button" class="alert alert-warning" role="alert" [hidden]="patientForm.valid">
+        Per procedere, risolvere i problemi relativi alla compilazione dei dati
+      </button>
+      <button type="button" class="btn btn-success" [disabled]="!patientForm.valid" data-toggle="modal" data-target="#confirm-save-modal">
+        {{ this.dataService.isNewExam == true ? 'Crea nuovo paziente' : 'Salva dati paziente' }}
+      </button>
+    </div>
+
+    <div class="modal fade" id="confirm-save-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Attenzione!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Annulla">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Stai per salvare i dati relativi a questo paziente. Sei sicuro di voler continuare?
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="close-save-modal" class="btn btn-secondary" (click)="close()" data-dismiss="modal">Annulla</button>
+            <button type="submit" class="btn btn-success" [disabled]="!patientForm.valid">Salva dati</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+</div>
