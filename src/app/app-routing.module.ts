@@ -1,31 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LoggedUserWrapperComponent } from './logged-user-wrapper/logged-user-wrapper.component'; 
+import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
-import { HomeComponent } from './home';
-import { LoginComponent } from './login';
-import { RegisterComponent } from './register';
-import { PatientDataViewComponent } from './patient-data-view/patient-data-view.component';
-import { AuthGuard, ExamGuard } from './_guards';
-
-const appRoutes: Routes = [
-    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-    { path: 'editExam', component: PatientDataViewComponent, canActivate: [ExamGuard] },
-
-    // otherwise redirect to home
-    { path: '**', redirectTo: '' }
+const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'main', component: LoggedUserWrapperComponent, children: [
+    { path: 'dashboard', component: DashboardComponent, outlet: 'logged' },
+    //{ path: '', redirectTo: 'dashboard', pathMatch: 'prefix' }
+  ] },
+  { path: '', redirectTo: 'main', pathMatch: 'prefix'}
+  
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: false } // <-- debugging purposes only
-    )
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

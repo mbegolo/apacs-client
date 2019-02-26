@@ -1,0 +1,84 @@
+<clr-modal [(clrModalOpen)]="editUserModal">
+  <h3 class="modal-title">Modifica i tuoi dati</h3>
+  <div class="modal-body">
+    <form class="clr-form clr-form-horizontal">
+      <clr-input-container>
+        <label for="user-username">Username:</label>
+        <input clrInput type="text" placeholder="{{this.logged_user.username}}" [(ngModel)]="logged_user.username" name="user-username">
+      </clr-input-container>
+
+      <clr-input-container>
+        <label for="user-password">Password:</label>
+        <input clrInput type="password" placeholder="{{this.logged_user.password}}" [(ngModel)]="logged_user.password" name="user-password">
+      </clr-input-container>
+
+      <clr-input-container>
+        <label for="user-mail">eMail:</label>
+        <input clrInput type="text" placeholder="{{this.logged_user.mail}}" [(ngModel)]="logged_user.email" name="user-email">
+      </clr-input-container>
+
+      <clr-input-container>
+        <label for="user-name">Nome:</label>
+        <input clrInput type="text" placeholder="{{this.logged_user.name}}" [(ngModel)]="logged_user.name" name="user-name">
+      </clr-input-container>
+
+      <clr-input-container>
+        <label for="user-surname">Cognome:</label>
+        <input clrInput type="text" placeholder="{{this.logged_user.surname}}" [(ngModel)]="logged_user.surname" name="user-surname">
+      </clr-input-container>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="editUserModal = false; onAbort();">Annulla</button>
+        <button type="button" class="btn btn-primary" (click)="editUserModal = false; onSave();">Salva</button>
+      </div>
+    </form> 
+  </div>
+</clr-modal>
+
+<div class="card clr-col-12 clr-col-md-6 clr-col-lg-4">
+  <div class="card-block">
+      <h4 class="card-title">Benvenuto <em>{{this.presentation_name}}</em></h4>
+      <p class="card-text">
+      Questi sono i dati del tuo profilo
+      </p>
+  </div>
+
+  <ul class="list-group list-group-flush card-block">
+    <li class="clr-row">
+      <div class="clr-col-4">
+        ID:
+      </div>
+      <div class="clr-col-8">{{this.logged_user.id}}</div>
+    </li>
+    <li class="clr-row">
+      <div class="clr-col-4">
+        Username:
+      </div>
+      <div class="clr-col-8">{{this.logged_user.username}}</div>
+    </li>
+    <li class="clr-row">
+      <div class="clr-col-4">
+        eMail:
+      </div>
+      <div class="clr-col-8">{{this.logged_user.email}}</div>
+    </li>
+    <li class="clr-row">
+      <div class="clr-col-4">
+        Nome:
+      </div>
+      <div class="clr-col-8">{{this.logged_user.name}}</div>
+    </li>
+    <li class="clr-row">
+      <div class="clr-col-4">
+        Cognome:
+      </div>
+      <div class="clr-col-8">{{this.logged_user.surname}}</div>
+    </li>
+  </ul>
+  <div class="card-block">
+    <button type="button" class="btn btn-icon" title="Modifica il tuo profilo" (click)="editUserModal = true">
+        <clr-icon shape="pencil"></clr-icon> Modifica profilo
+    </button>
+  </div>
+</div>
+

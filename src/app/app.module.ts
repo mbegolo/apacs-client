@@ -1,80 +1,47 @@
-import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule }    from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
-// used to create fake backend
-//import { fakeBackendProvider } from './_helpers';
-
-import { AppComponent }  from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-
-import { AlertComponent } from './_directives';
-import { AuthGuard, ExamGuard } from './_guards';
-import { JwtInterceptor, ErrorInterceptor } from './_helpers';
-import { AlertService, AuthenticationService, UserService, ExamService, DataService } from './_services';
-import { HomeComponent } from './home';
-import { LoginComponent } from './login';
-import { RegisterComponent } from './register';
-import { NavbarComponent } from './navbar/navbar.component';
-import { ExamListComponent } from './exam-list/exam-list.component';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 
-import { NglModule } from 'ng-lightning/ng-lightning';
-import { EditExamViewComponent } from './edit-exam-view/edit-exam-view.component';
-import { PatientDataViewComponent } from './patient-data-view/patient-data-view.component';
+import { ClarityModule } from '@clr/angular';
+import { UserComponentComponent } from './user-component/user-component.component';
 
-library.add(fas);
-/*
-lista icone
-https://fontawesome.com/icons?d=gallery&q=menu&s=solid&m=free
-*/
+import { UserService } from './_services';
+import { LoginComponent } from './login/login.component';
+import { RegisterFormComponent } from './register-form/register-form.component';
+import { AlertMessageComponent } from './alert-message/alert-message.component';
+import { LoggedUserWrapperComponent } from './logged-user-wrapper/logged-user-wrapper.component';
+import { ExamViewComponent } from './exam-view/exam-view.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+
 
 @NgModule({
-    imports: [
-        BrowserModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        MatExpansionModule,
-        BrowserAnimationsModule,
-        FontAwesomeModule,
-        NglModule.forRoot(),
-        FormsModule,
-        AppRoutingModule
-    ],
-    declarations: [
-        AppComponent,
-        AlertComponent,
-        HomeComponent,
-        LoginComponent,
-        RegisterComponent,
-        NavbarComponent,
-        ExamListComponent,
-        EditExamViewComponent,
-        PatientDataViewComponent
-    ],
-    providers: [
-        AuthGuard,
-        ExamGuard,
-        AlertService,
-        AuthenticationService,
-        UserService,
-        ExamService,
-        DataService,
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-        // provider used to create fake backend
-        // fakeBackendProvider
-    ],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    UserComponentComponent,
+    LoginComponent,
+    RegisterFormComponent,
+    AlertMessageComponent,
+    LoggedUserWrapperComponent,
+    ExamViewComponent,
+    DashboardComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule, 
+    BrowserAnimationsModule,
+    HttpModule,
+    //AngularFontAwesomeModule,
+    //NgbModule.forRoot()
+    ClarityModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
 })
-
 export class AppModule { }

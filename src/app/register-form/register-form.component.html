@@ -1,0 +1,50 @@
+<form clrForm clrLayout="vertical" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label>Username</label>
+        <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+    </div>
+    <div class="errors" *ngIf="submitted && f.username.errors">
+      <alert-message *ngIf="f.username.errors.required" msg="Il campo 'Username' è obbligatorio"></alert-message>
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+    </div>
+    <div class="errors" *ngIf="f.email.errors">
+      <alert-message *ngIf="submitted && f.email.errors.required" msg="Il campo 'Email' è obbligatorio"></alert-message>
+      <alert-message *ngIf="f.email.errors.email" msg="Indirizzo email non valido"></alert-message>
+    </div>
+
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+    </div>
+    <div class="errors" *ngIf="f.password.errors">
+      <alert-message *ngIf="submitted && f.password.errors.required" msg="Il campo 'Password' è obbligatorio"></alert-message>
+      <alert-message *ngIf="f.password.errors.minlength" msg="La password dev'essere lunga almeno 6 caratteri"></alert-message>
+    </div>
+
+
+    <div class="form-group">
+        <label>Conferma Password</label>
+        <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+    </div>
+    <div class="errors" *ngIf="f.confirmPassword.errors">
+      <alert-message *ngIf="submitted && f.confirmPassword.errors.required" msg="Il campo 'Conferma password' è obbligatorio"></alert-message>
+      <alert-message *ngIf="f.confirmPassword.errors.mustMatch" msg="Le due password devono essere uguali"></alert-message>
+    </div>
+
+    <div class="form-group">
+        <label>Nome</label>
+        <input type="text" formControlName="name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Cognome</label>
+        <input type="text" formControlName="surname" class="form-control" />
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Registrati</button>
+    </div>
+</form>

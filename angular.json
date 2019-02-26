@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "apacs-client": {
+    "apacs-client-new": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apacs-client",
+            "outputPath": "dist/apacs-client-new",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -27,13 +27,16 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              //"./node_modules/bootstrap/scss/bootstrap.scss",
+              //"./node_modules/font-awesome/css/font-awesome.css",
+              "./node_modules/@clr/icons/clr-icons.min.css",
+              "./node_modules/@clr/ui/clr-ui.min.css",
+              "src/styles.scss"
             ],
             "scripts": [
-              "./node_modules/jquery/dist/jquery.min.js",
-              "./node_modules/popper.js/dist/umd/popper.min.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+              //"./node_modules/mutationobserver-shim/dist/mutationobserver.min.js",
+              "./node_modules/@webcomponents/custom-elements/custom-elements.min.js",
+              "./node_modules/@clr/icons/clr-icons.min.js"
             ]
           },
           "configurations": {
@@ -66,18 +69,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "apacs-client:build"
+            "browserTarget": "apacs-client-new:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "apacs-client:build:production"
+              "browserTarget": "apacs-client-new:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "apacs-client:build"
+            "browserTarget": "apacs-client-new:build"
           }
         },
         "test": {
@@ -111,7 +114,7 @@
         }
       }
     },
-    "apacs-client-e2e": {
+    "apacs-client-new-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -120,11 +123,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "apacs-client:serve"
+            "devServerTarget": "apacs-client-new:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "apacs-client:serve:production"
+              "devServerTarget": "apacs-client-new:serve:production"
             }
           }
         },
@@ -140,5 +143,5 @@
       }
     }
   },
-  "defaultProject": "apacs-client"
+  "defaultProject": "apacs-client-new"
 }

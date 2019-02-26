@@ -1,59 +1,84 @@
-﻿import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { User } from '../_models';
+import { UserService } from '../_services';
+import { Router } from "@angular/router";
 
-import { AlertService, AuthenticationService } from '../_services';
-
-@Component({templateUrl: 'login.component.html'})
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
+})
 export class LoginComponent implements OnInit {
-    loginForm: FormGroup;
-    loading = false;
-    submitted = false;
-    returnUrl: string;
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private route: ActivatedRoute,
-        private router: Router,
-        private authenticationService: AuthenticationService,
-        private alertService: AlertService) {}
+  username: string;
+  password: string;
 
-    ngOnInit() {
-        this.loginForm = this.formBuilder.group({
-            username: ['', Validators.required],
-            password: ['', Validators.required]
-        });
+  wrongCredential = false;
+  missingCredential = false;
+  otherError = false;
+  error: string;
 
-        // reset login status
-        this.authenticationService.logout();
+  constructor(private router:Router, private userService: UserService) { }
 
-        // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  ngOnInit() {
+    if (this.userService.isUserLogged()) {
+      this.router.navigate(['main',{ outlets: { logged: ['dashboard'] } }]);
     }
+  }
 
-    // convenience getter for easy access to form fields
-    get f() { return this.loginForm.controls; }
+  onSubmit() {
+    this.tryLogin();
+  }
 
-    onSubmit() {
-        this.submitted = true;
+  tryLogin() {
+    this.userService.logIn(this.username,this.password).subscribe( 
+      response => {
+        this.onSuccess(response);
+      }, 
+      error => {
+        this.onFail(error);
+      }
+    );
+  }
 
-        // stop here if form is invalid
-        if (this.loginForm.invalid) {
-            return;
-        }
+  onSuccess(r) {
+    //console.log("Login effettuata correttamente.");
+    var uid = JSON.parse(r._body).uid;
+    this.userService.getUser(uid).subscribe( data => {
+      var usr = JSON.parse((<any>data)._body) as User;
+      this.userService.logUser(usr);
+      this.router.navigate(['main',{ outlets: { logged: ['dashboard'] } }]);
+    });
+  }
 
-        this.loading = true;
-        this.authenticationService.login(this.f.username.value, this.f.password.value)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    this.router.navigate([this.returnUrl]);
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
-        
+  onFail(e) { 
+    console.log("Fail on login: ", e);
+    if (e.status == "400" ) {
+      this.missingCredential = true;
     }
+    else if (e.status == "401" ) {
+      this.clean();
+      this.wrongCredential = true;
+    }
+    else {
+      this.clean();
+      this.otherError = true;
+      this.error = "http error "+e.status+" - "+JSON.parse(e._body).message;
+    }
+  }
+
+  checkUser() {
+    if (this.userService.isUserLogged()) {
+      return true;
+    }
+    return false;
+  }
+
+  clean() {
+    this.wrongCredential = false;
+    this.missingCredential = false;
+    this.otherError = false;
+    this.error = "";
+  }
+
 }
