@@ -1,5 +1,5 @@
 {
-  "name": "apacs-client-new",
+  "name": "apacs-client",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -35,7 +35,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.13.1",
     "@angular/cli": "~7.0.3",
-    "@angular/compiler-cli": "~7.0.0",
+    "@angular/compiler-cli": "^7.2.6",
     "@angular/language-service": "~7.0.0",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
