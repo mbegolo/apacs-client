@@ -1,45 +1,3 @@
-<!--
-<clr-modal [(clrModalOpen)]="editUserModal">
-  <h3 class="modal-title">Modifica i tuoi dati</h3>
-  <div class="modal-body">
-    <form class="clr-form clr-form-horizontal">
-      <clr-input-container>
-        <label for="user-username">Username:</label>
-        <input clrInput type="text" placeholder="{{this.logged_user.username}}" [(ngModel)]="logged_user.username" name="user-username">
-      </clr-input-container>
-
-      <clr-input-container>
-        <label for="user-password">Password:</label>
-        <input clrInput type="password" placeholder="{{this.logged_user.password}}" [(ngModel)]="logged_user.password" name="user-password">
-      </clr-input-container>
-
-      <clr-input-container>
-        <label for="user-mail">eMail:</label>
-        <input clrInput type="text" placeholder="{{this.logged_user.mail}}" [(ngModel)]="logged_user.email" name="user-email">
-      </clr-input-container>
-
-      <clr-input-container>
-        <label for="user-name">Nome:</label>
-        <input clrInput type="text" placeholder="{{this.logged_user.name}}" [(ngModel)]="logged_user.name" name="user-name">
-      </clr-input-container>
-
-      <clr-input-container>
-        <label for="user-surname">Cognome:</label>
-        <input clrInput type="text" placeholder="{{this.logged_user.surname}}" [(ngModel)]="logged_user.surname" name="user-surname">
-      </clr-input-container>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="editUserModal = false; onAbort();">Annulla</button>
-        <button type="button" class="btn btn-primary" (click)="editUserModal = false; onSave();">Salva</button>
-      </div>
-    </form> 
-  </div>
-</clr-modal>
-
--->
-
-
-
 
 <clr-modal [(clrModalOpen)]="editUserModal">
   <h3 class="modal-title">Modifica i tuoi dati</h3>
@@ -53,21 +11,21 @@
         <alert-message *ngIf="f.username.errors.required" msg="Il campo 'Username' è obbligatorio"></alert-message>
       </div>
 
-      <clr-input-container class="form-group">
+      <clr-password-container class="form-group">
         <label for="user-password">Password:</label>
-        <input clrInput type="password" placeholder="{{this.logged_user.password}}"  formControlName="password" name="user-password" [ngClass]="{ 'is-invalid': f.password.errors }">
-      </clr-input-container>
-      <div class="errors" *ngIf="f.password.errors">
-        <alert-message *ngIf="submitted && f.password.errors.required" msg="Il campo 'Password' è obbligatorio"></alert-message>
+        <input clrPassword placeholder="password" formControlName="password" name="user-password" [ngClass]="{ 'is-invalid': (f.password.touched && f.password.errors) }">
+      </clr-password-container>
+      <div class="errors" *ngIf="f.password.touched && f.password.errors">
+        <alert-message *ngIf="f.password.errors.required" msg="Il campo 'Password' è obbligatorio"></alert-message>
         <alert-message *ngIf="f.password.errors.minlength" msg="La password dev'essere lunga almeno 6 caratteri"></alert-message>
       </div>
 
-      <clr-input-container class="form-group">
+      <clr-password-container class="form-group">
         <label for="confirm-password">Conferma password:</label>
-        <input clrInput type="password" placeholder="{{this.logged_user.password}}"  formControlName="confirmPassword" name="confirm-password" [ngClass]="{ 'is-invalid': f.confirmPassword.errors }">
-      </clr-input-container>
-      <div class="errors" *ngIf="f.confirmPassword.errors">
-        <alert-message *ngIf="submitted && f.confirmPassword.errors.required" msg="Il campo 'Conferma password' è obbligatorio"></alert-message>
+        <input clrPassword placeholder="conferma password" formControlName="confirmPassword" name="confirm-password" [ngClass]="{ 'is-invalid':(f.confirmPassword.touched && f.confirmPassword.errors)}">
+      </clr-password-container>
+      <div class="errors" *ngIf="f.confirmPassword.touched && f.confirmPassword.errors">
+        <alert-message *ngIf="f.confirmPassword.errors.required" msg="Il campo 'Conferma password' è obbligatorio"></alert-message>
         <alert-message *ngIf="f.confirmPassword.errors.mustMatch" msg="Le due password devono essere uguali"></alert-message>
       </div>
 
@@ -100,7 +58,7 @@
 
 
 
-<div class="card clr-col-12 clr-col-md-6 clr-col-lg-4">
+<div class="card">
   <div class="card-block">
       <h4 class="card-title">Benvenuto <em>{{this.presentation_name}}</em></h4>
       <p class="card-text">

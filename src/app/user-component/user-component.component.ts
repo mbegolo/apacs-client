@@ -41,14 +41,15 @@ export class UserComponentComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.logged_user = new User();
-    //console.log("asdsadsadsadsa: ",this.userService.getLoggedUser());
     this.logged_user = this.userService.getLoggedUser() as User;
     this.presentation_name = this.logged_user.username;
     if (!(this.logged_user.name === "")) {
       this.presentation_name = this.logged_user.name;
     }
+    this.initFormData();
   }
+
+  get f() { return this.editUserForm.controls; }
 
   initForm() {
     this.editUserForm = this.formBuilder.group({
@@ -63,20 +64,27 @@ export class UserComponentComponent implements OnInit {
     });
   }
 
-  get f() { return this.editUserForm.controls; }
+  initFormData() {
+    this.editUserForm.controls['username'].setValue(this.logged_user.username);
+    this.editUserForm.controls['email'].setValue(this.logged_user.email);
+    this.editUserForm.controls['name'].setValue(this.logged_user.name);
+    this.editUserForm.controls['surname'].setValue(this.logged_user.surname);
+  }
 
   printData() {
     console.log(this.logged_user);
   }
 
   onSave() {
-    console.log("onSave");
     if (!this.save()) this.abort();
     else {
-      this.logged_user.username = this.editUserForm.controls.username.value
+      this.logged_user.username = this.editUserForm.controls.username.value;
+      this.logged_user.email = this.editUserForm.controls.email.value;
+      this.logged_user.password = this.editUserForm.controls.password.value;
+      this.logged_user.name = this.editUserForm.controls.name.value;
+      this.logged_user.surname = this.editUserForm.controls.surname.value;
       this.userService.updateUser(this.logged_user).subscribe(data => {
         var new_usr = JSON.parse((<any>data)._body);
-        console.log(new_usr);
         this.userService.logUser(new_usr);
       },
       error => {
@@ -86,18 +94,14 @@ export class UserComponentComponent implements OnInit {
   }
 
   save() {
-    //return confirm("Sicuro di voler salvare? L'azione non è reversibile");
-    console.log(this.editUserForm);
-    return false;
+    return confirm("Sicuro di voler salvare? L'azione non è reversibile");
   }
 
   onAbort() {
     this.abort();
   }
 
-  abort() {
-    this.logged_user = new User();
-  }
+  abort() { }
 
   getAllUsers() {
     this.userService.getAllUsers().subscribe(data => {
@@ -117,8 +121,8 @@ export class UserComponentComponent implements OnInit {
     //})
   }
 
-  test() {
-    this.userService.saveOnLocal();
+  print() {
+    console.log(this.editUserForm.controls);
   }
 
   logout() {

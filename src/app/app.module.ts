@@ -17,6 +17,8 @@ import { AlertMessageComponent } from './alert-message/alert-message.component';
 import { LoggedUserWrapperComponent } from './logged-user-wrapper/logged-user-wrapper.component';
 import { ExamViewComponent } from './exam-view/exam-view.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { TestComponent } from './test/test.component';
+import { ExamListViewComponent } from './exam-list-view/exam-list-view.component';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AlertMessageComponent,
     LoggedUserWrapperComponent,
     ExamViewComponent,
-    DashboardComponent
+    DashboardComponent,
+    TestComponent,
+    ExamListViewComponent
   ],
   imports: [
     BrowserModule,

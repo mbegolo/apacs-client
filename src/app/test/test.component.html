@@ -1,0 +1,34 @@
+<div class="card">
+  <div class="card-block">
+      <h4 class="card-title">I tuoi ultimi esami</h4>
+  </div>
+  <div class="card-block">
+    <ul>
+      <li *ngFor="let exam of lastExams">
+        {{ exam.id }} - {{exam.date}}
+      </li>
+    </ul>
+  </div>
+  <div class="card-block">
+    <button type="button" class="btn btn-icon" title="Modifica il tuo profilo" (click)="getMyExam()">
+        GET ALL MY EXAMS
+    </button>
+  </div>
+  <div class="card-block">
+    <button type="button" class="btn btn-icon" title="Modifica il tuo profilo" (click)="createNewExam()">
+        CREATE NEW EXAM AS CURRENT USER
+    </button>
+  </div>
+  
+  <div class="card-block">
+    <button type="button" class="btn btn-icon" title="Modifica il tuo profilo" (click)="getActualExamId()">
+        GET ACTUAL EXAM ID
+    </button>
+  </div>
+
+  <div class="card-block">
+    <button type="button" class="btn btn-icon" title="Modifica il tuo profilo" (click)="test(5)">
+        Last 5 exams
+    </button>
+  </div>
+</div>
