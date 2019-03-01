@@ -15,6 +15,11 @@ export class Patient {
   esaminatore: string;
   esame: string;
 
+  constructor() {
+    this.nome = "_name_";
+    this.cognome = "_surname_";
+  }
+
   isValid(): boolean {
     if (this.nome && this.cognome && this.sesso && this.eta && this.lateralita && this.diagnosi) return true;
     return false;

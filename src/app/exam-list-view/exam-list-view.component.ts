@@ -29,6 +29,7 @@ class DateFilter implements ClrDatagridStringFilterInterface<Exam> {
 
 class NameFilter implements ClrDatagridStringFilterInterface<Exam> {
   accepts(exam: Exam, search: string): boolean {
+    console.log((<any>exam.patient).id);
     return ((<any>exam.patient).nome).toLowerCase().includes(search);
   }
 }
@@ -81,9 +82,13 @@ export class ExamListViewComponent implements OnInit {
     //console.log(this.patients);
   }
 
-  editExam(id:string) {
-    this.examService.setActive(id);
-    console.log("edit ",id);
+  editExam(eid:string, pid:string) {
+    //this.examService.setActive(id);
+    console.log("edit exam: ",eid);
+    console.log("edit pat : ",pid);
+    this.patientService.getPatient(pid).subscribe(response => {
+      console.log(JSON.parse((<any>response)._body));
+    });
   }
 
   deleteExam(e) {
@@ -96,13 +101,6 @@ export class ExamListViewComponent implements OnInit {
         errors => console.log(errors)
       );
       console.log("elimina ",e);
-    }
-  }
-
-  test() {
-    //console.log(this.examService.getActiveExam());
-    for (let p of this.exams) {
-      console.log(p);
     }
   }
 }

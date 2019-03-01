@@ -6,6 +6,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 import { UserService } from '../_services';
 import { ExamService } from '../_services';
+import { PatientService } from '../_services';
 
 @Component({
   selector: 'app-test',
@@ -16,7 +17,7 @@ export class TestComponent implements OnInit {
 
   private lastExams: Exam[];
 
-  constructor(private examService: ExamService) {
+  constructor(private examService: ExamService, private patientService: PatientService) {
     this.examService.loadAllMyExams();
   }
 
@@ -32,11 +33,14 @@ export class TestComponent implements OnInit {
   }
 
   createNewExam() {
-    this.examService.createNewExam().subscribe(data => {
-      var new_exam = JSON.parse((<any>data)._body);
-      console.log(new_exam);
-      this.examService.saveOnLocal(new_exam);
-      this.getMyLastExams(5);
+    this.patientService.createNewPatient().subscribe(response => {
+      var pid = (JSON.parse( (<any>response)._body)).id;
+      this.examService.createNewExam(pid).subscribe(data => {
+        var new_exam = JSON.parse((<any>data)._body);
+        console.log(new_exam);
+        this.examService.saveOnLocal(new_exam);
+        this.getMyLastExams(5);
+      });
     });
   }
 

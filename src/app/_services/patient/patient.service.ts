@@ -25,6 +25,11 @@ export class PatientService {
     return this.http.get(API_URL + '/patient/' + id);
   }
 
+  createNewPatient() {
+    var new_pat = new Patient();
+    return this.http.post(API_URL + '/patient', new_pat);
+  }
+
   getMyPatientList() {
     this.examService.getMyExamList().subscribe( data => {
       var ex_list = JSON.parse((<any>data)._body);

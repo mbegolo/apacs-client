@@ -46,10 +46,10 @@ export class ExamService {
     return this.lastExams;
   }
 
-  createNewExam() {
+  createNewExam(pid:string) {
     var usr = this.userService.getLoggedUser();
     if (usr) {
-      this.activeExam = new Exam(new Date(), usr.id);
+      this.activeExam = new Exam(new Date(), usr.id, pid);
       return this.http.post(API_URL + '/exam', this.activeExam);
     }
   }

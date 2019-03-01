@@ -18,7 +18,7 @@
         <clr-dg-cell>{{exam.patient.cognome}}</clr-dg-cell>
         <clr-dg-cell>{{exam.date | date:"dd/MM/yyyy"}}</clr-dg-cell>
         <clr-dg-cell>
-          <button class="btn btn-sm" (click)="editExam(exam.id)">
+          <button class="btn btn-sm" (click)="editExam(exam.id, exam.patient.id)">
             <clr-icon shape="pencil"></clr-icon> edit
           </button>
           <button class="btn btn-danger-outline btn-sm" (click)="deleteExam(exam.id)">
@@ -36,5 +36,3 @@
         </clr-dg-pagination>
     </clr-dg-footer>
 </clr-datagrid>
-
-<button (click)="test()">TEST</button>
