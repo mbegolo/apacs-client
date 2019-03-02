@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClrDatagridSortOrder } from '@clr/angular';
 import { ClrDatagridStringFilterInterface } from "@clr/angular";
+import { Router } from "@angular/router";
 
 import { User, Exam, Patient } from '../_models';
 import { UserService, ExamService, PatientService } from '../_services';
@@ -57,7 +58,7 @@ export class ExamListViewComponent implements OnInit {
   private surnameFilter = new SurnameFilter();
   private loaded_data = false;
 
-  constructor(private examService: ExamService, private patientService: PatientService) { }
+  constructor(private router:Router, private examService: ExamService, private patientService: PatientService) { }
 
   ngOnInit() {
     this.refresh();
@@ -83,11 +84,13 @@ export class ExamListViewComponent implements OnInit {
   }
 
   editExam(eid:string, pid:string) {
-    //this.examService.setActive(id);
-    console.log("edit exam: ",eid);
-    console.log("edit pat : ",pid);
-    this.patientService.getPatient(pid).subscribe(response => {
-      console.log(JSON.parse((<any>response)._body));
+    this.examService.setActive(eid);
+    this.patientService.setActive(pid);
+    //console.log(this.examService.getActiveExam(), this.patientService.getActivePatient());
+    this.examService.getExam(eid).subscribe(_exam => {
+      this.patientService.getPatient(pid).subscribe(_pat => {
+        this.router.navigate(['main',{ outlets: { logged: ['exam'] } }]);
+      });
     });
   }
 

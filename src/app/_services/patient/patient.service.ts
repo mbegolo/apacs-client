@@ -15,6 +15,9 @@ const API_URL = environment.apiUrl;
 })
 export class PatientService {
 
+  public activePatient: Patient;
+  public activePatientId: string;
+
   constructor(private userService: UserService, 
       private examService: ExamService, 
       private http: Http
@@ -23,6 +26,35 @@ export class PatientService {
   getPatient(id: string) {
     //console.log("asking for: ", id);
     return this.http.get(API_URL + '/patient/' + id);
+  }
+
+  setActive(pid: string) {
+    this.activePatientId = pid;
+    this.getPatient(pid).subscribe(response => {
+      this.activePatient = JSON.parse((<any>response)._body) as Patient;
+      this.saveOnLocal(this.activePatient);
+      console.log("PAT service: ",this.activePatient);
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  saveOnLocal(p: Patient) {
+    //this.activePatient = p;
+    localStorage.setItem('activePatient',JSON.stringify(this.activePatient));
+    this.loadFromLocal();
+  }
+
+  loadFromLocal() {
+    var patient = JSON.parse(localStorage.getItem('activePatient'));
+    this.activePatient = patient;
+    return this.activePatient;
+  }
+
+  getActivePatient(): Patient {
+    this.loadFromLocal();
+    return this.activePatient;
   }
 
   createNewPatient() {
@@ -35,5 +67,9 @@ export class PatientService {
       var ex_list = JSON.parse((<any>data)._body);
       console.log(ex_list);
     })
+  }
+
+  savePatient(p: Patient) {
+    return this.http.post(API_URL + '/patient/' + p.id, p);
   }
 }

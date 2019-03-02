@@ -2,9 +2,9 @@ export class Patient {
   id: string;
   nome: string;
   cognome: string;
-  sesso: string;
+  sesso: boolean;
   eta: number;
-  lateralita: string;
+  lateralita: boolean;
   luogonascita: string;
   professione: string;
   scolarita: number;
@@ -16,8 +16,20 @@ export class Patient {
   esame: string;
 
   constructor() {
-    this.nome = "_name_";
-    this.cognome = "_surname_";
+    this.nome = "";
+    this.cognome = "";
+    this.sesso = null;
+    this.eta =0;
+    this.lateralita = null;
+    this.luogonascita ="";
+    this.professione ="";
+    this.scolarita =0;
+    this.lingua ="";
+    this.altro ="";
+    this.diagnosi ="";
+    this.data ="";
+    this.esaminatore ="";
+    this.esame ="";
   }
 
   isValid(): boolean {

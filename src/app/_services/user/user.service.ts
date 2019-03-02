@@ -53,14 +53,12 @@ export class UserService {
 
   public getLoggedUser() {
     this.loadFromLocal();
-    if (this.loggedUserID != null) {
+    //if (this.loggedUserID != null) {
       return this.loggedUser;
-      //console.log("LoggedUserId trovato in user service -> getLoggedUser()");
-    }
-    else {
-      //console.log("GNE!--",this.loggedUserID);
-      return false;
-    }
+    //}
+    //else {
+      //return false;
+    //}
   }
 
   public saveOnLocal() {
@@ -83,6 +81,8 @@ export class UserService {
     this.loggedUser = null;
     this.loggedUserID = null;
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('activePatient');
+    localStorage.removeItem('activeExam');
   }
 
   public isUserLogged() {

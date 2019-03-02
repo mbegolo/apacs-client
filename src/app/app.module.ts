@@ -19,6 +19,7 @@ import { ExamViewComponent } from './exam-view/exam-view.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TestComponent } from './test/test.component';
 import { ExamListViewComponent } from './exam-list-view/exam-list-view.component';
+import { EditPatientComponent } from './edit-patient/edit-patient.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { ExamListViewComponent } from './exam-list-view/exam-list-view.component
     ExamViewComponent,
     DashboardComponent,
     TestComponent,
-    ExamListViewComponent
+    ExamListViewComponent,
+    EditPatientComponent
   ],
   imports: [
     BrowserModule,

@@ -1,13 +1,13 @@
 
 <clr-datagrid [clrDgLoading]="loading">
     <clr-dg-column>ID esame</clr-dg-column>
-    <clr-dg-column>Nome Paziente
+    <clr-dg-column [clrDgField]="'patient.nome'">Nome Paziente
       <clr-dg-string-filter [clrDgStringFilter]="nameFilter"></clr-dg-string-filter>
     </clr-dg-column>
-    <clr-dg-column>Cognome Paziente
+    <clr-dg-column [clrDgField]="'patient.nome'">Cognome Paziente
       <clr-dg-string-filter [clrDgStringFilter]="surnameFilter"></clr-dg-string-filter>
     </clr-dg-column>
-    <clr-dg-column>Data
+    <clr-dg-column [clrDgField]="'date'">Data
       <clr-dg-string-filter [clrDgStringFilter]="dateFilter"></clr-dg-string-filter>
     </clr-dg-column>
     <clr-dg-column>Azioni</clr-dg-column>

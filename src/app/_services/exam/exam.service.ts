@@ -14,10 +14,11 @@ const API_URL = environment.apiUrl;
 })
 export class ExamService {
 
-  private activeExam: Exam;
-  private allMyExams: Exam[];
+  public activeExam: Exam;
+  public activeExamId: string;
+  public allMyExams: Exam[];
   public lastExams: Exam[];
-  private last_exams_number = 5;
+  public last_exams_number = 5;
 
   constructor(private userService: UserService, private http: Http) { }
 
@@ -55,9 +56,13 @@ export class ExamService {
   }
 
   setActive(id: string) {
+    this.activeExamId = id;
     this.getExam(id).subscribe(data => {
-      this.activeExam = JSON.parse((<any>data)._body);
-    });
+      this.activeExam = JSON.parse((<any>data)._body) as Exam;
+      this.saveOnLocal(this.activeExam);
+      console.log("EXA service: ",this.activeExam);
+    },
+    error => console.log(error));
   }
 
   saveOnLocal(e: Exam) {
@@ -72,12 +77,19 @@ export class ExamService {
   }
 
   getActiveExam() {
-    if (this.activeExam)
-      return(this.activeExam.id);
-    else return false;
+    this.loadFromLocal();
+    return this.activeExam;
   }
 
   deleteExam(id: string) {
     return this.http.delete(API_URL + '/exam/' + id);
+  }
+
+  saveExam(e: Exam) {
+    return this.http.post(API_URL + '/exam/' + e.id , e)
+  }
+
+  update() {
+    
   }
 }
