@@ -48,7 +48,7 @@ class SurnameFilter implements ClrDatagridStringFilterInterface<Exam> {
 })
 export class ExamListViewComponent implements OnInit {
 
-  descSort = ClrDatagridSortOrder.DESC;
+  
 
   private exams: Exam[];
   private patients: Patient[] = [];
@@ -57,8 +57,11 @@ export class ExamListViewComponent implements OnInit {
   private nameFilter = new NameFilter();
   private surnameFilter = new SurnameFilter();
   private loaded_data = false;
+  private defaultSort = ClrDatagridSortOrder.DESC;
 
-  constructor(private router:Router, private examService: ExamService, private patientService: PatientService) { }
+  constructor(private router:Router, private examService: ExamService, private patientService: PatientService) {
+    
+  }
 
   ngOnInit() {
     this.refresh();
@@ -95,7 +98,8 @@ export class ExamListViewComponent implements OnInit {
   }
 
   deleteExam(e) {
-    if (confirm("Sicuro di voler eliminare questo esame? L'azione non è reversibile")) {
+    //alert(e);
+    //if (confirm("Sicuro di voler eliminare questo esame? L'azione non è reversibile")) {
       this.examService.deleteExam(e).subscribe(
         response => {
           this.refresh();
@@ -104,6 +108,20 @@ export class ExamListViewComponent implements OnInit {
         errors => console.log(errors)
       );
       console.log("elimina ",e);
-    }
+    //}
+  }
+
+  createNewExam() {
+    this.patientService.createNewPatient().subscribe(response => {
+      var pid = (JSON.parse( (<any>response)._body)).id;
+      this.patientService.saveOnLocal(JSON.parse( (<any>response)._body) as Patient);
+      this.examService.createNewExam(pid).subscribe(data => {
+        var new_exam = JSON.parse((<any>data)._body);
+        console.log(new_exam);
+        this.examService.saveOnLocal(new_exam);
+        //this.getMyLastExams(5);
+        this.refresh();
+      });
+    });
   }
 }

@@ -1,0 +1,38 @@
+<li class="interview-item" (click)="onClickItem()">
+  <div class="item-top">
+    <!--
+    <clr-icon class="item-icon" shape="{{all_items[cat][item].icona}}"></clr-icon>
+  -->
+    <clr-icon class="item-icon" shape="pencil"></clr-icon>
+    <span class="item-title">{{all_items[cat][item].nome}}</span>
+  </div>
+  <div class="item-bottom">
+    <div class="item-progress" [hidden]="!countable">
+      <div class="back">
+        <button (click)="undo()">
+          <clr-icon shape="undo"></clr-icon>
+        </button>
+      </div>
+      <div class="progress bar">
+        <div class="progress-bar progress-bar-striped" role="progressbar" [style.width]="stile" attr.aria-valuenow="{{progress}}" attr.aria-valuemin="{{min}}" attr.aria-valuemax="{{max}}">{{progress}} / {{max}}</div>
+      </div>
+    </div>
+    <div class="item-slider" [hidden]="countable">
+      <div class="back">
+        <button (click)="undo()">
+          <clr-icon shape="undo"></clr-icon>
+        </button>
+      </div>
+      <div class="bar">
+        <div>
+          <input type="range" min="0" max="2" value="{{frequenza}}" class="slider" (change)="changeVal($event)">
+        </div>
+        <div class="slider-label">
+          <span class="left">M</span>
+          <span class="center">QV</span>
+          <span class="right">S</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>

@@ -1,0 +1,64 @@
+<p>
+  interview works!
+</p>
+
+<div>
+  <div class="audio-bar">
+    <button class="btn btn-success" (click)="startRegistration()" [disabled]="registration_on">Avvia registrazione</button>
+    <button class="btn btn-warning" (click)="stopRegistration()" [disabled]="!registration_on">Ferma registrazione</button>
+  </div>
+  <div class="saving-bar">
+    <button class="btn btn-success" (click)="onSubmit()" title="Salva i dati"><clr-icon size="16" shape="save"></clr-icon></button>
+    <button class="btn btn-warning" (click)="clearData()" title="Elimina i dati"><clr-icon size="16" shape="times-rectangle-o"></clr-icon></button>
+  </div>
+</div>
+<div *ngIf="registration_on" class="microphone-control" (click)="toggleRegistration()">
+  <div class="registration on">
+    <clr-icon size="36" shape="microphone"></clr-icon>
+  </div>
+  <div class="registration">
+    <clr-icon size="36" shape="pause"></clr-icon>
+  </div>
+</div>
+<div *ngIf="!registration_on" class="microphone-control" (click)="toggleRegistration()">
+  <div class="registration off">
+    <clr-icon size="36" shape="microphone"></clr-icon>
+  </div>
+  <div class="registration">
+    <clr-icon size="36" shape="play"></clr-icon>
+  </div>
+</div>
+
+<div class="grid">
+
+  <ul class="col blue-bg">
+    <li *ngFor="let item of all_items[1]; index as i">
+      <app-interview-item [col]=1 [item]=i+1 [active]="false" [ngClass]="{'hidden': !registration_on}"></app-interview-item>
+    </li>
+  </ul>
+
+  <ul class="col yellow-bg">
+    <li *ngFor="let item of all_items[2]; index as i">
+      <app-interview-item [col]=2 [item]=i+1 [active]="false" [ngClass]="{'hidden': !registration_on}"></app-interview-item>
+    </li>
+  </ul>
+
+  <ul class="col red-bg">
+    <li *ngFor="let item of all_items[3]; index as i">
+      <app-interview-item [col]=3 [item]=i+1 [active]="false" [ngClass]="{'hidden': !registration_on}"></app-interview-item>
+    </li>
+  </ul>
+
+  <ul class="col green-bg">
+    <li *ngFor="let item of all_items[4]; index as i">
+      <app-interview-item [col]=4 [item]=i+1 [active]="false" [ngClass]="{'hidden': !registration_on}"></app-interview-item>
+    </li>
+  </ul>
+
+  <ul class="col grey-bg">
+    <li *ngFor="let item of all_items[5]; index as i">
+      <app-interview-item [col]=5 [item]=i+1 [active]="false" [ngClass]="{'hidden': !registration_on}"></app-interview-item>
+    </li>
+  </ul>
+
+</div>

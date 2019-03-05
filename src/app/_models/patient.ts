@@ -16,8 +16,8 @@ export class Patient {
   esame: string;
 
   constructor() {
-    this.nome = "";
-    this.cognome = "";
+    this.nome = "nuovo_paziente";
+    this.cognome = "___";
     this.sesso = null;
     this.eta =0;
     this.lateralita = null;

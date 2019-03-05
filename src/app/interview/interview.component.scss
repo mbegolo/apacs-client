@@ -1,0 +1,65 @@
+.blue-bg {
+  background-color: #7da8ed;
+}
+.green-bg {
+  background-color: #68e284;
+}
+.red-bg {
+  background-color: #ff7272;
+}
+.yellow-bg {
+  background-color: #ffeb54;
+}
+.grey-bg {
+  background-color: #d8d8d8;
+}
+
+div.grid {
+  display: flex;
+  width: 100%
+}
+
+ul.col {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+.audio-bar, .saving-bar {
+  width: 50%;
+  margin: 0;
+  float: left;
+}
+
+.saving-bar {
+  text-align: right;
+}
+
+.saving-bar button {
+  display: inline-block;
+}
+
+div.registration {
+  width: 60px;
+  height: 60px;
+  padding: 6px;
+  text-align: center;
+  border-radius: 50%;
+  float: left;
+}
+
+.registration.on {
+  background-color: red;
+}
+
+.registration.off {
+  background-color: grey;
+}
+
+div.microphone-control {
+  clear: both;
+}

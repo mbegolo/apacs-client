@@ -41,7 +41,7 @@ export class PatientService {
   }
 
   saveOnLocal(p: Patient) {
-    //this.activePatient = p;
+    this.activePatient = p;
     localStorage.setItem('activePatient',JSON.stringify(this.activePatient));
     this.loadFromLocal();
   }

@@ -20,6 +20,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { TestComponent } from './test/test.component';
 import { ExamListViewComponent } from './exam-list-view/exam-list-view.component';
 import { EditPatientComponent } from './edit-patient/edit-patient.component';
+import { InterviewComponent } from './interview/interview.component';
+import { InterviewItemComponent } from './interview-item/interview-item.component';
 
 
 @NgModule({
@@ -34,7 +36,9 @@ import { EditPatientComponent } from './edit-patient/edit-patient.component';
     DashboardComponent,
     TestComponent,
     ExamListViewComponent,
-    EditPatientComponent
+    EditPatientComponent,
+    InterviewComponent,
+    InterviewItemComponent
   ],
   imports: [
     BrowserModule,
