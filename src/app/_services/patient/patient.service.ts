@@ -33,7 +33,7 @@ export class PatientService {
     this.getPatient(pid).subscribe(response => {
       this.activePatient = JSON.parse((<any>response)._body) as Patient;
       this.saveOnLocal(this.activePatient);
-      console.log("PAT service: ",this.activePatient);
+      //console.log("PAT service: ",this.activePatient);
     },
     error => {
       console.log(error);

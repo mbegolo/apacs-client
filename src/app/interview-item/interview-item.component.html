@@ -1,38 +1,35 @@
-<li class="interview-item" (click)="onClickItem()">
-  <div class="item-top">
-    <!--
-    <clr-icon class="item-icon" shape="{{all_items[cat][item].icona}}"></clr-icon>
-  -->
-    <clr-icon class="item-icon" shape="pencil"></clr-icon>
-    <span class="item-title">{{all_items[cat][item].nome}}</span>
-  </div>
-  <div class="item-bottom">
-    <div class="item-progress" [hidden]="!countable">
-      <div class="back">
-        <button (click)="undo()">
+<div *ngIf="loaded" class="interview-item" (click)="onClickItem()">
+  <clr-icon [attr.shape]="item.icona"></clr-icon>
+  <span class="item-title">{{item.nome}}</span>
+  <div class="item-progress" [hidden]="!countable">
+    <div class="progress-block">
+      <label class="undo-button">
+        <button class="" (click)="undo()">
           <clr-icon shape="undo"></clr-icon>
         </button>
-      </div>
-      <div class="progress bar">
-        <div class="progress-bar progress-bar-striped" role="progressbar" [style.width]="stile" attr.aria-valuenow="{{progress}}" attr.aria-valuemin="{{min}}" attr.aria-valuemax="{{max}}">{{progress}} / {{max}}</div>
+      </label>
+      <div class="progress labeled danger">
+        <progress max="{{max}}" value="{{progress}}" data-displayval="0%"></progress>
+        <span>{{progress}} / {{max}}</span>
       </div>
     </div>
-    <div class="item-slider" [hidden]="countable">
-      <div class="back">
-        <button (click)="undo()">
+  </div>
+
+  <div class="item-slider" [hidden]="countable">
+    <div class="progress-block">
+      <label class="undo-button">
+        <button class="" (click)="undo()">
           <clr-icon shape="undo"></clr-icon>
         </button>
-      </div>
+      </label>
       <div class="bar">
-        <div>
-          <input type="range" min="0" max="2" value="{{frequenza}}" class="slider" (change)="changeVal($event)">
-        </div>
+        <input type="range" min="0" max="2" value="{{frequenza}}" class="slider" (change)="changeVal($event)">
         <div class="slider-label">
-          <span class="left">M</span>
-          <span class="center">QV</span>
-          <span class="right">S</span>
+          <div class="left">M</div>
+          <div class="center">QV</div>
+          <div class="right">S</div>
         </div>
       </div>
     </div>
   </div>
-</li>
+</div>

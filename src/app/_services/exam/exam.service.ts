@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Http, Response, RequestOptions, Headers, Request, RequestMethod } from '@angular/http';
 import { Router } from "@angular/router";
-import { User, Exam } from '../../_models/';
+import { User, Exam, ExamVoice } from '../../_models/';
 import { UserService } from '../user/user.service';
 
 const API_URL = environment.apiUrl;
@@ -16,21 +16,48 @@ export class ExamService {
 
   public activeExam: Exam;
   public activeExamId: string;
+  public activeExamVoices: ExamVoice[] = [];
   public allMyExams: Exam[];
   public lastExams: Exam[];
   public last_exams_number = 5;
 
   constructor(private userService: UserService, private http: Http) { }
 
+  refresh() {
+    this.getMyExamList().subscribe(response => {
+      this.allMyExams = JSON.parse((<any>response)._body);
+    },
+    errors => console.log(errors));
+  }
+
+  // Restituisce tutti gli esami di un dato utente
   getMyExamList() {
     var usr_id = (this.userService.getLoggedUser() as User).id;
     return this.http.get(API_URL + '/exam/?user=' + usr_id);
   }
 
+  // Restituisce un esame (dato il suo id)
   getExam(id: string) {
     return this.http.get(API_URL + '/exam/'+id);
   }
 
+  getExamVoiceData(id: string) {
+    return this.http.get(API_URL + '/examdata/' + id);
+    /*
+    console.log((this.activeExamVoices).length);
+    if ( (this.activeExamVoices).length == 0) {
+      this.getAllVoicesData(this.activeExam.id).subscribe(data => {
+        console.log(JSON.parse((<any>data)._body));
+      })
+    }
+    for (let v of this.activeExamVoices) {
+      if (v.id == id) return v;
+    }
+    return false;
+    */
+  }
+
+  // Carica la lista dei miei esami su una variabile locale
   loadAllMyExams() {
     this.getMyExamList().subscribe(response => {
       var data = JSON.parse((<any>response)._body) as Exam[];
@@ -39,14 +66,17 @@ export class ExamService {
     });
   }
 
+  // restituisce tutti gli esami dalla variable locale
   getAllMyExams() {
     return this.allMyExams;
   }
 
+  // restituisce gli ultimi esami (dalla variaible locale)
   getLastExams() {
     return this.lastExams;
   }
 
+  // Crea un nuovo esame sul server
   createNewExam(pid:string) {
     var usr = this.userService.getLoggedUser();
     if (usr) {
@@ -55,30 +85,86 @@ export class ExamService {
     }
   }
 
+  // Crea una voce esame (dati) associata alla voce vid e all'esame eid
+  createVoiceData(vid,eid) {
+    var obj = {"m":true,"qv":false,"s":false,"punteggio":2,"progress":0,"voiceid":vid,"examid":eid};
+    return this.http.post(API_URL + '/examdata',obj);
+  }
+
+  loadVoice(vid) {
+    return this.http.get(API_URL + '/examvoice/' + vid);
+  }
+
+  // carica tutte le voci esame (info)
+  loadAllVoices() {
+    return this.http.get(API_URL + '/examvoice/');
+  }
+
+  getAllVoicesData(eid: string) {
+    return this.http.get(API_URL + '/examdata?examid='+eid);
+  }
+
+  // Imposta l'esame attivo
   setActive(id: string) {
     this.activeExamId = id;
     this.getExam(id).subscribe(data => {
       this.activeExam = JSON.parse((<any>data)._body) as Exam;
       this.saveOnLocal(this.activeExam);
-      console.log("EXA service: ",this.activeExam);
+      this.getAllVoicesData(id).subscribe(_data => {
+        this.loadAllVoices().subscribe(_voices => {
+          var d = JSON.parse((<any>_data)._body);
+          var v = JSON.parse((<any>_voices)._body);
+          this.activeExamVoices = this.merge(d,v);
+        });
+      })
+      //console.log("EXA service: ",this.activeExam);
     },
     error => console.log(error));
   }
 
+  // Salva i dati in localstorage
   saveOnLocal(e: Exam) {
     this.activeExam = e;
     localStorage.setItem('activeExam',JSON.stringify(this.activeExam));
   }
 
+  // carica i dati da localstorage
   loadFromLocal() {
     var exam = JSON.parse(localStorage.getItem('activeExam'));
     this.activeExam = exam;
     return this.activeExam;
   }
 
-  getActiveExam() {
+  // Restituisce l'esame attivo
+  getActiveExam(): Exam {
     this.loadFromLocal();
     return this.activeExam;
+  }
+
+  getActiveExamVoices(): ExamVoice[] {
+    this.loadFromLocal();
+    return this.activeExamVoices;
+  }
+
+  saveActiveExam(e: Exam) {
+    console.log("saveActiveExam(e:Exam):todo");
+  }
+  
+  saveActiveExamVoices(v: ExamVoice[]) {
+    console.log("saveActiveExamVoices(e:Exam):todo");
+  }
+
+
+  deleteExamData(eid: string) {
+    this.http.get(API_URL + '/examdata?examid=' + eid).subscribe(data => {
+      var voices = (JSON.parse((<any>data)._body));
+      for (let v of voices) {
+        this.http.delete(API_URL + '/examdata/' + v.id).subscribe(
+          response => console.log(response), 
+          errors => console.log(errors)
+        );
+      }
+    });
   }
 
   deleteExam(id: string) {
@@ -86,10 +172,36 @@ export class ExamService {
   }
 
   saveExam(e: Exam) {
-    return this.http.post(API_URL + '/exam/' + e.id , e)
+    return this.http.post(API_URL + '/exam/' + e.id , e);
   }
 
-  update() {
-    
+  saveExamData(id: string, obj) {
+    return this.http.put(API_URL + '/examdata/'+id,obj);
   }
+
+  loadActiveExam() {
+    this.loadFromLocal();
+    //console.log(this.activeExam.id);
+    return this.http.get(API_URL + '/examdata?examid=' + this.activeExam.id);
+  }
+
+  loadPalette() {
+    return this.http.get(API_URL + '/examgroup');
+  }
+
+  merge(data:any[], voices:any[]) {
+    var examData = [];
+    if (data.length != voices.length) {
+      //console.log("Error! lunghezze array differenti",data.length," vs ",voices.length);
+      return [];
+    }
+    else {
+      //console.log("ok, array uguali");
+      for (var i=0; i<data.length; i++) {
+        examData.push(new ExamVoice(data[i],voices[i]));
+      }
+      return examData;
+    }
+  }
+
 }

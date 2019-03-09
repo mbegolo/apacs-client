@@ -1,5 +1,32 @@
-<!--
-<app-interview></app-interview>
--->
+<div class="main-container">
+    <header class="header header-4">
+          <div class="branding">
+            <a href="..." class="nav-link">
+                <clr-icon shape="cursor-hand-click"></clr-icon>
+                <span class="title">Modalità intervista</span>
+            </a>
+          </div>
+          <div class="header-nav">
+            <a [routerLink]="[{ outlets: { exam: ['editpatient'] } }]" outletName=[exam] routerLinkActive="active" class="nav-link nav-text">Anagrafica</a>
+            <a [routerLink]="[{ outlets: { exam: ['interview'] } }]" outletName=[exam] routerLinkActive="active" class="nav-link nav-text">Intervista</a>
+          </div>
+          <div class="header-actions">
+            <a (click)="basic = true" class="nav-link nav-text"><clr-icon shape="times"></clr-icon>esci dalla modalità intervista</a>
+          </div>
 
-<app-edit-patient></app-edit-patient>
+    </header>
+    <div>
+      <router-outlet name="exam"></router-outlet>
+    </div>
+</div>
+
+<clr-modal [(clrModalOpen)]="basic" [clrModalSize]="'sm'">
+    <h3 class="modal-title">Attenzione</h3>
+    <div class="modal-body">
+        <p>Stai per uscire dalla modalità intervista, i dati non salvati andranno persi. Vuoi procedere?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="basic = false">No, annulla</button>
+        <button type="button" class="btn btn-primary" (click)="exit()">Si, esci</button>
+    </div>
+</clr-modal>

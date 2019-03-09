@@ -92,36 +92,41 @@ export class ExamListViewComponent implements OnInit {
     //console.log(this.examService.getActiveExam(), this.patientService.getActivePatient());
     this.examService.getExam(eid).subscribe(_exam => {
       this.patientService.getPatient(pid).subscribe(_pat => {
-        this.router.navigate(['main',{ outlets: { logged: ['exam'] } }]);
+        //this.router.navigate(['main',{ outlets: { logged: ['exam'] } }]);
+        this.router.navigate(['exam']);
       });
     });
   }
 
   deleteExam(e) {
-    //alert(e);
-    //if (confirm("Sicuro di voler eliminare questo esame? L'azione non è reversibile")) {
-      this.examService.deleteExam(e).subscribe(
-        response => {
-          this.refresh();
-          console.log(response);
-        },
-        errors => console.log(errors)
-      );
-      console.log("elimina ",e);
-    //}
+    this.examService.deleteExam(e).subscribe(
+      response => {
+        this.examService.deleteExamData(e);
+        this.refresh();
+      },
+      errors => console.log(errors)
+    );
+    console.log("elimina ",e);
   }
 
   createNewExam() {
-    this.patientService.createNewPatient().subscribe(response => {
-      var pid = (JSON.parse( (<any>response)._body)).id;
-      this.patientService.saveOnLocal(JSON.parse( (<any>response)._body) as Patient);
-      this.examService.createNewExam(pid).subscribe(data => {
-        var new_exam = JSON.parse((<any>data)._body);
-        console.log(new_exam);
-        this.examService.saveOnLocal(new_exam);
-        //this.getMyLastExams(5);
-        this.refresh();
+    this.patientService.createNewPatient().subscribe(data => {
+      var d = (JSON.parse((<any>data)._body));
+      var pid = d.id;
+      this.patientService.saveOnLocal(d as Patient);
+      this.examService.createNewExam(pid).subscribe( _exam => {
+        var eid = (JSON.parse((<any>_exam)._body)).id;
+        this.examService.loadAllVoices().subscribe(_voices => {
+          var voices = (JSON.parse((<any>_voices)._body));
+          console.log(voices);
+          for (let v of voices) {
+            this.examService.createVoiceData(v.id,eid).subscribe(_voice => {
+              console.log(JSON.parse((<any>_voice)._body));
+            });
+          };
+          this.refresh();
+        });
       });
-    });
+    })
   }
 }

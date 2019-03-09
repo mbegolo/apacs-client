@@ -1,7 +1,18 @@
 <div class="card">
   <div class="card-block">
-      <h4 class="card-title">I tuoi ultimi esami</h4>
+      <h4 class="card-title">Note sullo sviluppo</h4>
   </div>
+  <div class="card-block">
+    <ul>
+      <li>Bisogna ancora sistemare i routes di default, e in generale vorrei abbellire un po' gli URI</li>
+      <li>Devo ancora mettere mano ai CSS per i componenti relativi all'esame</li>
+      <li>Per l'esecuzione di un esame ho pensato ad una "modalità intervista", alla quale si può accedere da Lista esami -> modifica esame. Per ora non mi entusiasma come soluzione, ma non saprei come integrare l'intervista con il resto dell'interfaccia</li>
+      <li>Devo ancora terminare di gestire il salvataggio automatico dei dati. Vorrei avvisare l'utente che esce di eventuali modifiche non salvate, permettendo (tramite alert) di salvare e uscire, uscire o restare.</li>
+      <li>Oltre ai dati personali sull'utente, non so cos'altro inserire nella dashboard</li>
+    </ul>
+  </div>
+
+  <!--
   <div class="card-block">
     <ul>
       <li *ngFor="let exam of lastExams">
@@ -25,10 +36,19 @@
         GET ACTUAL EXAM ID
     </button>
   </div>
-
+  
   <div class="card-block">
-    <button type="button" class="btn btn-icon" title="Modifica il tuo profilo" (click)="test(5)">
-        Last 5 exams
+    <button type="button" class="btn btn-icon" title="Modifica il tuo profilo" (click)="test()">
+        test
     </button>
   </div>
+
+  
+
+  <div class="card-block">
+    <button type="button" class="btn btn-icon" title="Modifica il tuo profilo" (click)="testDel()">
+        delete examdata where id=
+    </button>
+  </div>
+  -->
 </div>

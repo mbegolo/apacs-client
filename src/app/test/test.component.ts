@@ -16,6 +16,7 @@ import { PatientService } from '../_services';
 export class TestComponent implements OnInit {
 
   private lastExams: Exam[];
+  ids: any[];
 
   constructor(private examService: ExamService, private patientService: PatientService) {
     this.examService.loadAllMyExams();
@@ -48,7 +49,72 @@ export class TestComponent implements OnInit {
     console.log(this.examService.getActiveExam());
   }
 
-  test(i) {
-    this.getMyLastExams(5);
-  };
+  test() {
+    /*
+    this.patientService.createNewPatient().subscribe(data => {
+      var pid = (JSON.parse((<any>data)._body)).id;
+      console.log(pid);
+      this.examService.generateExam(pid);
+    })
+    
+    /*
+    var dati;
+    this.examService.loadAllData().subscribe(data => {
+      dati = (JSON.parse((<any>data)._body));
+      //this.ids = (dati);
+      //var i = 0;
+      //this.ids = [];
+      for (let d of dati) {
+        d.examid = "3175ba3924e21890";
+        //d.treshold1 = 1;
+        //d.treshold2 = 2;
+        this.examService.editData(d.id, d).subscribe(response => {
+          console.log(d)
+        }, errors => console.log("fail"));
+      }
+    });
+    */
+  }
+
+  testDel() {
+    var todel = "5890a08fe74d98f9";
+    this.examService.deleteExamData(todel)
+    /*.subscribe(
+      data => console.log(data), 
+      errors => console.log(errors)
+    );
+    */
+  }
+
+  print() {
+    /*
+    for (let id of this.ids) {
+      //console.log(id.id);
+      this.examService.createVoiceData(id.id,id.id).subscribe(
+        success => console.log("success"), 
+        errors => console.log("fail")
+      );
+    }
+    */
+  }
+
+  getAllDataId() {
+    /*
+    this.examService.getAllDataId().subscribe(success => {
+      var out = JSON.parse((<any>success)._body);
+      //console.log(out);
+      this.generateArray(out);
+    })
+    */
+  }
+
+  generateArray(o) {
+    var es = [];
+    var i=0;
+    for (let a of o) {
+      es[i] = a.id;
+      i++;
+    }
+    console.log(es);
+  }
 }

@@ -1,4 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { UserService } from '../_services';
+import { ExamService } from '../_services';
+import { PatientService } from '../_services';
+import { Exam,ExamVoice} from '../_models';
 
 //import { ITEMS } from '../mock-items';
 
@@ -11,9 +15,13 @@ import { Component, OnInit, Input } from '@angular/core';
 export class InterviewItemComponent implements OnInit {
 
 
-  @Input() col: number;
-  @Input() item: number;
+  //@Input() col: number;
+  @Input() itemid: string;
   @Input() active: boolean = true;
+
+  loaded: boolean = false;
+  item: ExamVoice;
+
   id: string;
   form: string;
   stile: string;
@@ -28,19 +36,19 @@ export class InterviewItemComponent implements OnInit {
   min: number = 0;
   max: number = 20;
   obj: any[];
-  all_items: any[];
+  //all_items: any[];
 
-
-  all_items_default: any[] = [
+/*
+  all_items: any[] = [
       [
         { id: 0, i: 0, j: 0, nome: 'Errore - Questo componente non esiste' , icona: 'exclamation-triangle', m: true, qv: false, s: false, progress: 0, punteggio: 0, countable: true }, 
       ],
       [
-        { id: 11, i: 1, j: 1, nome: "Anomie", icona: 'commenting', m: true, qv: false, s: false, progress: 0, punteggio: 2, countable: true },
-        { id: 12, i: 1, j: 2, nome: "Agrammatismo", icona: 'comment-o', m: true, qv: false, s: false, progress: 0, punteggio: 2, countable: true },
-        { id: 13, i: 1, j: 3, nome: "Parafasie fonemiche", icona: 'forumbee', m: true, qv: false, s: false, progress: 0, punteggio: 2, countable: true },
-        { id: 14, i: 1, j: 4, nome: "Parafasie semantiche", icona: 'indent', m: true, qv: false, s: false, progress: 0, punteggio: 2, countable: true },
-        { id: 15, i: 1, j: 5, nome: "Circonlocuzioni", icona: 'repeat', m: true, qv: false, s: false, progress: 0, punteggio: 2, countable: true },
+        { id: 11, i: 1, j: 1, nome: "Anomie", icona: 'chat-bubble', m: true, qv: false, s: false, progress: 0, punteggio: 2, countable: true },
+        { id: 12, i: 1, j: 2, nome: "Agrammatismo", icona: 'bubble-exclamation', m: true, qv: false, s: false, progress: 0, punteggio: 2, countable: true },
+        { id: 13, i: 1, j: 3, nome: "Parafasie fonemiche", icona: 'bubble-chart', m: true, qv: false, s: false, progress: 0, punteggio: 2, countable: true },
+        { id: 14, i: 1, j: 4, nome: "Parafasie semantiche", icona: 'shuffle', m: true, qv: false, s: false, progress: 0, punteggio: 2, countable: true },
+        { id: 15, i: 1, j: 5, nome: "Circonlocuzioni", icona: 'refresh', m: true, qv: false, s: false, progress: 0, punteggio: 2, countable: true },
       ],
       [
         { id: 21, i: 2, j: 1, nome: "Ripetizioni ", icona: 'copy', m: true, qv: false, s: false, progress: 0, punteggio: 2, countable: true },
@@ -68,11 +76,58 @@ export class InterviewItemComponent implements OnInit {
         { id: 55, i: 5, j: 5, nome: "Abuso gesti compensativi", icona: 'signing', m: true, qv: false, s: false, progress: 0, punteggio: 2, countable: false },
       ]
     ];
+*/
 
-
-  constructor() { }
+  constructor(private userService:UserService,
+    private examService:ExamService,
+    private patientService:PatientService) { }
 
   ngOnInit() {
+    var v_data;
+    this.examService.getExamVoiceData(this.itemid).subscribe(_data => {
+      v_data = JSON.parse((<any>_data)._body);
+      //console.log(voice.voice_id,this.voiceid);
+      //this.item = v_data as ExamVoice;
+      //console.log((<any>this.item).voiceid);
+      this.examService.loadVoice((<any>v_data).voiceid).subscribe(_voice => {
+        //console.log(JSON.parse((<any>_voice)._body), (<any>this.item).voiceid);
+        var voice = JSON.parse((<any>_voice)._body);
+        var d = new Array<any>();
+        var v = new Array<any>();
+        d.push(v_data);
+        v.push(voice);
+        //console.log(this.examService.merge(d,v)[0]);
+        this.item = this.examService.merge(d,v)[0] as ExamVoice;
+        this.m=this.item.m;
+        this.qv=this.item.qv;
+        this.s=this.item.s;
+        this.nome=this.item.nome;
+        this.punteggio=this.item.punteggio;
+        this.frequenza= 2 - this.punteggio;
+        this.progress=this.item.progress;
+        this.countable=this.item.countable;
+        this.stile = (this.progress)/(this.max)*100+"%";
+        this.loaded = true;
+      });
+
+    });
+    //console.log(voice,this.itemid);
+    /*.subscribe(_voice => {
+      var voice = JSON.parse((<any>_voice)._body);
+      */
+      //console.log(voice);
+    //while ( !voice ) {
+    //  console.log("data not received");
+    //}
+    //if (voice) {
+      //console.log(voice);
+
+    //}
+    //else {
+    //  console.log("item is empty");
+    //}
+      //console.log(this.item.punteggio);
+    /*
     // ADJUST item index
     this.item = this.item - 1;
 
@@ -93,26 +148,28 @@ export class InterviewItemComponent implements OnInit {
 
     // LOAD DATA
     var load = localStorage.getItem('exam'+this.id);
-    this.all_items = this.all_items_default;
+    //this.all_items = this.all_items_default;
     if (load != null) {
-      this.all_items[this.col][this.item] = JSON.parse(load);
-      //console.log("Saved data loaded ");
+      this.item = JSON.parse(load);
+      console.log("Saved data loaded ");
     }
     else {
-      //console.log("default data loaded");
+      console.log("default data loaded");
     }
-
+    */
+/*
     // Update actual item to saved values
-    this.m=this.all_items[this.col][this.item].m;
-    this.qv=this.all_items[this.col][this.item].qv;
-    this.s=this.all_items[this.col][this.item].s;
-    this.nome=this.all_items[this.col][this.item].nome;
-    this.punteggio=this.all_items[this.col][this.item].punteggio;
+    this.m=this.item.m;
+    this.qv=this.item.qv;
+    this.s=this.item.s;
+    this.nome=this.item.nome;
+    this.punteggio=this.item.punteggio;
     this.frequenza= 2 - this.punteggio;
-    this.progress=this.all_items[this.col][this.item].progress;
-    this.countable=this.all_items[this.col][this.item].countable;
+    this.progress=this.item.progress;
+    this.countable=this.item.countable;
     this.stile = (this.progress)/(this.max)*100+"%";
-    //console.log(this.all_items[this.col][this.item].punteggio);
+    //console.log(this.item.punteggio);
+    */
   }
 
   onClickItem() {
@@ -141,6 +198,7 @@ export class InterviewItemComponent implements OnInit {
   }
 
   editProgress(n:number):void {
+    console.log("edit-progress");
     this.progress += n;
     this.stile = (this.progress)/(this.max)*100+"%";
   }
@@ -204,12 +262,21 @@ export class InterviewItemComponent implements OnInit {
   }
 
   save() {
-    this.all_items[this.col][this.item].m=this.m;
-    this.all_items[this.col][this.item].qv=this.qv;
-    this.all_items[this.col][this.item].s=this.s;
-    this.all_items[this.col][this.item].punteggio=this.punteggio;
-    this.all_items[this.col][this.item].progress=this.progress;
-    localStorage.setItem('exam'+this.id, JSON.stringify(this.all_items[this.col][this.item]));
+    //console.log(this.progress);
+    var to_upload = {
+      "m":this.m,
+      "qv":this.qv,
+      "s":this.s,
+      "punteggio": this.punteggio,
+      "progress": this.progress,
+      "examid": this.item.exam_id,
+      "voiceid": this.item.voice_id
+    };
+    //console.log(to_upload);
+    localStorage.setItem('exam'+this.id, JSON.stringify(this.item));
+    this.examService.saveExamData(this.item.id, to_upload).subscribe(data => {
+      console.log(JSON.parse((<any>data)._body));
+    });
   }
 
   enable() {
