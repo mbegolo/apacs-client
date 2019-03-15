@@ -45,9 +45,10 @@ export class InterviewComponent implements OnInit {
         this.examService.loadAllVoices().subscribe(_voices => {
           var my_voices = JSON.parse((<any>_voices)._body);
           var ex_data = this.examService.merge(my_data, my_voices);
-          this.examData = this.splitInColumns(ex_data);
-          console.log(this.examData);
-          this.loaded = true;
+          this.examData = this.examService.splitInColumns(ex_data);
+          this.examService.activeExamVoices = this.examData;
+          this.examService.calculateExamScore();
+          var delay = setTimeout(this.setLoaded(), 1000);
         });
       },
       errors => {
@@ -56,19 +57,8 @@ export class InterviewComponent implements OnInit {
     );
   }
 
-  splitInColumns(data) {
-    var new_data: ExamVoice[][];
-    new_data = new Array<Array<ExamVoice>>();
-    for (let d of data) {
-      //console.log(d);
-      if (typeof (new_data[d.gruppo-1]) != 'undefined')
-        new_data[d.gruppo-1][d.riga-1] = d;
-      else {
-        new_data[d.gruppo-1] = new Array<ExamVoice>();
-          new_data[d.gruppo-1][d.riga-1] = d;
-      }
-    }
-    return (new_data);
+  setLoaded(): any {
+    this.loaded = true;
   }
 
   printExam(){
@@ -89,69 +79,14 @@ export class InterviewComponent implements OnInit {
   }
 
   saveData() {
-    //for (var i=0; i<this.children.length; i++) {
-      this.children.forEach(it => {
-        //console.log(it.progress);
-        it.save();
-      });
-    //}
-  }
-  /*
-
-  loadData() {
-    this.exam = this.apiService.loadExam();
+    this.children.forEach(it => {
+      it.save();
+    });
+    this.loadData();
   }
 
-  toggleRegistration() {
-    if (this.registration_on) this.stopRegistration();
-    else this.startRegistration();
+  test() {
+    //this.examService.calculateExamScore();
+    console.log(this.examService.activeExam.score);
   }
-
-  startRegistration() {
-    this.registration_on = !this.registration_on;
-    this.enableAll()
-  }
-
-  stopRegistration() {
-    this.registration_on = !this.registration_on;
-    this.disableAll()
-  }
-
-  onSubmit() {
-    var r = confirm("Stai salvando i dati relativi a questo esame. Sei sicuro di vler continuare?");
-    if (r == true) {
-      this.saveAll();
-    }
-  }
-
-  saveAll() {
-    //localStorage.clear();
-    //console.log("read: "+this.children);
-    for (var i=0; i<this.children.length; i++) {
-      this.children.forEach(it => it.save());
-    }
-  }
-
-  enableAll() {
-    //alert(this.children.length);
-    for (var i=0; i<this.children.length; i++) {
-      this.children.forEach(it => it.enable());
-    }
-  }
-
-  disableAll() {
-    for (var i=0; i<this.children.length; i++) {
-      this.children.forEach(it => it.disable());
-    }
-  }
-
-  clearData() {
-    var r = confirm("Sei sicuro di voler cancellare tutti i dati?");
-    if (r == true) {
-      localStorage.clear();
-      window.location.reload();
-    }
-  }
-*/
-
 }

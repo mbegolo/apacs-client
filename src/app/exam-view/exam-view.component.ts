@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
+import { ExamService } from '../_services';
 
 @Component({
   selector: 'app-exam-view',
@@ -8,12 +9,13 @@ import { Router } from "@angular/router";
 })
 export class ExamViewComponent implements OnInit {
 
-  constructor(private router:Router) { }
+  constructor(private examService:ExamService,private router:Router) { }
 
   ngOnInit() {
   }
 
   exit() {
+    this.examService.setActive(this.examService.activeExam.id);
     this.router.navigate(['main',{ outlets: { logged: ['dashboard'] } }]);
   }
 

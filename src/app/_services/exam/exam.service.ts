@@ -43,18 +43,6 @@ export class ExamService {
 
   getExamVoiceData(id: string) {
     return this.http.get(API_URL + '/examdata/' + id);
-    /*
-    console.log((this.activeExamVoices).length);
-    if ( (this.activeExamVoices).length == 0) {
-      this.getAllVoicesData(this.activeExam.id).subscribe(data => {
-        console.log(JSON.parse((<any>data)._body));
-      })
-    }
-    for (let v of this.activeExamVoices) {
-      if (v.id == id) return v;
-    }
-    return false;
-    */
   }
 
   // Carica la lista dei miei esami su una variabile locale
@@ -115,6 +103,8 @@ export class ExamService {
           var d = JSON.parse((<any>_data)._body);
           var v = JSON.parse((<any>_voices)._body);
           this.activeExamVoices = this.merge(d,v);
+          console.log(this.activeExamVoices);
+          this.calculateExamScore();
         });
       })
       //console.log("EXA service: ",this.activeExam);
@@ -198,10 +188,47 @@ export class ExamService {
     else {
       //console.log("ok, array uguali");
       for (var i=0; i<data.length; i++) {
-        examData.push(new ExamVoice(data[i],voices[i]));
+        for (var j=0; j<voices.length; j++) {
+          if (data[i].voiceid === voices[j].id)
+            examData.push(new ExamVoice(data[i],voices[j]));
+        }
       }
       return examData;
     }
+  }
+
+  splitInColumns(data) {
+    var new_data: ExamVoice[][];
+    new_data = new Array<Array<ExamVoice>>();
+    for (let d of data) {
+      //console.log(d);
+      if (typeof (new_data[d.gruppo-1]) != 'undefined')
+        new_data[d.gruppo-1][d.riga-1] = d;
+      else {
+        new_data[d.gruppo-1] = new Array<ExamVoice>();
+          new_data[d.gruppo-1][d.riga-1] = d;
+      }
+    }
+    return (new_data);
+  }
+
+  calculateExamScore() {
+    console.log(typeof this.activeExamVoices);
+    var tot = 0;
+    for (let v of this.activeExamVoices) {
+      tot += v.punteggio;
+      console.log(v.punteggio);
+    }
+    this.activeExam.score = tot;
+    console.log(tot);
+    this.saveExam(this.activeExam).subscribe(exam => {
+      this.activeExam = JSON.parse((<any>exam)._body) as Exam;
+      //console.log(this.activeExam.score);
+    });
+  }
+
+  loadGroups() {
+    return this.http.get(API_URL + '/examgroup/');
   }
 
 }

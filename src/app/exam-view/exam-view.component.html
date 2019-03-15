@@ -9,6 +9,7 @@
           <div class="header-nav">
             <a [routerLink]="[{ outlets: { exam: ['editpatient'] } }]" outletName=[exam] routerLinkActive="active" class="nav-link nav-text">Anagrafica</a>
             <a [routerLink]="[{ outlets: { exam: ['interview'] } }]" outletName=[exam] routerLinkActive="active" class="nav-link nav-text">Intervista</a>
+            <a [routerLink]="[{ outlets: { exam: ['resume'] } }]" outletName=[exam] routerLinkActive="active" class="nav-link nav-text">Resume</a>
           </div>
           <div class="header-actions">
             <a (click)="basic = true" class="nav-link nav-text"><clr-icon shape="times"></clr-icon>esci dalla modalità intervista</a>

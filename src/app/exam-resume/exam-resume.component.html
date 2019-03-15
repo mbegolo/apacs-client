@@ -1,0 +1,74 @@
+<clr-stack-view *ngIf="loaded">
+    <clr-stack-header>Riepilogo esame di <strong>{{patient.nome+" "+patient.cognome}}</strong> del <strong>{{exam.date | date:"dd/MM/yyyy"}}</strong></clr-stack-header>
+    <!-- heading -->
+    <clr-stack-block>
+        <clr-stack-label><strong>Nome</strong></clr-stack-label>
+        <clr-stack-content>
+          <div class="clr-row">
+              <div class="clr-col">
+                  <span><strong>Mai</strong></span>
+              </div>
+              <div class="clr-col">
+                  <span><strong>Qualche Volta</strong></span>
+              </div>
+              <div class="clr-col">
+                  <span><strong>Spesso</strong></span>
+              </div>
+              <div class="clr-col-4">
+                  <span><strong>Punteggio</strong></span>
+              </div>
+          </div>
+        </clr-stack-content>
+    </clr-stack-block>
+
+    <!-- Groups -->
+    <clr-stack-block *ngFor="let g of examData">
+        <clr-stack-label>{{groups[g[0].gruppo-1].nome}}</clr-stack-label>
+        <clr-stack-content>
+          <div class="clr-row">
+              <div class="clr-col"></div>
+              <div class="clr-col"></div>
+              <div class="clr-col"></div>
+              <div class="clr-col-4">
+                  <span><strong>{{partialGroupScore(g)}}/{{(g.length)*2}}</strong></span>
+              </div>
+          </div>
+        </clr-stack-content>
+        <clr-stack-block *ngFor="let voice of g">
+          <clr-stack-label>{{voice.nome}}</clr-stack-label>
+          <clr-stack-content>
+            <div class="clr-row">
+                <div class="clr-col"><clr-icon *ngIf="voice.m" shape="check"></clr-icon></div>
+                <div class="clr-col"><clr-icon *ngIf="voice.qv" shape="check"></clr-icon></div>
+                <div class="clr-col"><clr-icon *ngIf="voice.s" shape="check"></clr-icon></div>
+                <div class="clr-col-4">
+                    <span><strong>{{voice.punteggio}}/2</strong></span>
+                </div>
+            </div>
+          </clr-stack-content>
+        </clr-stack-block>
+    </clr-stack-block>
+
+  <clr-stack-block>
+        <clr-stack-label><strong>Totale</strong></clr-stack-label>
+        <clr-stack-content>
+          <div class="clr-row">
+              <div class="clr-col"></div>
+              <div class="clr-col"></div>
+              <div class="clr-col"></div>
+              <div class="clr-col-4">
+                  <span><strong>{{totalScore()}}/44</strong></span>
+              </div>
+          </div>
+        </clr-stack-content>
+    </clr-stack-block>
+</clr-stack-view>
+
+<div *ngIf="!loaded" [ngStyle]="{'margin': '0 auto','width':'100%','text-align':'center'}">
+  <span class="spinner spinner-inline">
+      Loading...
+  </span>
+  <span>
+      Sto caricando i dati...
+  </span>
+</div>

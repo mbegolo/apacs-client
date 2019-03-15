@@ -22,6 +22,7 @@ import { ExamListViewComponent } from './exam-list-view/exam-list-view.component
 import { EditPatientComponent } from './edit-patient/edit-patient.component';
 import { InterviewComponent } from './interview/interview.component';
 import { InterviewItemComponent } from './interview-item/interview-item.component';
+import { ExamResumeComponent } from './exam-resume/exam-resume.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { InterviewItemComponent } from './interview-item/interview-item.componen
     ExamListViewComponent,
     EditPatientComponent,
     InterviewComponent,
-    InterviewItemComponent
+    InterviewItemComponent,
+    ExamResumeComponent
   ],
   imports: [
     BrowserModule,
