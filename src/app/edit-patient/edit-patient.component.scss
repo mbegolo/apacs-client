@@ -1,0 +1,49 @@
+.clr-row {
+  max-width: 100% !important;
+}
+
+.form_group {
+  width: 100%;
+  clear: both;
+  margin: 0.5em 0;
+  height: 2.5em;
+
+}
+
+.form_group>label {
+  display: block;
+  max-width: 100% !important;
+  width: 10em;
+  float: left;
+}
+
+.form_group>div, .form_group>input {
+  display: block;
+  max-width: 100% !important;
+  width: calc(100% - 10em);
+  float: right;
+}
+
+clr-radio-container, clr-select-container, .clr-form-control  {
+  margin: 0 !important;
+}
+
+select {
+  box-sizing: border-box !important;
+}
+
+clr-select-container > label {
+  display: none !important;
+}
+
+clr-select-container > .clr-control-container {
+  padding: 0 !important;
+}
+
+.clr-select-wrapper {
+  width: 100% !important;
+}
+
+textarea {
+  height: 50%;
+}

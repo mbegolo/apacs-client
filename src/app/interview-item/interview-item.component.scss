@@ -1,12 +1,69 @@
+.interview-item {
+  margin: 0.5em;
+  padding: 0.5em;
+  padding-top: 0;
+}
+
+.interview-item:hover {
+  background-color: rgba(0,0,0,0.1);
+}
+
+.item-header {
+  display: block;
+  width: 100%;
+  margin-bottom: -1em;
+  margin-top: 0em;
+  text-align: center;
+}
+
+.item-header >span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .progress {
   max-height: 1.5em;
   color: #123456;
 }
 
+.item-icon {
+  width: 5em;
+  height:5em;
+  text-align: center;
+}
+
+.item-icon>clr-icon {
+  width: 4.5em;
+  height:4.5em;
+  padding: 0.5em;
+}
+
+.item-title {
+  max-width: calc(100% - 5em);
+  width: calc(100% - 5em);
+  vertical-align: middle;
+}
+
+button {
+  background-color: rgba(0,0,0,0.1);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgba(0,0,0,0.05);
+  border: none;
+  border-radius: 50%;
+}
 
 .undo-button {
-  width: 15%;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+  width: 3em;
   height: 2em;
+  padding: 0 0.5em;
 }
 .bar {
   width: 85%;
@@ -40,7 +97,6 @@ input[type=range]:focus {
 input[type=range]::-ms-track {
   width: 100%;
   cursor: pointer;
-
   /* Hides the slider so custom styles can be added */
   background: transparent; 
   border-color: transparent;

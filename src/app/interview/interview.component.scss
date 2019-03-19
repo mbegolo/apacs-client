@@ -1,17 +1,10 @@
-.blue-bg {
-  background-color: #7da8ed;
+.interview-component {
+  cursor: pointer;
 }
-.green-bg {
-  background-color: #68e284;
-}
-.red-bg {
-  background-color: #ff7272;
-}
-.yellow-bg {
-  background-color: #ffeb54;
-}
-.grey-bg {
-  background-color: #d8d8d8;
+
+.interview-component.inactive {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 div.grid {

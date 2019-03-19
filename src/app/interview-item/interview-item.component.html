@@ -1,6 +1,12 @@
 <div *ngIf="loaded" class="interview-item" (click)="onClickItem()">
-  <clr-icon [attr.shape]="item.icona"></clr-icon>
-  <span class="item-title">{{item.nome}}</span>
+  <div class="item-header">
+    <span class="item-icon">
+      <clr-icon [attr.shape]="item.icona"></clr-icon>
+    </span>
+    <span class="item-title">
+      {{item.nome}}
+    </span>
+  </div>
   <div class="item-progress" [hidden]="!countable">
     <div class="progress-block">
       <label class="undo-button">

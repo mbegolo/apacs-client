@@ -25,18 +25,18 @@ export class EditPatientComponent implements OnInit {
   private loggedUser: User;
   private show_sex: boolean;
   private show_lat: boolean;
+  private submitted: boolean = true;
 
   ngOnInit() {
     this.activeExam = this.examService.getActiveExam();
     this.activePatient = this.patientService.getActivePatient();
     this.loggedUser = this.userService.getLoggedUser();
+    this.checkPatientData();
     this.patientForm = this.formBuilder.group({
-        //email: ['', [Validators.required, Validators.email]],
-        //password: ['', [Validators.required, Validators.minLength(6)]],
-        nome: [this.activePatient.nome],
-        cognome: [this.activePatient.cognome],
+        nome: [this.activePatient.nome, Validators.required],
+        cognome: [this.activePatient.cognome, Validators.required],
         sesso: [this.activePatient.sesso],
-        eta: [this.activePatient.eta],
+        eta: [this.activePatient.eta, Validators.min(10)],
         lateralita: [this.activePatient.lateralita],
         luogonascita: [this.activePatient.luogonascita],
         professione: [this.activePatient.professione],
@@ -55,7 +55,7 @@ export class EditPatientComponent implements OnInit {
   get f() { return this.patientForm.controls; }
 
   onSubmit() {
-    if (confirm("Sicuro di voler salvare? L'azione non è reversibile")) {
+    //if (confirm("Sicuro di voler salvare? L'azione non è reversibile")) {
       var control = this.patientForm.controls;
       var new_exam: Exam = this.activeExam;
       new_exam.date = new Date(control.data.value);
@@ -74,7 +74,28 @@ export class EditPatientComponent implements OnInit {
       new_pat.diagnosi = control.diagnosi.value;
 
       this.save(new_exam,new_pat);
-    }
+    //}
+  }
+
+  checkPatientData() {
+    if (this.activePatient.nome == "")
+      this.activePatient.nome = null;
+    if (this.activePatient.cognome == "")
+      this.activePatient.cognome = null;
+    if (this.activePatient.eta == 0)
+      this.activePatient.lateralita = null;
+    if (this.activePatient.luogonascita == "")
+      this.activePatient.luogonascita = null;
+    if (this.activePatient.professione == "")
+      this.activePatient.professione = null;
+    if (this.activePatient.scolarita == 0)
+      this.activePatient.scolarita = null;
+    if (this.activePatient.lingua == "")
+      this.activePatient.lingua = null;
+    if (this.activePatient.altro == "")
+      this.activePatient.altro = null;
+    if (this.activePatient.diagnosi == "")
+      this.activePatient.diagnosi = null;
   }
 
   save(e: Exam, p: Patient) {
@@ -95,10 +116,12 @@ export class EditPatientComponent implements OnInit {
   }
 
   printPat() {
-    console.log(this.activePatient);
+    //console.log(this.activePatient);
+
+    console.log(this.patientForm.valid);
   }
 
   printExam() {
-    console.log(this.activeExam);
+    //this.patientForm.controls.nome.status="INVALID";
   }
 }

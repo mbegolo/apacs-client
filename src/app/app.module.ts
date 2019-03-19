@@ -23,6 +23,7 @@ import { EditPatientComponent } from './edit-patient/edit-patient.component';
 import { InterviewComponent } from './interview/interview.component';
 import { InterviewItemComponent } from './interview-item/interview-item.component';
 import { ExamResumeComponent } from './exam-resume/exam-resume.component';
+import { PdfResumeComponent } from './pdf-resume/pdf-resume.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { ExamResumeComponent } from './exam-resume/exam-resume.component';
     EditPatientComponent,
     InterviewComponent,
     InterviewItemComponent,
-    ExamResumeComponent
+    ExamResumeComponent,
+    PdfResumeComponent
   ],
   imports: [
     BrowserModule,

@@ -22,12 +22,12 @@
         <clr-dg-cell>{{exam.date | date:"dd/MM/yyyy"}}</clr-dg-cell>
         <clr-dg-cell>{{exam.score}}</clr-dg-cell>
         <clr-dg-cell>
-          <button class="btn btn-sm" (click)="editExam(exam.id, exam.patient.id)">
-            <clr-icon shape="pencil"></clr-icon> edit
+          <button class="btn btn-sm" (click)="editExam(exam.id, exam.patient.id)" title="Modifica questo esame">
+            <clr-icon shape="pencil"></clr-icon> modifica
           </button>
-          <button class="btn btn-danger-outline btn-sm" (click)="delete_exam = true; new_id = exam.id">
+          <button class="btn btn-danger-outline btn-sm" (click)="delete_exam = true; new_id = exam.id" title="Elimina questo esame">
           <!--<button class="btn btn-danger-outline btn-sm" (click)="deleteExam(exam.id)">-->
-            <clr-icon shape="trash"></clr-icon> delete
+            <clr-icon shape="trash"></clr-icon> elimina
           </button>
           
         </clr-dg-cell>
@@ -35,9 +35,9 @@
 
     <clr-dg-footer>
         <clr-dg-pagination #pagination [clrDgTotalItems]="total" [clrDgPageSize]="10">
-            <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Users per page</clr-dg-page-size>
+            <clr-dg-page-size [clrPageSizeOptions]="[5,10,20,50,100]">Elementi per pagina</clr-dg-page-size>
             {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-            of {{pagination.totalItems}} exams
+            di {{pagination.totalItems}} esami.
         </clr-dg-pagination>
     </clr-dg-footer>
 </clr-datagrid>

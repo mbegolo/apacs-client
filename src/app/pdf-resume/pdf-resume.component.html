@@ -1,0 +1,15 @@
+<button title="Genera PDF" (click)="pdf_modal = true" class="btn btn-primary">
+  <clr-icon shape="file"></clr-icon>Genera PDF
+</button>
+<clr-modal [(clrModalOpen)]="pdf_modal" [clrModalSize]="'xl'">
+    <h3 class="modal-title">Ecco l'anteprima del tuo documento</h3>
+    <div class="modal-body">
+        <p>--- anteprima ---</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="pdf_modal = false" title="Annulla">Annulla</button>
+        <button type="button" class="btn btn-primary" (click)="downloadPdf()" title="Scarica PDF">
+          <clr-icon shape="download"></clr-icon>Scarica PDF
+        </button>
+    </div>
+</clr-modal>

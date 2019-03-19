@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChildren, QueryList  } from '@angular/core';
 import { InterviewItemComponent } from '../interview-item/interview-item.component';
-//import { APIService } from  '../api.service';
 import { UserService } from '../_services';
 import { ExamService } from '../_services';
 import { PatientService } from '../_services';
@@ -24,6 +23,7 @@ export class InterviewComponent implements OnInit {
   private examData: any;
   private loaded: boolean = false;
   private palette: string[] = ["","","","",""];
+  private enabled: boolean = false;
 
 
   //constructor(private  apiService:  APIService) { }
@@ -35,6 +35,8 @@ export class InterviewComponent implements OnInit {
   ngOnInit() {
     this.loadData();
     this.loadPalette();
+
+    //this.startRecording();
   }
 
   loadData() {
@@ -79,10 +81,27 @@ export class InterviewComponent implements OnInit {
   }
 
   saveData() {
+    this.stopRecording();
     this.children.forEach(it => {
       it.save();
     });
     this.loadData();
+  }
+
+  resetData() {
+    this.stopRecording();
+    this.children.forEach(it => {
+      it.reset();
+    });
+    this.loadData();
+  }
+
+  startRecording() {
+    this.enabled = true;
+  }
+
+  stopRecording() {
+    this.enabled = false;
   }
 
   test() {
