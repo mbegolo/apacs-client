@@ -6,13 +6,13 @@
         <clr-stack-content>
           <div class="clr-row">
               <div class="clr-col">
-                  <span><strong>Mai</strong></span>
+                  <span><strong>Spesso o Sempre</strong></span>
               </div>
               <div class="clr-col">
                   <span><strong>Qualche Volta</strong></span>
               </div>
               <div class="clr-col">
-                  <span><strong>Spesso</strong></span>
+                  <span><strong>Mai</strong></span>
               </div>
               <div class="clr-col-4">
                   <span><strong>Punteggio</strong></span>
@@ -38,9 +38,9 @@
           <clr-stack-label>{{voice.nome}}</clr-stack-label>
           <clr-stack-content>
             <div class="clr-row">
-                <div class="clr-col"><clr-icon *ngIf="voice.m" shape="check"></clr-icon></div>
-                <div class="clr-col"><clr-icon *ngIf="voice.qv" shape="check"></clr-icon></div>
                 <div class="clr-col"><clr-icon *ngIf="voice.s" shape="check"></clr-icon></div>
+                <div class="clr-col"><clr-icon *ngIf="voice.qv" shape="check"></clr-icon></div>
+                <div class="clr-col"><clr-icon *ngIf="voice.m" shape="check"></clr-icon></div>
                 <div class="clr-col-4">
                     <span><strong>{{voice.punteggio}}/2</strong></span>
                 </div>
@@ -73,4 +73,4 @@
   </span>
 </div>
 
-<app-pdf-resume></app-pdf-resume>
+<app-pdf-resume [examData]="examData" [groups]="groups"></app-pdf-resume>

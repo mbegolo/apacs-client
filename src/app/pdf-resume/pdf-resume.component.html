@@ -4,7 +4,44 @@
 <clr-modal [(clrModalOpen)]="pdf_modal" [clrModalSize]="'xl'">
     <h3 class="modal-title">Ecco l'anteprima del tuo documento</h3>
     <div class="modal-body">
-        <p>--- anteprima ---</p>
+        <div id="contentToConvert" class="clr-row"> 
+            <div class="clr-col-6">
+                <h4>Paziente: <strong>{{nome}} {{cognome}}</strong></h4>
+                <h5>ID esame: <strong>{{id}}</strong></h5>
+            </div>
+            <div class="clr-col-6">
+                <h4>Data esame: <strong>{{data | date:"dd/MM/yyyy"}}</strong></h4>
+                <h5>ID esaminatore: <strong>{{esaminatore}}</strong></h5>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="thead left"></th>
+                        <th class="thead">Molto spesso o sempre</th>
+                        <th class="thead">Qualche volta</th>
+                        <th class="thead">Mai</th>
+                        <th class="thead">Totale</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let g of examData">
+                    <tr class="trow">
+                        <td colspan=5 class="left">{{groups[g[0].gruppo-1].nome}}</td>
+                    </tr>
+                    <tr *ngFor="let voice of g">
+                        <td class="left">{{voice.nome}}</td>
+                        <td><span *ngIf="voice.m">V</span></td>
+                        <td><span *ngIf="voice.qv">V</span></td>
+                        <td><span *ngIf="voice.s">V</span></td>
+                        <td>
+                            <span><strong>{{voice.punteggio}}</strong></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <h3>Totale: <strong>{{totalscore}}</strong>/44</h3>
+            </div>
+        </div> 
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="pdf_modal = false" title="Annulla">Annulla</button>

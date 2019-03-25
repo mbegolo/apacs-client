@@ -1,7 +1,7 @@
 <div class="main-container">
     <header class="header header-4">
           <div class="branding">
-            <a href="..." class="nav-link">
+            <a class="nav-link">
                 <clr-icon shape="cursor-hand-click"></clr-icon>
                 <span class="title">Modalità intervista</span>
             </a>
@@ -12,7 +12,12 @@
             <a [routerLink]="[{ outlets: { exam: ['resume'] } }]" outletName=[exam] routerLinkActive="active" class="nav-link nav-text">Resume</a>
           </div>
           <div class="header-actions">
-            <a (click)="basic = true" class="nav-link nav-text"><clr-icon shape="times"></clr-icon>esci dalla modalità intervista</a>
+            <a title="esci dalla modalità intervista" href="javascript://" class="nav-link nav-text" (click)="basic = true" >
+              <span>esci dalla modalità intervista</span>
+            </a>
+            <a title="esci dalla modalità intervista" href="javascript://" class="nav-link nav-text" (click)="basic = true" >
+              <clr-icon shape="times"></clr-icon> 
+            </a>
           </div>
 
     </header>
