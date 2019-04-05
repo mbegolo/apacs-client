@@ -11,6 +11,7 @@ import { ClarityModule } from '@clr/angular';
 import { UserComponentComponent } from './user-component/user-component.component';
 
 import { UserService } from './_services';
+import { AudioRecordingService } from './_services/audio-recording.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterFormComponent } from './register-form/register-form.component';
 import { AlertMessageComponent } from './alert-message/alert-message.component';
@@ -25,6 +26,7 @@ import { InterviewItemComponent } from './interview-item/interview-item.componen
 import { ExamResumeComponent } from './exam-resume/exam-resume.component';
 import { PdfResumeComponent } from './pdf-resume/pdf-resume.component';
 import { PdfExportComponent } from './pdf-export/pdf-export.component';
+import { RecordingComponent } from './recording/recording.component';
 
 
 @NgModule({
@@ -44,7 +46,8 @@ import { PdfExportComponent } from './pdf-export/pdf-export.component';
     InterviewItemComponent,
     ExamResumeComponent,
     PdfResumeComponent,
-    PdfExportComponent
+    PdfExportComponent,
+    RecordingComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +60,7 @@ import { PdfExportComponent } from './pdf-export/pdf-export.component';
     //NgbModule.forRoot()
     ClarityModule
   ],
-  providers: [],
+  providers: [AudioRecordingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

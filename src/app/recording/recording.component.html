@@ -1,0 +1,44 @@
+
+<!--
+<div>
+  <button class="start-button" *ngIf="!isRecording && !blobUrl" (click)="startRecording()">Inizia nuova registrazione</button>
+  <button class="stop-button" *ngIf="isRecording && !blobUrl" (click)="stopRecording()">Ferma la registrazione</button>
+  <button class="cancel-button" *ngIf="!isRecording && blobUrl" (click)="clearRecordedData()">Elimina la registrazione</button>
+</div>
+-->
+<!--
+<div>
+  <button class="start-button"  (click)="startRecording()">Inizia nuova registrazione</button>
+  <button class="stop-button" (click)="stopRecording()">Terminala registrazione</button>
+
+</div>
+-->
+
+<div>
+  <button class="start-button" *ngIf="!isRecording && !blobUrl" (click)="startRecording()">Inizia nuova registrazione</button>
+  <!--
+  <button class="start-button" *ngIf="!isRecording && blobUrl" (click)="continueRecording()">Continua sulla vecchia registrazione</button>
+-->
+  <button class="stop-button" *ngIf="isRecording && !blobUrl" (click)="stopRecording()">Termina la registrazione</button>
+</div>
+
+<div>
+  <button class="start-button" *ngIf="isRecording && isPaused" (click)="resumeRecording()">Riprendi la registrazione</button>
+  <button class="stop-button" *ngIf="isRecording && !isPaused" (click)="pauseRecording()">Metti in pausa la registrazione</button>
+</div>
+<div>
+  <button class="cancel-button" (click)="clearRecordedData()">Elimina registrazione</button>
+</div>
+<div>
+  <button class="cancel-button" (click)="print()">---PRINT---</button>
+</div>
+
+
+<div>
+  <div *ngIf="isRecording "> {{recordedTime}} </div>
+  <div>
+  <audio *ngIf="!isRecording && blobUrl"  controls>
+    <source [src]="blobUrl" type="audio/webm">
+  </audio>
+  </div>
+</div>
