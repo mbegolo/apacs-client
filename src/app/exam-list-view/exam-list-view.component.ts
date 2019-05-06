@@ -93,7 +93,19 @@ export class ExamListViewComponent implements OnInit {
     this.examService.getExam(eid).subscribe(_exam => {
       this.patientService.getPatient(pid).subscribe(_pat => {
         //this.router.navigate(['main',{ outlets: { logged: ['exam'] } }]);
-        this.router.navigate(['exam']);
+        this.router.navigate(['editpatient']);
+      });
+    });
+  }
+
+  redirectExam(eid:string, pid:string) {
+    this.examService.setActive(eid);
+    this.patientService.setActive(pid);
+    //console.log(this.examService.getActiveExam(), this.patientService.getActivePatient());
+    this.examService.getExam(eid).subscribe(_exam => {
+      this.patientService.getPatient(pid).subscribe(_pat => {
+        //this.router.navigate(['main',{ outlets: { logged: ['exam'] } }]);
+        this.router.navigate(['resume']);
       });
     });
   }
@@ -110,6 +122,7 @@ export class ExamListViewComponent implements OnInit {
   }
 
   createNewExam() {
+    var counter = 0;
     this.patientService.createNewPatient().subscribe(data => {
       var d = (JSON.parse((<any>data)._body));
       var pid = d.id;
@@ -118,10 +131,15 @@ export class ExamListViewComponent implements OnInit {
         var eid = (JSON.parse((<any>_exam)._body)).id;
         this.examService.loadAllVoices().subscribe(_voices => {
           var voices = (JSON.parse((<any>_voices)._body));
-          console.log(voices);
+          //console.log(voices);
           for (let v of voices) {
             this.examService.createVoiceData(v.id,eid).subscribe(_voice => {
-              console.log(JSON.parse((<any>_voice)._body));
+              //console.log(JSON.parse((<any>_voice)._body));
+              counter++;
+              if (counter == 22) {
+                //console.log("esame creato correttamente "+eid);
+                this.editExam(eid,pid);
+              }
             });
           };
           this.refresh();

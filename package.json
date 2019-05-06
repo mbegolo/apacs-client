@@ -27,6 +27,7 @@
     "@webcomponents/custom-elements": "^1.0.0",
     "ajv": "^6.9.1",
     "angular-font-awesome": "^3.1.2",
+    "audio-converter": "^1.0.13",
     "bootstrap": "^4.3.0",
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",

@@ -16,9 +16,6 @@
 
 <div>
   <button class="start-button" *ngIf="!isRecording && !blobUrl" (click)="startRecording()">Inizia nuova registrazione</button>
-  <!--
-  <button class="start-button" *ngIf="!isRecording && blobUrl" (click)="continueRecording()">Continua sulla vecchia registrazione</button>
--->
   <button class="stop-button" *ngIf="isRecording && !blobUrl" (click)="stopRecording()">Termina la registrazione</button>
 </div>
 
@@ -35,9 +32,9 @@
 
 
 <div>
-  <div *ngIf="isRecording "> {{recordedTime}} </div>
+  <div> {{recordedTime}} </div>
   <div>
-  <audio *ngIf="!isRecording && blobUrl"  controls>
+  <audio *ngIf="blobUrl"  controls>
     <source [src]="blobUrl" type="audio/webm">
   </audio>
   </div>

@@ -16,10 +16,10 @@ export class Patient {
   esame: string;
 
   constructor() {
-    this.nome = "nuovo_paziente";
-    this.cognome = "___";
+    this.nome = " ";
+    this.cognome = " ";
     this.sesso = null;
-    this.eta =0;
+    this.eta =10;
     this.lateralita = null;
     this.luogonascita ="";
     this.professione ="";

@@ -22,6 +22,9 @@
         <clr-dg-cell>{{exam.date | date:"dd/MM/yyyy"}}</clr-dg-cell>
         <clr-dg-cell>{{exam.score}}</clr-dg-cell>
         <clr-dg-cell>
+          <button class="btn btn-success-outline btn-sm" (click)="redirectExam(exam.id, exam.patient.id)" title="Visualizza resoconto e PDF">
+            <clr-icon shape="file"></clr-icon> pdf
+          </button>
           <button class="btn btn-sm" (click)="editExam(exam.id, exam.patient.id)" title="Modifica questo esame">
             <clr-icon shape="pencil"></clr-icon> modifica
           </button>

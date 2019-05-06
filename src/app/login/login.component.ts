@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (this.userService.isUserLogged()) {
-      this.router.navigate(['main',{ outlets: { logged: ['dashboard'] } }]);
+      this.router.navigate(['dashboard']);
     }
   }
 
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
     this.userService.getUser(uid).subscribe( data => {
       var usr = JSON.parse((<any>data)._body) as User;
       this.userService.logUser(usr);
-      this.router.navigate(['main',{ outlets: { logged: ['dashboard'] } }]);
+      this.router.navigate(['dashboard']);
     });
   }
 

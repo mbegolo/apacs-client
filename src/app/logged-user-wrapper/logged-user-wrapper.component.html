@@ -1,7 +1,9 @@
 <div class="main-container">
+    <!--
     <div class="alert alert-app-level">
         [Spazio per gli alert!]
     </div>
+    -->
     <header class="header header-6">
           <div class="branding">
             <a class="nav-link">
@@ -10,8 +12,11 @@
             </a>
           </div>
           <div class="header-nav">
+            <!--
             <a [routerLink]="[{ outlets: { logged: ['dashboard'] } }]" outletName=[logged] routerLinkActive="active" class="nav-link nav-text">Dashboard</a>
             <a [routerLink]="[{ outlets: { logged: ['exams'] } }]" outletName=[logged] routerLinkActive="active" class="nav-link nav-text">Esami</a>
+            -->
+            <a href="" class="nav-link nav-text active">Dashboard</a>
           </div>
           <div class="header-actions">
             <clr-dropdown>
@@ -26,13 +31,11 @@
           </div>
 
     </header>
-    <!--
-    <nav class="subnav">
-        [subnav]
-    </nav>
-    -->
     <div>
+      <!--
       <router-outlet name="logged"></router-outlet>
+    -->
+        <app-dashboard></app-dashboard>
     </div>
 </div>
 

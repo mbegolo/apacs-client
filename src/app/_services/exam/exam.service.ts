@@ -93,7 +93,7 @@ export class ExamService {
   }
 
   // Imposta l'esame attivo
-  setActive(id: string) {
+  setActive(id: string, redirect:boolean = false) {
     this.activeExamId = id;
     this.getExam(id).subscribe(data => {
       this.activeExam = JSON.parse((<any>data)._body) as Exam;
@@ -105,6 +105,7 @@ export class ExamService {
           this.activeExamVoices = this.merge(d,v);
           console.log(this.activeExamVoices);
           this.calculateExamScore();
+          if (redirect) console.log(id);
         });
       })
       //console.log("EXA service: ",this.activeExam);

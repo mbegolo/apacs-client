@@ -9,6 +9,7 @@ import { EditPatientComponent } from './edit-patient/edit-patient.component';
 import { InterviewComponent } from './interview/interview.component';
 import { ExamResumeComponent } from './exam-resume/exam-resume.component';
 
+/*
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'main', component: LoggedUserWrapperComponent, children: [
@@ -21,9 +22,18 @@ const routes: Routes = [
     { path: 'editpatient', component:EditPatientComponent, outlet: 'exam'},
     { path: 'interview', component:InterviewComponent, outlet: 'exam'},
     { path: 'resume', component:ExamResumeComponent, outlet: 'exam'},
-    { path: '', redirectTo: 'component', pathMatch: 'full' }
+    { path: '', redirectTo: 'exam:editpatient', pathMatch: 'full' }
   ] }
-  
+];
+*/
+const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'dashboard', component: LoggedUserWrapperComponent },
+  { path: 'editpatient', component: EditPatientComponent },
+  { path: 'interview', component: InterviewComponent },
+  { path: 'resume', component: ExamResumeComponent },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+  //] }
 ];
 
 @NgModule({

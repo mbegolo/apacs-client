@@ -1,4 +1,6 @@
+<!--
 <div class="main-container">
+-->
     <header class="header header-4">
           <div class="branding">
             <a class="nav-link">
@@ -7,9 +9,9 @@
             </a>
           </div>
           <div class="header-nav">
-            <a [routerLink]="[{ outlets: { exam: ['editpatient'] } }]" outletName=[exam] routerLinkActive="active" class="nav-link nav-text">Anagrafica</a>
-            <a [routerLink]="[{ outlets: { exam: ['interview'] } }]" outletName=[exam] routerLinkActive="active" class="nav-link nav-text">Intervista</a>
-            <a [routerLink]="[{ outlets: { exam: ['resume'] } }]" outletName=[exam] routerLinkActive="active" class="nav-link nav-text">Resume</a>
+            <a [routerLink]="['/editpatient']" routerLinkActive="active" class="nav-link nav-text">Anagrafica</a>
+            <a [routerLink]="['/interview']" routerLinkActive="active" class="nav-link nav-text">Intervista</a>
+            <a [routerLink]="['/resume']" routerLinkActive="active" class="nav-link nav-text">Resume</a>
           </div>
           <div class="header-actions">
             <a title="esci dalla modalità intervista" href="javascript://" class="nav-link nav-text" (click)="basic = true" >
@@ -21,10 +23,14 @@
           </div>
 
     </header>
+    <!--
     <div>
       <router-outlet name="exam"></router-outlet>
     </div>
+    -->
+<!--
 </div>
+-->
 
 <clr-modal [(clrModalOpen)]="basic">
     <h3 class="modal-title">Attenzione</h3>

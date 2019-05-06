@@ -27,6 +27,7 @@ import { ExamResumeComponent } from './exam-resume/exam-resume.component';
 import { PdfResumeComponent } from './pdf-resume/pdf-resume.component';
 import { PdfExportComponent } from './pdf-export/pdf-export.component';
 import { RecordingComponent } from './recording/recording.component';
+import { ExamNavbarComponent } from './exam-navbar/exam-navbar.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { RecordingComponent } from './recording/recording.component';
     ExamResumeComponent,
     PdfResumeComponent,
     PdfExportComponent,
-    RecordingComponent
+    RecordingComponent,
+    ExamNavbarComponent
   ],
   imports: [
     BrowserModule,

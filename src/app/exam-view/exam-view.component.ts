@@ -16,7 +16,7 @@ export class ExamViewComponent implements OnInit {
 
   exit() {
     this.examService.setActive(this.examService.activeExam.id);
-    this.router.navigate(['main',{ outlets: { logged: ['dashboard'] } }]);
+    this.router.navigate(['dashboard']);
   }
 
 }

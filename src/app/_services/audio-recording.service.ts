@@ -22,6 +22,15 @@ export class AudioRecordingService {
   private _recordingTime = new Subject<string>();
   private _recordingFailed = new Subject<string>();
 
+  private mediaOptions = {
+    type: 'audio',
+    mimeType: 'audio/webm',
+    numberOfAudioChannels: 1,
+    bufferSize: 256,
+    sampleRate: 22050//, 
+    //desiredSampRate: 16000
+  };
+
 
   getRecordedBlob(): Observable<RecordedAudioOutput> {
     return this._recorded.asObservable();
@@ -35,8 +44,8 @@ export class AudioRecordingService {
     return this._recordingFailed.asObservable();
   }
 
-  constructor() {
-  }
+  //constructor(private ac:AudioConverter) {
+  //}
 
   startRecording() {
     this.startNewRecording();
@@ -47,12 +56,11 @@ export class AudioRecordingService {
     }
     this._recordingTime.next('00:00');
     this.totalTime = moment.duration((moment()).diff(moment()));
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(s => {
+    navigator.mediaDevices.getUserMedia({audio: true}).then(s => {
+      console.log(s);
       this.stream = s;
-      this.recorder = new RecordRTC.StereoAudioRecorder(this.stream, {
-        type: 'audio',
-        mimeType: 'audio/webm'
-      });
+      //this.recorder = new RecordRTC.StereoAudioRecorder(this.stream, {
+      this.recorder = new RecordRTC.StereoAudioRecorder(this.stream, this.mediaOptions);
       this.startTime = moment();
       this.record();
     }).catch(error => {

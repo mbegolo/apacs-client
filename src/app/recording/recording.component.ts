@@ -11,7 +11,7 @@ export class RecordingComponent implements OnInit,  OnDestroy {
 
   isRecording = false;
   isPaused = false;
-  recordedTime;
+  recordedTime = "00:00";
   blobUrl;
 
   constructor(private audioRecordingService: AudioRecordingService, private sanitizer: DomSanitizer) {
