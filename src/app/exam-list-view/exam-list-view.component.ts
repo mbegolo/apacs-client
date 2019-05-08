@@ -58,6 +58,8 @@ export class ExamListViewComponent implements OnInit {
   private surnameFilter = new SurnameFilter();
   private loaded_data = false;
   private defaultSort = ClrDatagridSortOrder.DESC;
+  private patientName: string = "";
+  private delete_exam: boolean = false;
 
   constructor(private router:Router, private examService: ExamService, private patientService: PatientService) {
     
@@ -108,6 +110,28 @@ export class ExamListViewComponent implements OnInit {
         this.router.navigate(['resume']);
       });
     });
+  }
+
+  openDeleteModal(a) {
+    this.delete_exam = true;
+    this.loadExamInfo(a);
+    //console.log(a);
+  }
+
+  loadExamInfo(eid) {
+    this.examService.setActive(eid);
+    var e = this.examService.getActiveExam();
+    var pid = (<any>e.patient).id;
+    this.patientService.setActive(pid);
+    var p = this.patientService.getActivePatient();
+    this.patientName = (<any>p).nome +" "+ (<any>p).cognome;
+    console.log(p);
+    /*
+    this.examService.getExam(e).subscribe(data => {
+      var d = JSON.parse((<any>data)._body);
+      console.log(d);
+    });
+    */
   }
 
   deleteExam(e) {

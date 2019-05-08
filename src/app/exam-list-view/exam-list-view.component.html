@@ -1,8 +1,8 @@
 <button type="button" class="btn btn-icon btn-primary" title="Modifica il tuo profilo" (click)="createNewExam()">
-    <clr-icon shape="plus"></clr-icon> Crea un nuovo esame
+    <clr-icon shape="plus"></clr-icon> Nuova Valutazione
 </button>
 <clr-datagrid [clrDgLoading]="loading">
-    <clr-dg-column>ID esame</clr-dg-column>
+    <clr-dg-column>ID valutazione</clr-dg-column>
     <clr-dg-column [clrDgField]="'patient.nome'">Nome Paziente
       <clr-dg-string-filter [clrDgStringFilter]="nameFilter"></clr-dg-string-filter>
     </clr-dg-column>
@@ -28,7 +28,10 @@
           <button class="btn btn-sm" (click)="editExam(exam.id, exam.patient.id)" title="Modifica questo esame">
             <clr-icon shape="pencil"></clr-icon> modifica
           </button>
+          <!--
           <button class="btn btn-danger-outline btn-sm" (click)="delete_exam = true; new_id = exam.id" title="Elimina questo esame">
+          -->
+          <button class="btn btn-danger-outline btn-sm" (click)="openDeleteModal(exam.id)" title="Elimina questo esame">
           <!--<button class="btn btn-danger-outline btn-sm" (click)="deleteExam(exam.id)">-->
             <clr-icon shape="trash"></clr-icon> elimina
           </button>
@@ -45,13 +48,13 @@
     </clr-dg-footer>
 </clr-datagrid>
 
-<clr-modal [(clrModalOpen)]="delete_exam" [clrModalSize]="'sm'">
+<clr-modal [(clrModalOpen)]="delete_exam">
     <h3 class="modal-title">Attenzione</h3>
     <div class="modal-body">
-        <p>Stai per eliminare questo esame, l'azione non è reversibile. Sei sicuro?</p>
+        <p>Stai per eliminare la valutazione di <strong>{{this.patientName}}</strong>, l'azione non è reversibile. Sei sicuro?</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="delete_exam = false">Annulla</button>
-        <button type="button" class="btn btn-primary" (click)="deleteExam(new_id); delete_exam = false">Ok</button>
+        <button type="button" class="btn btn-danger" (click)="deleteExam(new_id); delete_exam = false"><clr-icon shape="trash"></clr-icon> Si, elimina</button>
     </div>
 </clr-modal>

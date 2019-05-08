@@ -1,9 +1,10 @@
 <app-exam-navbar></app-exam-navbar>
+<button *ngIf="formIsChanged" type="button" class="btn btn-danger">CHANGED</button>
 <!--
 <alert-message *ngIf="!this.patientForm.valid" msg="I campi contrassegnati con * sono obbligatori"></alert-message>
 -->
 <form clrForm clrLayout="horizontal" [formGroup]="patientForm" class="clr-form clr-form-horizontal">
-    <h2>Dati Esame</h2>
+    <h2>Dati Valutazione</h2>
     <div class="clr-row">
       <div class="clr-col">
         <div class="form_group">
@@ -61,7 +62,6 @@
             </clr-radio-container>
             <div class="clr-subtext-wrapper">
               <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-              <span class="clr-subtext">Helper Text</span>
             </div>
           </div>
           <div class="errors" *ngIf="submitted && f.sesso.errors">
@@ -105,17 +105,16 @@
 
             <clr-radio-container clrInline>
               <clr-radio-wrapper>
-                <input clrRadio type="radio" id="lat-radio1" formControlName="lateralita" value="true" class="clr-radio" [checked]="show_lat">
-                <label for="lat-radio1" class="clr-control-label">DX</label>
-              </clr-radio-wrapper>
-              <clr-radio-wrapper>
                 <input clrRadio type="radio" id="lat-radio2" formControlName="lateralita" value="false" class="clr-radio" [checked]="!show_lat">
                 <label for="lat-radio2" class="clr-control-label">SX</label>
+              </clr-radio-wrapper>
+              <clr-radio-wrapper>
+                <input clrRadio type="radio" id="lat-radio1" formControlName="lateralita" value="true" class="clr-radio" [checked]="show_lat">
+                <label for="lat-radio1" class="clr-control-label">DX</label>
               </clr-radio-wrapper>
             </clr-radio-container>
             <div class="clr-subtext-wrapper">
               <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-              <span class="clr-subtext">Helper Text</span>
             </div>
           </div>
         </div>

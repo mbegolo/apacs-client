@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from "@angular/router";
-import { ExamService } from '../_services';
+import { ExamService, PatientService, DataService } from '../_services';
 
 @Component({
   selector: 'app-exam-view',
@@ -9,14 +9,49 @@ import { ExamService } from '../_services';
 })
 export class ExamViewComponent implements OnInit {
 
-  constructor(private examService:ExamService,private router:Router) { }
+  private basic: boolean;
+  private unstagedChanges: boolean = false;
+
+  @Output() saveEvent = new EventEmitter<string>();
+
+  constructor(
+    private examService: ExamService, 
+    private patientService: PatientService, 
+    private dataService: DataService, 
+    private router: Router
+    ) { }
+
 
   ngOnInit() {
+    //this.dataService.
+  }
+
+  savePatient() {
+    this.saveEvent.emit('savePatient');
   }
 
   exit() {
     this.examService.setActive(this.examService.activeExam.id);
-    this.router.navigate(['dashboard']);
+    this.router.navigate(['']);
+  }
+
+  saveExit() {
+    //TODO
+    console.log("TODO: al momento non salva davvero");
+    this.exit();
+  }
+
+  saveAll() {
+    //this.examService.saveExam(this.examService.getActiveExam());
+  }
+
+  openModal() {
+    this.unstagedChanges = this.dataService.pendingChanges();
+    this.basic = true;
+  }
+
+  test() {
+    this.basic = false;
   }
 
 }

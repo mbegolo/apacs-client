@@ -14,31 +14,26 @@
             <a [routerLink]="['/resume']" routerLinkActive="active" class="nav-link nav-text">Resume</a>
           </div>
           <div class="header-actions">
-            <a title="esci dalla modalità intervista" href="javascript://" class="nav-link nav-text" (click)="basic = true" >
+            <a title="esci dalla modalità intervista" href="javascript://" class="nav-link nav-text" (click)="openModal()" >
               <span>esci dalla modalità intervista</span>
             </a>
-            <a title="esci dalla modalità intervista" href="javascript://" class="nav-link nav-text" (click)="basic = true" >
+            <a title="esci dalla modalità intervista" href="javascript://" class="nav-link nav-text" (click)="openModal()" >
               <clr-icon shape="times"></clr-icon> 
             </a>
           </div>
 
     </header>
-    <!--
-    <div>
-      <router-outlet name="exam"></router-outlet>
-    </div>
-    -->
-<!--
-</div>
--->
 
 <clr-modal [(clrModalOpen)]="basic">
     <h3 class="modal-title">Attenzione</h3>
     <div class="modal-body">
-        <p>Stai per uscire dalla modalità intervista, i dati non salvati andranno persi. Vuoi procedere?</p>
+        <p>Stai per uscire dalla modalità intervista. <span *ngIf="this.unstagedChanges">Le ultime modifiche non saranno salvate. Vuoi procedere?</span><span *ngIf="!this.unstagedChanges">Non ci sono modifiche da salvare.</span></p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="basic = false">No, annulla</button>
-        <button type="button" class="btn btn-primary" (click)="exit()">Si, esci</button>
+        <button *ngIf="this.unstagedChanges" type="button" class="btn btn-outline" (click)="test()">No, annulla</button>
+        <button *ngIf="this.unstagedChanges" type="button" class="btn btn-danger" (click)="exit()">Esci senza salvare</button>
+        <button *ngIf="this.unstagedChanges" type="button" class="btn btn-primary" (click)="saveExit()"><clr-icon shape="floppy"></clr-icon> Salva ed esci</button>
+        <button *ngIf="!this.unstagedChanges" type="button" class="btn btn-outline" (click)="test()">Annulla</button>
+        <button *ngIf="!this.unstagedChanges" type="button" class="btn btn-primary" (click)="exit()">Esci</button>
     </div>
 </clr-modal>

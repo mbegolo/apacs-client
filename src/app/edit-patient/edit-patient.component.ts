@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 //import { ClarityModule, ClrFormsNextModule } from '@clr/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Params, ActivatedRoute } from '@angular/router';
-
 import { User, Exam, Patient } from '../_models';
-import { UserService, ExamService, PatientService } from '../_services';
+import { UserService, ExamService, PatientService, DataService } from '../_services';
 
 @Component({
   selector: 'app-edit-patient',
@@ -17,6 +16,7 @@ export class EditPatientComponent implements OnInit {
         private patientService: PatientService, 
         private examService: ExamService, 
         private userService: UserService,
+        private dataService: DataService,
         private formBuilder: FormBuilder) { }
 
   private patientForm: FormGroup;
@@ -26,8 +26,10 @@ export class EditPatientComponent implements OnInit {
   private show_sex: boolean;
   private show_lat: boolean;
   private submitted: boolean = true;
+  private formIsChanged: boolean = false;
 
   ngOnInit() {
+    
     this.activeExam = this.examService.getActiveExam();
     this.activePatient = this.patientService.getActivePatient();
     this.loggedUser = this.userService.getLoggedUser();
@@ -47,12 +49,25 @@ export class EditPatientComponent implements OnInit {
         data: [(''+this.activeExam.date).substring(0,10)],
         esaminatore: [this.loggedUser.name+" "+this.loggedUser.surname]
     });
-    this.show_sex =this.activePatient.sesso;// ((this.activePatient.sesso == "true")||(this.activePatient.sesso == true));
-    this.show_lat =this.activePatient.lateralita;// ((this.activePatient.lateralita == "true")||(this.activePatient.lateralita == true));
-    console.log(this.show_sex,this.show_lat);
+    this.show_sex =this.activePatient.sesso;
+    this.show_lat =this.activePatient.lateralita;
+    console.log(this.patientForm.controls);
+    Object.keys(this.patientForm.controls).forEach(key => {
+      //console.log(this.patientForm.controls[key]);
+      this.patientForm.controls[key].valueChanges.subscribe(data => {
+        this.formChanged();
+      })
+    });
+    this.formIsChanged = false;
+    this.dataService.setChanges(false);
   }
 
   get f() { return this.patientForm.controls; }
+
+  formChanged() {
+    this.formIsChanged = true;
+    this.dataService.setChanges(true);
+  }
 
   onSubmit() {
     //if (confirm("Sicuro di voler salvare? L'azione non è reversibile")) {
@@ -103,6 +118,8 @@ export class EditPatientComponent implements OnInit {
       var returnobj = (JSON.parse((<any>data)._body));
       console.log(returnobj);
       this.patientService.saveOnLocal(returnobj);
+      this.formIsChanged = false;
+      this.dataService.setChanges(false);
     },
     error => console.log(error));
 
@@ -110,6 +127,8 @@ export class EditPatientComponent implements OnInit {
       var returnobj = (JSON.parse((<any>data)._body));
       console.log(returnobj);
       this.examService.saveOnLocal(returnobj);
+      this.formIsChanged = false;
+      this.dataService.setChanges(false);
     },
     error => console.log(error));
     //console.log(e,p);
