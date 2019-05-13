@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChildren, QueryList  } from '@angular/core';
 import { InterviewItemComponent } from '../interview-item/interview-item.component';
-import { UserService } from '../_services';
-import { ExamService } from '../_services';
-import { PatientService } from '../_services';
+import { UserService, ExamService, PatientService, DataService } from '../_services';
 import { Exam,ExamVoice} from '../_models';
 
 
@@ -24,18 +22,20 @@ export class InterviewComponent implements OnInit {
   private loaded: boolean = false;
   private palette: string[] = ["","","","",""];
   private enabled: boolean = false;
+  private changesOccurred: boolean = false;
 
 
   //constructor(private  apiService:  APIService) { }
   constructor(private userService:UserService,
     private examService:ExamService,
+    private dataService: DataService,
     private patientService:PatientService) { }
 
 
   ngOnInit() {
+    this.changesOccurred = false;
     this.loadData();
     this.loadPalette();
-
     //this.startRecording();
   }
 
@@ -63,18 +63,11 @@ export class InterviewComponent implements OnInit {
     this.loaded = true;
   }
 
-  printExam(){
-    console.log(this.exam);
-  }
-  printData(){
-    console.log(this.examData);
-  }
-
   loadPalette() {
     this.examService.loadPalette().subscribe(data => {
       var d = JSON.parse((<any>data)._body);
       for (let p of d) {
-        console.log(p.colore,p.ordine);
+        //console.log(p.colore,p.ordine);
         this.palette[p.ordine-1] = p.colore;
       }
     });
@@ -85,6 +78,8 @@ export class InterviewComponent implements OnInit {
     this.children.forEach(it => {
       it.save();
     });
+    this.changesOccurred = false;
+    this.dataService.setChanges(false);
     this.loadData();
   }
 
@@ -93,19 +88,18 @@ export class InterviewComponent implements OnInit {
     this.children.forEach(it => {
       it.reset();
     });
+    this.changesOccurred = false;
+    this.dataService.setChanges(false);
     this.loadData();
   }
 
   startRecording() {
     this.enabled = true;
+    this.changesOccurred = true;
+    this.dataService.setChanges(true);
   }
 
   stopRecording() {
     this.enabled = false;
-  }
-
-  test() {
-    //this.examService.calculateExamScore();
-    console.log(this.examService.activeExam.score);
   }
 }

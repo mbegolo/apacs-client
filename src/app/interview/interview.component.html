@@ -1,4 +1,5 @@
-<app-exam-navbar></app-exam-navbar>
+<app-exam-navbar (saveEvent)="saveData()"></app-exam-navbar>
+<button *ngIf='changesOccurred' type="button" class="btn btn-warning">CHANGED DATA</button>
 <div>
   <span *ngIf="enabled" class="registration_on">
     <clr-icon shape="microphone" class="is-inverse" size="36" title="Registrazione in corso"></clr-icon>

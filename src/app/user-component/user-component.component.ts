@@ -76,21 +76,21 @@ export class UserComponentComponent implements OnInit {
   }
 
   onSave() {
-    if (!this.save()) this.abort();
-    else {
-      this.logged_user.username = this.editUserForm.controls.username.value;
-      this.logged_user.email = this.editUserForm.controls.email.value;
-      this.logged_user.password = this.editUserForm.controls.password.value;
-      this.logged_user.name = this.editUserForm.controls.name.value;
-      this.logged_user.surname = this.editUserForm.controls.surname.value;
-      this.userService.updateUser(this.logged_user).subscribe(data => {
-        var new_usr = JSON.parse((<any>data)._body);
-        this.userService.logUser(new_usr);
-      },
-      error => {
-        console.log(error);
-      })
-    }
+    //if (!this.save()) this.abort();
+    //else {
+    this.logged_user.username = this.editUserForm.controls.username.value;
+    this.logged_user.email = this.editUserForm.controls.email.value;
+    this.logged_user.password = this.editUserForm.controls.password.value;
+    this.logged_user.name = this.editUserForm.controls.name.value;
+    this.logged_user.surname = this.editUserForm.controls.surname.value;
+    this.userService.updateUser(this.logged_user).subscribe(data => {
+      var new_usr = JSON.parse((<any>data)._body);
+      this.userService.logUser(new_usr);
+    },
+    error => {
+      console.log(error);
+    })
+    //}
   }
 
   save() {

@@ -1,4 +1,4 @@
-<app-exam-navbar></app-exam-navbar>
+<app-exam-navbar (saveEvent)="onSubmit()"></app-exam-navbar>
 <button *ngIf="formIsChanged" type="button" class="btn btn-danger">CHANGED</button>
 <!--
 <alert-message *ngIf="!this.patientForm.valid" msg="I campi contrassegnati con * sono obbligatori"></alert-message>

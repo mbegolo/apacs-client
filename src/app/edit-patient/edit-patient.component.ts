@@ -51,7 +51,7 @@ export class EditPatientComponent implements OnInit {
     });
     this.show_sex =this.activePatient.sesso;
     this.show_lat =this.activePatient.lateralita;
-    console.log(this.patientForm.controls);
+    //console.log(this.patientForm.controls);
     Object.keys(this.patientForm.controls).forEach(key => {
       //console.log(this.patientForm.controls[key]);
       this.patientForm.controls[key].valueChanges.subscribe(data => {
@@ -116,7 +116,7 @@ export class EditPatientComponent implements OnInit {
   save(e: Exam, p: Patient) {
     this.patientService.savePatient(p).subscribe(data => {
       var returnobj = (JSON.parse((<any>data)._body));
-      console.log(returnobj);
+      //console.log(returnobj);
       this.patientService.saveOnLocal(returnobj);
       this.formIsChanged = false;
       this.dataService.setChanges(false);
@@ -125,7 +125,7 @@ export class EditPatientComponent implements OnInit {
 
     this.examService.saveExam(e).subscribe(data => {
       var returnobj = (JSON.parse((<any>data)._body));
-      console.log(returnobj);
+      //console.log(returnobj);
       this.examService.saveOnLocal(returnobj);
       this.formIsChanged = false;
       this.dataService.setChanges(false);
@@ -134,13 +134,4 @@ export class EditPatientComponent implements OnInit {
     //console.log(e,p);
   }
 
-  printPat() {
-    //console.log(this.activePatient);
-
-    console.log(this.patientForm.valid);
-  }
-
-  printExam() {
-    //this.patientForm.controls.nome.status="INVALID";
-  }
 }

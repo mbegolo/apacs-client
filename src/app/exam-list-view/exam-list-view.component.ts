@@ -23,14 +23,14 @@ class DateFilter implements ClrDatagridStringFilterInterface<Exam> {
       this.cf = this.cf + " " +this.y+"/"+this.m+"/"+this.d+" " +this.y+"-"+this.m+"-"+this.d+" " +this.y+"."+this.m+"."+this.d+" ";
       this.cf = this.cf + " " +this.m+"/"+this.d+"/"+this.y+" " +this.m+"-"+this.d+"-"+this.y+" " +this.m+"."+this.d+"."+this.y+" ";
 
-      console.log(this.cf);
+      //console.log(this.cf);
       return this.cf.includes(search);
     }
 }
 
 class NameFilter implements ClrDatagridStringFilterInterface<Exam> {
   accepts(exam: Exam, search: string): boolean {
-    console.log((<any>exam.patient).id);
+    //console.log((<any>exam.patient).id);
     return ((<any>exam.patient).nome).toLowerCase().includes(search);
   }
 }
@@ -60,6 +60,7 @@ export class ExamListViewComponent implements OnInit {
   private defaultSort = ClrDatagridSortOrder.DESC;
   private patientName: string = "";
   private delete_exam: boolean = false;
+  private desiredDeleteId;
 
   constructor(private router:Router, private examService: ExamService, private patientService: PatientService) {
     
@@ -112,26 +113,19 @@ export class ExamListViewComponent implements OnInit {
     });
   }
 
-  openDeleteModal(a) {
+  openDeleteModal(id) {
+
     this.delete_exam = true;
-    this.loadExamInfo(a);
-    //console.log(a);
+    this.desiredDeleteId = id;
+    this.loadExamInfo(id);
   }
 
   loadExamInfo(eid) {
-    this.examService.setActive(eid);
-    var e = this.examService.getActiveExam();
-    var pid = (<any>e.patient).id;
-    this.patientService.setActive(pid);
-    var p = this.patientService.getActivePatient();
-    this.patientName = (<any>p).nome +" "+ (<any>p).cognome;
-    console.log(p);
-    /*
-    this.examService.getExam(e).subscribe(data => {
-      var d = JSON.parse((<any>data)._body);
-      console.log(d);
-    });
-    */
+    for (let e of this.exams) {
+      if (e.id==eid) {
+        this.patientName = (<any>e.patient).nome + " " + (<any>e.patient).cognome;
+      }
+    }
   }
 
   deleteExam(e) {
@@ -142,7 +136,7 @@ export class ExamListViewComponent implements OnInit {
       },
       errors => console.log(errors)
     );
-    console.log("elimina ",e);
+    //console.log("elimina ",e);
   }
 
   createNewExam() {

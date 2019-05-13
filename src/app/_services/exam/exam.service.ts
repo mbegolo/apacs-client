@@ -103,9 +103,9 @@ export class ExamService {
           var d = JSON.parse((<any>_data)._body);
           var v = JSON.parse((<any>_voices)._body);
           this.activeExamVoices = this.merge(d,v);
-          console.log(this.activeExamVoices);
+          //console.log(this.activeExamVoices);
           this.calculateExamScore();
-          if (redirect) console.log(id);
+          //if (redirect) console.log(id);
         });
       })
       //console.log("EXA service: ",this.activeExam);
@@ -138,11 +138,11 @@ export class ExamService {
   }
 
   saveActiveExam(e: Exam) {
-    console.log("saveActiveExam(e:Exam):todo");
+    //console.log("saveActiveExam(e:Exam):todo");
   }
   
   saveActiveExamVoices(v: ExamVoice[]) {
-    console.log("saveActiveExamVoices(e:Exam):todo");
+    //console.log("saveActiveExamVoices(e:Exam):todo");
   }
 
 
@@ -151,7 +151,7 @@ export class ExamService {
       var voices = (JSON.parse((<any>data)._body));
       for (let v of voices) {
         this.http.delete(API_URL + '/examdata/' + v.id).subscribe(
-          response => console.log(response), 
+          //response => console.log(response), 
           errors => console.log(errors)
         );
       }
@@ -214,14 +214,14 @@ export class ExamService {
   }
 
   calculateExamScore() {
-    console.log(typeof this.activeExamVoices);
+    //console.log(typeof this.activeExamVoices);
     var tot = 0;
     for (let v of this.activeExamVoices) {
       tot += v.punteggio;
-      console.log(v.punteggio);
+      //console.log(v.punteggio);
     }
     this.activeExam.score = tot;
-    console.log(tot);
+    //console.log(tot);
     this.saveExam(this.activeExam).subscribe(exam => {
       this.activeExam = JSON.parse((<any>exam)._body) as Exam;
       //console.log(this.activeExam.score);

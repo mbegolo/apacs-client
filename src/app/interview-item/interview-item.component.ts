@@ -99,7 +99,7 @@ export class InterviewItemComponent implements OnInit {
   }
 
   editProgress(n:number):void {
-    console.log("edit-progress");
+    //console.log("edit-progress");
     this.progress += n;
     this.stile = (this.progress)/(this.max)*100+"%";
   }
@@ -176,7 +176,7 @@ export class InterviewItemComponent implements OnInit {
     //console.log(to_upload);
     localStorage.setItem('exam'+this.id, JSON.stringify(this.item));
     this.examService.saveExamData(this.item.id, to_upload).subscribe(data => {
-      console.log(JSON.parse((<any>data)._body));
+      //console.log(JSON.parse((<any>data)._body));
     });
   }
 

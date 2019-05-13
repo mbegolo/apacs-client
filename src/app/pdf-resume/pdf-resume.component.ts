@@ -31,7 +31,7 @@ export class PdfResumeComponent implements OnInit {
     this.data = this.examService.getActiveExam().date;
     this.esaminatore = this.examService.getActiveExam().user;
     this.id = this.examService.getActiveExam().id;
-    console.log(this.totalscore);
+    //console.log(this.totalscore);
   }
 
   downloadPdf() {

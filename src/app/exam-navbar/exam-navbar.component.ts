@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from "@angular/router";
+import { ExamService, PatientService, DataService } from '../_services';
 
 @Component({
   selector: 'app-exam-navbar',
@@ -7,9 +9,95 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ExamNavbarComponent implements OnInit {
 
-  constructor() { }
+  private exitModal: boolean;
+  private switchModal: boolean;
+  private desiredUrl: string;
+  private unstagedChanges: boolean = false;
+  private activePatient: boolean = false;
+  private activeInterview: boolean = false;
+  private activeResume: boolean = false;
 
-  ngOnInit() {
+  @Output() saveEvent = new EventEmitter<string>();
+
+  constructor(
+    private examService: ExamService, 
+    private patientService: PatientService, 
+    private dataService: DataService, 
+    private router: Router
+  ) { }
+
+  ngOnInit() { }
+
+  savePatient() {
+    this.saveEvent.emit('savePatient');
   }
 
+  saveInterview() {
+    this.saveEvent.emit('saveInterview');
+  }
+
+  isActive(s: string) {
+    var _url = window.location.href.split('/');
+    var actualUrl = '/'+_url[_url.length-1];
+    return (s === actualUrl);
+  }
+
+  goTo(url: string) {
+    this.unstagedChanges = this.dataService.pendingChanges();
+    //var _url = window.location.href.split('/');
+    //var actualUrl = '/'+_url[_url.length-1];
+    var actualUrl = this.getActualUrl;
+    this.desiredUrl = url;
+    if (this.unstagedChanges) this.openSwitchModal();
+    else this.navigateTo(this.desiredUrl);
+  }
+
+  getActualUrl() {
+    var _url = window.location.href.split('/');
+    return '/'+_url[_url.length-1];
+  }
+
+  navigateTo(url: string) {
+    this.router.navigate([url]);
+  }
+
+  ignoreEdit() {
+    this.dataService.setChanges(false);
+    this.router.navigate([this.desiredUrl]);
+  }
+
+  exit() {
+    this.examService.setActive(this.examService.activeExam.id);
+    this.router.navigate(['']);
+  }
+  
+  saveExit() {
+    if (this.getActualUrl() == '/editpatient') this.saveInterview();
+    else if (this.getActualUrl() == '/interview') this.savePatient();
+    this.exit();
+  }
+
+  saveMove() {
+    if (this.getActualUrl() == '/editpatient') this.saveInterview();
+    else if (this.getActualUrl() == '/interview') this.savePatient();
+    this.navigateTo(this.desiredUrl);
+  }
+
+  openModal() {
+    this.unstagedChanges = this.dataService.pendingChanges();
+    this.exitModal = true;
+  }
+
+  closeModal() {
+    this.exitModal = false;
+  }
+
+  openSwitchModal() {
+    this.unstagedChanges = this.dataService.pendingChanges();
+    this.switchModal = true;
+  }
+
+  closeSwitchModal() {
+    this.switchModal = false;
+  }
 }
