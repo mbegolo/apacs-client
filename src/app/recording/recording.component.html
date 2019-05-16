@@ -1,41 +1,73 @@
+  <button title="Tempo di registrazione" class="btn" disabled > {{recordedTime}} </button>
 
-<!--
-<div>
-  <button class="start-button" *ngIf="!isRecording && !blobUrl" (click)="startRecording()">Inizia nuova registrazione</button>
-  <button class="stop-button" *ngIf="isRecording && !blobUrl" (click)="stopRecording()">Ferma la registrazione</button>
-  <button class="cancel-button" *ngIf="!isRecording && blobUrl" (click)="clearRecordedData()">Elimina la registrazione</button>
-</div>
--->
-<!--
-<div>
-  <button class="start-button"  (click)="startRecording()">Inizia nuova registrazione</button>
-  <button class="stop-button" (click)="stopRecording()">Terminala registrazione</button>
+  <clr-icon *ngIf="isRecording && !blobUrl" shape="circle" class="is-solid blink red"></clr-icon>
+  <clr-icon *ngIf="!(isRecording && !blobUrl)" shape="circle" class="is-solid"></clr-icon>
 
-</div>
--->
+  <button title="Avvia nuova registrazione" class="btn" *ngIf="!isRecording && !blobUrl" (click)="startRecording()">
+      <clr-icon shape="microphone" class="is-solid"></clr-icon>
+  </button>
+  <button title="Avvia nuova registrazione" class="btn" disabled *ngIf="!(!isRecording && !blobUrl)" (click)="startRecording()">
+      <clr-icon shape="microphone" class="is-solid"></clr-icon>
+  </button>
 
-<div>
-  <button class="start-button" *ngIf="!isRecording && !blobUrl" (click)="startRecording()">Inizia nuova registrazione</button>
-  <button class="stop-button" *ngIf="isRecording && !blobUrl" (click)="stopRecording()">Termina la registrazione</button>
-</div>
+  <button title="Termina registrazione corrente" class="btn" *ngIf="isRecording && !blobUrl" (click)="stopRecording()">
+      <clr-icon shape="microphone-mute"></clr-icon>
+  </button>
+  <button title="Termina registrazione corrente" class="btn" disabled *ngIf="!(isRecording && !blobUrl)" (click)="stopRecording()">
+      <clr-icon shape="microphone-mute"></clr-icon>
+  </button>
 
-<div>
-  <button class="start-button" *ngIf="isRecording && isPaused" (click)="resumeRecording()">Riprendi la registrazione</button>
-  <button class="stop-button" *ngIf="isRecording && !isPaused" (click)="pauseRecording()">Metti in pausa la registrazione</button>
-</div>
-<div>
-  <button class="cancel-button" (click)="clearRecordedData()">Elimina registrazione</button>
-</div>
-<div>
-  <button class="cancel-button" (click)="print()">---PRINT---</button>
-</div>
+  <button title="Riprendi la registrazione corrente" class="btn" *ngIf="isRecording && isPaused" (click)="resumeRecording()">
+      <clr-icon shape="play" class="is-solid"></clr-icon>
+  </button>
+  <button title="Riprendi la registrazione corrente" class="btn" disabled *ngIf="!(isRecording && isPaused)" (click)="resumeRecording()">
+      <clr-icon shape="play" class="is-solid"></clr-icon>
+  </button>
+
+  <button title="Metti in pausa la registrazione corrente" class="btn" *ngIf="isRecording && !isPaused" (click)="pauseRecording()">
+      <clr-icon shape="pause" class="is-solid"></clr-icon>
+  </button>
+  <button title="Metti in pausa la registrazione corrente" class="btn" disabled *ngIf="!(isRecording && !isPaused)" (click)="pauseRecording()">
+      <clr-icon shape="pause" class="is-solid"></clr-icon>
+  </button>
+
+
+  <button *ngIf="blobUrl" title="Elimina la registrazione corrente" class="btn btn-danger-outline" (click)="clearRecordedData()">
+    <clr-icon shape="trash"></clr-icon>
+  </button>
+
+  <a *ngIf="blobUrl" title="Avvia il download del file audio con la registrazione corrente" [href]="blobUrl" [download]="blobName" class="btn btn-outline"><clr-icon shape="download"></clr-icon> File</a>
 
 
 <div>
   <div> {{recordedTime}} </div>
-  <div>
-  <audio *ngIf="blobUrl"  controls>
-    <source [src]="blobUrl" type="audio/webm">
-  </audio>
+
+  <div *ngIf="audioConverting" class="alert alert-warning" role="alert">
+      <div class="alert-items">
+          <div class="alert-item static">
+              <div class="alert-icon-wrapper">
+                  <clr-icon class="alert-icon spin" shape="cog"></clr-icon>
+              </div>
+              <span class="alert-text">La registrazione è in elaborazione, si prega di attendere. Potrebbe volerci un po' di tempo, soprattutto in caso di registrazioni lunghe</span>
+          </div>
+      </div>
+  </div>
+
+  <div *ngIf="audioUploading" class="alert alert-info" role="alert">
+      <div class="alert-items">
+          <div class="alert-item static">
+              <div class="alert-icon-wrapper">
+                  <clr-icon class="alert-icon spin" shape="sync"></clr-icon>
+              </div>
+              <span class="alert-text">E' in corso il salvataggio della registrazione sul server. L'operazione potrebbe richiedere parecchio tempo.</span>
+              <h4>NON ANCORA FUNZIONANTE!</h4>
+          </div>
+      </div>
+  </div>
+
+  <div *ngIf="blobUrl" class="vertical-align-middle">
+    <audio controls download="CIAO.mp3" controlsList="nodownload">
+      <source [src]="blobUrl" type="audio/webm">
+    </audio>
   </div>
 </div>

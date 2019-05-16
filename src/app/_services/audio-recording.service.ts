@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import * as RecordRTC from 'recordrtc';
 import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
+import lame from 'lamejs';
 
 interface RecordedAudioOutput {
   blob: Blob;
@@ -16,11 +17,13 @@ export class AudioRecordingService {
   private recorder;
   private interval;
   private startTime;
+  private buffer;
   private paused: boolean = false;
   private totalTime;
   private _recorded = new Subject<any>();
   private _recordingTime = new Subject<string>();
   private _recordingFailed = new Subject<string>();
+
 
   private mediaOptions = {
     type: 'audio',
@@ -74,20 +77,6 @@ export class AudioRecordingService {
     }
     const time = this.toString(this.totalTime.minutes()) + ':' + this.toString(this.totalTime.seconds());
     this._recordingTime.next(time);
-    console.log(this.recorder);
-    /*
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(s => {
-      this.stream = s;
-      this.recorder = new RecordRTC.StereoAudioRecorder(this.stream, {
-        type: 'audio',
-        mimeType: 'audio/webm'
-      });
-      this.startTime = moment();
-      this.record();
-    }).catch(error => {
-      this._recordingFailed.next();
-    });
-    */
     this.startTime = moment();
     this.record();
   }
@@ -98,8 +87,30 @@ export class AudioRecordingService {
       this.recorder.stop((blob) => {
         if (this.startTime) {
           const mp3Name = encodeURIComponent('audio_' + new Date().getTime() + '.mp3');
+          this.buffer = this.recorder.buffer;
+          //var prova = new Int16Array(this.buffer);
           this.stopMedia();
-          this._recorded.next({ blob: blob, title: mp3Name });
+          fetch(URL.createObjectURL(blob)).then(res => {
+            res.arrayBuffer().then(data => {
+              this.buffer = data;
+              this._recorded.next({ blob: this.convertAudio(), title: mp3Name });
+            });
+          });
+          //this._recorded.next({ blob: this.convertAudio(), title: mp3Name });
+          //this._recorded.next({ blob: blob, title: mp3Name });
+
+
+          /*
+
+          var arrayBuffer;
+          var fileReader = new FileReader();
+          fileReader.onload = function(event) {
+              arrayBuffer = (<any>event.target).result;
+          };
+          var out = fileReader.readAsArrayBuffer(blob);
+          console.log(out);
+          */
+
         }
       }, () => {
         this.stopMedia();
@@ -130,6 +141,10 @@ export class AudioRecordingService {
     console.log("resume @ ",this._recordingTime.next());
   }
 
+  getBuffer() {
+    return this.buffer;
+  }
+
   private record() {
     this.recorder.record();
     this.interval = setInterval(
@@ -157,6 +172,21 @@ export class AudioRecordingService {
         this.stream = null;
       }
     }
+  }
+
+  private convertAudio() {
+    var mp3Data = [];
+    var mp3encoder = new lame.Mp3Encoder(1, 44100, 64); //mono 44.1khz encode to 128kbps
+    console.log(this.buffer);
+    var samples = new Int16Array(this.buffer);
+    console.log(samples);
+    var mp3Tmp = mp3encoder.encodeBuffer(samples); //encode mp3
+    mp3Data.push(mp3Tmp);
+    mp3Tmp = mp3encoder.flush();
+    mp3Data.push(mp3Tmp);
+    var blob = new Blob(mp3Data, {type: 'audio/mp3'});
+    //var url = window.URL.createObjectURL(blob);
+    return blob;
   }
 
   private toString(value) {
