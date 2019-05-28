@@ -7,6 +7,10 @@
   color: red;
 }
 
+.recording-dot {
+  margin-right: 12px;
+}
+
 .spinning, .spin {
     -webkit-animation: spin 2000ms infinite linear;
     animation: spin 2000ms infinite linear;

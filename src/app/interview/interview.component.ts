@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChildren, QueryList  } from '@angular/core';
 import { InterviewItemComponent } from '../interview-item/interview-item.component';
+import { RecordingComponent } from '../recording/recording.component';
 import { UserService, ExamService, PatientService, DataService } from '../_services';
 import { Exam,ExamVoice} from '../_models';
+import { Observable, Subject } from 'rxjs';
 
 
 @Component({
@@ -12,12 +14,15 @@ import { Exam,ExamVoice} from '../_models';
 export class InterviewComponent implements OnInit {
 
   @ViewChildren(InterviewItemComponent) children: QueryList<InterviewItemComponent>; 
+  @ViewChildren(RecordingComponent) recordingComponent: QueryList<RecordingComponent>; 
 
   registration_on: boolean = true;
 
   //private all_items: any[];
 
   private exam: Exam;
+  private _examId = new Subject<string>();
+  private recorder;
   private examData: any;
   private loaded: boolean = false;
   private palette: string[] = ["","","","",""];
@@ -36,13 +41,33 @@ export class InterviewComponent implements OnInit {
     this.changesOccurred = false;
     this.loadData();
     this.loadPalette();
-    //this.startRecording();
+    //this.startrecordingComponent();
+    //this.recordingComponent.first.hello();
+  }
+
+  ngAfterViewInit() {
+    this.recorder = this.recordingComponent.first;
+    this.getExam().subscribe(data => {
+      this.exam.id = data;
+      this.recorder.setExamId(this.exam.id);
+      this.recorder.getStartEvent().subscribe(data => {
+        this.startRecording();
+      });
+      this.recorder.getStopEvent().subscribe(data => {
+        this.stopRecording();
+      });
+    });
+  }
+
+  private getExam(): Observable<string> {
+    return this._examId.asObservable();
   }
 
   loadData() {
     this.examService.loadActiveExam().subscribe(
       data => {
         this.exam = this.examService.getActiveExam();
+        this._examId.next(this.exam.id);
         var my_data = JSON.parse((<any>data)._body);
         this.examService.loadAllVoices().subscribe(_voices => {
           var my_voices = JSON.parse((<any>_voices)._body);

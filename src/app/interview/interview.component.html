@@ -1,5 +1,7 @@
 <app-exam-navbar (saveEvent)="saveData()"></app-exam-navbar>
-<button *ngIf='changesOccurred' type="button" class="btn btn-warning">CHANGED DATA</button>
+<!-- Audio Controls -->
+
+<!--
 <div>
   <span *ngIf="enabled" class="registration_on">
     <clr-icon shape="microphone" class="is-inverse" size="36" title="Registrazione in corso"></clr-icon>
@@ -12,6 +14,17 @@
   <button (click)="saveData()" class="btn btn-primary"><clr-icon shape="floppy"></clr-icon> Salva dati</button>
   <button (click)="reset_data = true" class="btn btn-warning-outline"><clr-icon shape="history"></clr-icon> Reset di tutti i dati</button>
 </div>
+-->
+<div class="clr-row">
+  <div class="clr-col-8">
+    <app-recording></app-recording>
+  </div>
+  <div class="clr-col-4" style="text-align: right;">
+    <button (click)="saveData()" class="btn btn-primary"><clr-icon shape="floppy"></clr-icon> Salva dati</button>
+    <button (click)="reset_data = true" class="btn btn-warning-outline"><clr-icon shape="history"></clr-icon> Reset di tutti i dati</button>
+  </div>
+</div>
+
 <div *ngIf="loaded" class="grid">
   <ul *ngFor="let c of examData; index as i" class="col" [ngStyle]="{'background-color': palette[i]}">
     <li *ngFor="let item of c" [ngClass]="{inactive: !enabled}" class="interview-component">

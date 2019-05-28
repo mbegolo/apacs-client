@@ -170,6 +170,17 @@ export class ExamService {
     return this.http.put(API_URL + '/examdata/'+id,obj);
   }
 
+  addNewRecording(examid, filename){
+    /*
+    var nuovo: Exam = new Exam(this.activeExam.date, this.activeExam.user, this.activeExam.patient);
+    nuovo = this.activeExam;
+    nuovo.recordings = [""+filename];
+    */
+    this.activeExam.recordings = [""+filename];
+    console.log(this.activeExam, examid);
+    return this.http.put(API_URL + '/exam/' + examid, this.activeExam);
+  }
+
   loadActiveExam() {
     this.loadFromLocal();
     //console.log(this.activeExam.id);

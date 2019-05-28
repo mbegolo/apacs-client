@@ -1,8 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Http, Response, RequestOptions, Headers, Request, RequestMethod } from '@angular/http';
 import { AudioRecordingService } from '../_services/audio-recording.service';
+import { ExamService } from '../_services/exam/exam.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Observable, Subject } from 'rxjs';
 import lame from 'lamejs';
-//import btb from 'blob-to-buffer';
+import { Buffer } from 'buffer';
+
+
 
 
 @Component({
@@ -12,15 +17,20 @@ import lame from 'lamejs';
 })
 export class RecordingComponent implements OnInit,  OnDestroy {
 
+  private examId;
+  private _startRecording = new Subject<string>();
+  private _stopRecording = new Subject<string>();
+  private deleteAudioModal = false;
   isRecording = false;
   isPaused = false;
   audioConverting = false;
+  audioUploading = false;
   recordedTime = "00:00";
   blobUrl;
   blobName;
   blob;
 
-  constructor(private audioRecordingService: AudioRecordingService, private sanitizer: DomSanitizer) {
+  constructor(private audioRecordingService: AudioRecordingService, private sanitizer: DomSanitizer, private examService:ExamService) {
 
     this.audioRecordingService.recordingFailed().subscribe(() => {
       this.isRecording = false;
@@ -33,18 +43,28 @@ export class RecordingComponent implements OnInit,  OnDestroy {
     this.audioRecordingService.getRecordedBlob().subscribe((data) => {
       this.blob = data.blob;
       this.blobName = data.title;
-      console.log(this.blobName);
-      this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(data.blob));
+      //console.log(this.blobName);
+      this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.blob));
       this.audioConverting = false;
+    });
+
+    this.audioRecordingService.isUploading().subscribe(uploading => {
+      this.audioUploading = uploading;
     });
   }
 
   ngOnInit() {
+    this.getLastRecording();
+  }
+
+  hello() {
+    console.log("HELLO");
   }
 
   startRecording() {
     if (!this.isRecording) {
       this.isRecording = true;
+      this._startRecording.next();
       this.audioRecordingService.startRecording();
     }
   }
@@ -82,19 +102,64 @@ export class RecordingComponent implements OnInit,  OnDestroy {
       this.audioRecordingService.stopRecording();
       this.isRecording = false;
       this.audioConverting = true;
+      this._stopRecording.next();
     }
   }
 
-  clearRecordedData() {
-    this.blobUrl = null;
+  deleteRecordedData() {
+    var activeExam = this.examService.getActiveExam();
+    if (activeExam.recordings != undefined) {
+      var recordingId = (activeExam.recordings[0]);
+      this.audioRecordingService.deleteAudio(recordingId).subscribe(data => {
+        activeExam.recordings = [];
+        this.examService.saveExam(activeExam).subscribe(success => {
+          this.blobUrl = null;
+          this.deleteAudioModal = false;
+        });
+      });
+    }
   }
 
   ngOnDestroy(): void {
     this.abortRecording();
   }
 
-  print() {
-    console.log(this.blobUrl);
+  setExamId(id) {
+    this.examId = id;
+    //console.log("Exam ID: ",this.examId);
+  }
+
+  getStartEvent(): Observable<string> {
+    return this._startRecording.asObservable();
+  }
+
+  getStopEvent(): Observable<string> {
+    return this._stopRecording.asObservable();
+  }
+
+  getLastRecording() {
+    var recordingId;
+    var recordings = this.audioRecordingService.getExamsRecording();
+    if (recordings != undefined) {
+      if (recordings[0] != undefined) {
+        recordingId = recordings[0];
+        //console.log(recordingId);
+        this.audioRecordingService.getRecording(recordingId).subscribe( data => {
+          //console.log((JSON.parse((<any>data)._body)).filename);
+          var filename = (JSON.parse((<any>data)._body)).filename;
+          this.blobUrl = this.audioRecordingService.getAudioUrlBase() + filename;
+        },
+        errors => {
+          console.log(errors);
+        });
+      }
+    }
+  }
+
+  test() {
+    this.audioRecordingService.getAllRecordings().subscribe(data => {
+      console.log(JSON.parse( (<any>data)._body) );
+    });
   }
 
 }

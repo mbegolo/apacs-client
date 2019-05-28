@@ -1,7 +1,9 @@
-  <button title="Tempo di registrazione" class="btn" disabled > {{recordedTime}} </button>
+  <button title="Tempo di registrazione" class="btn btn-link" > {{recordedTime}} </button>
 
-  <clr-icon *ngIf="isRecording && !blobUrl" shape="circle" class="is-solid blink red"></clr-icon>
-  <clr-icon *ngIf="!(isRecording && !blobUrl)" shape="circle" class="is-solid"></clr-icon>
+  <span class="recording-dot">
+    <clr-icon *ngIf="isRecording && !blobUrl" shape="circle" class="is-solid blink red"></clr-icon>
+    <clr-icon *ngIf="!(isRecording && !blobUrl)" shape="circle" class="is-solid"></clr-icon>
+  </span>
 
   <button title="Avvia nuova registrazione" class="btn" *ngIf="!isRecording && !blobUrl" (click)="startRecording()">
       <clr-icon shape="microphone" class="is-solid"></clr-icon>
@@ -31,16 +33,28 @@
       <clr-icon shape="pause" class="is-solid"></clr-icon>
   </button>
 
-
-  <button *ngIf="blobUrl" title="Elimina la registrazione corrente" class="btn btn-danger-outline" (click)="clearRecordedData()">
+  <button *ngIf="blobUrl" title="Elimina la registrazione corrente" class="btn btn-danger-outline" (click)="deleteAudioModal=true">
     <clr-icon shape="trash"></clr-icon>
   </button>
 
   <a *ngIf="blobUrl" title="Avvia il download del file audio con la registrazione corrente" [href]="blobUrl" [download]="blobName" class="btn btn-outline"><clr-icon shape="download"></clr-icon> File</a>
 
+  <span *ngIf="blobUrl" class="vertical-align-middle">
+    <audio controls download="nope.mp3" controlsList="nodownload">
+      <source type="audio/mp3" [src]="blobUrl" type="audio/webm">
+    </audio>
+  </span>
+  <span *ngIf="!(blobUrl || isRecording || isPaused || audioConverting || audioUploading)" class="vertical-align-middle">
+    <button title="Nessuna registrazione" class="btn btn-link" >Nessuna registrazione</button>
+  </span>
 
-<div>
-  <div> {{recordedTime}} </div>
+  <!--
+  <button (click)="test()">GET audio</button>
+  -->
+
+  <!--
+  <span> {{recordedTime}} </span>
+  -->
 
   <div *ngIf="audioConverting" class="alert alert-warning" role="alert">
       <div class="alert-items">
@@ -65,9 +79,16 @@
       </div>
   </div>
 
-  <div *ngIf="blobUrl" class="vertical-align-middle">
-    <audio controls download="CIAO.mp3" controlsList="nodownload">
-      <source [src]="blobUrl" type="audio/webm">
-    </audio>
-  </div>
-</div>
+  <clr-modal [(clrModalOpen)]="deleteAudioModal">
+    <h3 class="modal-title">Attenzione</h3>
+    <div class="modal-body">
+        <p>Stai per eliminare il file audio relativo a questa intervista, la modifica non è reversibile. Sei sicuro di voler eliminare il file audio?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="deleteAudioModal=false">Annulla</button>
+        <button type="button" class="btn btn-warning" (click)="deleteRecordedData()"><clr-icon shape="trash"></clr-icon> Elimina file</button>
+    </div>
+</clr-modal>
+
+
+

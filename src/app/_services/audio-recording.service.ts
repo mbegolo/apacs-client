@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { Observable, Subject } from 'rxjs';
+import { Http, Response, RequestOptions, Headers, Request, RequestMethod } from '@angular/http';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ExamService } from './exam/exam.service';
 import * as RecordRTC from 'recordrtc';
 import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
+
 import lame from 'lamejs';
+
+const API_URL = environment.apiUrl;
 
 interface RecordedAudioOutput {
   blob: Blob;
@@ -13,6 +20,7 @@ interface RecordedAudioOutput {
 @Injectable()
 export class AudioRecordingService {
 
+  private audioAPI = "http://localhost:9001";
   private stream;
   private recorder;
   private interval;
@@ -20,6 +28,9 @@ export class AudioRecordingService {
   private buffer;
   private paused: boolean = false;
   private totalTime;
+  private activeExam;
+  private blob;
+  private _uploading = new Subject<boolean>();
   private _recorded = new Subject<any>();
   private _recordingTime = new Subject<string>();
   private _recordingFailed = new Subject<string>();
@@ -32,8 +43,11 @@ export class AudioRecordingService {
     bufferSize: 256,
     sampleRate: 22050//, 
     //desiredSampRate: 16000
-  };
+  }
 
+  getActiveExam() {
+    return this.examService.getActiveExam();
+  }
 
   getRecordedBlob(): Observable<RecordedAudioOutput> {
     return this._recorded.asObservable();
@@ -47,12 +61,18 @@ export class AudioRecordingService {
     return this._recordingFailed.asObservable();
   }
 
-  //constructor(private ac:AudioConverter) {
-  //}
+  isUploading(): Observable<boolean> {
+    return this._uploading.asObservable();
+  }
+
+  constructor(private http: Http, private sanitizer: DomSanitizer, private examService: ExamService) {
+    this.activeExam = this.examService.getActiveExam();
+  }
 
   startRecording() {
     this.startNewRecording();
   }
+
   startNewRecording() {
     if (this.recorder) { 
       return;
@@ -60,7 +80,7 @@ export class AudioRecordingService {
     this._recordingTime.next('00:00');
     this.totalTime = moment.duration((moment()).diff(moment()));
     navigator.mediaDevices.getUserMedia({audio: true}).then(s => {
-      console.log(s);
+      //console.log(s);
       this.stream = s;
       //this.recorder = new RecordRTC.StereoAudioRecorder(this.stream, {
       this.recorder = new RecordRTC.StereoAudioRecorder(this.stream, this.mediaOptions);
@@ -96,21 +116,6 @@ export class AudioRecordingService {
               this._recorded.next({ blob: this.convertAudio(), title: mp3Name });
             });
           });
-          //this._recorded.next({ blob: this.convertAudio(), title: mp3Name });
-          //this._recorded.next({ blob: blob, title: mp3Name });
-
-
-          /*
-
-          var arrayBuffer;
-          var fileReader = new FileReader();
-          fileReader.onload = function(event) {
-              arrayBuffer = (<any>event.target).result;
-          };
-          var out = fileReader.readAsArrayBuffer(blob);
-          console.log(out);
-          */
-
         }
       }, () => {
         this.stopMedia();
@@ -130,7 +135,7 @@ export class AudioRecordingService {
     const time = this.toString(this.totalTime.minutes()) + ':' + this.toString(this.totalTime.seconds());
     this._recordingTime.next(time);
     
-    console.log("pause @ ",this._recordingTime.next());
+    //console.log("pause @ ",this._recordingTime.next());
   }
 
   resumeRecording() {
@@ -138,7 +143,7 @@ export class AudioRecordingService {
     this.paused = false;
     this.recorder.resume();
     
-    console.log("resume @ ",this._recordingTime.next());
+    //console.log("resume @ ",this._recordingTime.next());
   }
 
   getBuffer() {
@@ -177,16 +182,19 @@ export class AudioRecordingService {
   private convertAudio() {
     var mp3Data = [];
     var mp3encoder = new lame.Mp3Encoder(1, 44100, 64); //mono 44.1khz encode to 128kbps
-    console.log(this.buffer);
+    //console.log(this.buffer);
     var samples = new Int16Array(this.buffer);
-    console.log(samples);
+    //console.log(samples);
     var mp3Tmp = mp3encoder.encodeBuffer(samples); //encode mp3
     mp3Data.push(mp3Tmp);
     mp3Tmp = mp3encoder.flush();
     mp3Data.push(mp3Tmp);
-    var blob = new Blob(mp3Data, {type: 'audio/mp3'});
+    //console.log(mp3Data)
+    this.blob = new Blob(mp3Data, {type: 'audio/mp3'});
+    //console.log(this.buffer);
+    this.uploadAudio(this.blob,"audio_"+this.activeExam.id+".mp3",new Date());
     //var url = window.URL.createObjectURL(blob);
-    return blob;
+    return this.blob;
   }
 
   private toString(value) {
@@ -198,6 +206,76 @@ export class AudioRecordingService {
       val = '0' + value;
     }
     return val;
+  }
+
+  test() {
+    this.http.get(API_URL + '/fileupload/').subscribe(result => {
+        console.log(JSON.parse((<any>result)._body));
+    });
+  }
+
+  getAllRecordings() {
+    return this.http.get(API_URL + '/fileupload/');
+  }
+
+  getRecording(rid) {
+    return this.http.get(API_URL + '/fileupload/' + rid);
+  }
+
+  getAudioUrlBase() {
+    return API_URL + '/uploads/';
+  }
+
+  getExamsRecording() {
+    this.activeExam = this.examService.getActiveExam();
+    return this.activeExam.recordings;
+    /*
+    var baseUrl = API_URL + '/uploads/';
+    if (this.activeExam.recordings != undefined)
+      return baseUrl + this.activeExam.recordings[0];
+    else return undefined;
+    */
+    //console.log(this.activeExam);
+  }
+
+  deleteAudio(rid) {
+    return this.http.delete(API_URL + '/fileupload/' + rid)
+  }
+
+  getAudioFile(filename) {
+    var xhr = new XMLHttpRequest();
+    var _url = API_URL + '/fileupload/' + filename;
+    var newUrl;
+    xhr.open('GET', _url);
+    xhr.responseType = 'blob';
+    xhr.send();
+    return xhr.onreadystatechange;
+  }
+
+  getGeneral(url) {
+    return this.http.get(url);
+  }
+
+  uploadAudio(blob, filename, date) {
+    this._uploading.next(true);
+    //console.log(filename);
+    var file = new File([blob], filename);
+    var formData: FormData = new FormData();
+    //console.log(formData);
+    formData.append('file', file);
+    // POST
+    this.http.post(API_URL + '/fileupload/', formData).subscribe(result => {
+      var fileId = (<any>(JSON.parse((<any>result)._body))[0]).id;
+      console.log(fileId);
+      this.examService.addNewRecording(this.activeExam.id, fileId).subscribe(
+        response => {
+          console.log(response);
+          this._uploading.next(false);
+        },
+        errors => console.log(errors)
+      );
+    });
+
   }
 
 }
