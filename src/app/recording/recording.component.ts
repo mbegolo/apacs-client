@@ -100,6 +100,7 @@ export class RecordingComponent implements OnInit,  OnDestroy {
   stopRecording() {
     if (this.isRecording) {
       this.audioRecordingService.stopRecording();
+      this.examService.setActive(this.examService.getActiveExam().id);
       this.isRecording = false;
       this.audioConverting = true;
       this._stopRecording.next();
@@ -113,6 +114,7 @@ export class RecordingComponent implements OnInit,  OnDestroy {
       this.audioRecordingService.deleteAudio(recordingId).subscribe(data => {
         activeExam.recordings = [];
         this.examService.saveExam(activeExam).subscribe(success => {
+          this.examService.setActive(activeExam.id);
           this.blobUrl = null;
           this.deleteAudioModal = false;
         });
@@ -143,9 +145,9 @@ export class RecordingComponent implements OnInit,  OnDestroy {
     if (recordings != undefined) {
       if (recordings[0] != undefined) {
         recordingId = recordings[0];
-        //console.log(recordingId);
+        console.log("Recording ID: ",recordingId);
         this.audioRecordingService.getRecording(recordingId).subscribe( data => {
-          //console.log((JSON.parse((<any>data)._body)).filename);
+          //console.log((<any>data)._body);
           var filename = (JSON.parse((<any>data)._body)).filename;
           this.blobUrl = this.audioRecordingService.getAudioUrlBase() + filename;
         },

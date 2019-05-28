@@ -266,10 +266,11 @@ export class AudioRecordingService {
     // POST
     this.http.post(API_URL + '/fileupload/', formData).subscribe(result => {
       var fileId = (<any>(JSON.parse((<any>result)._body))[0]).id;
-      console.log(fileId);
+      //console.log(fileId);
       this.examService.addNewRecording(this.activeExam.id, fileId).subscribe(
         response => {
-          console.log(response);
+          //console.log(response);
+          this.examService.setActive(this.activeExam.id);
           this._uploading.next(false);
         },
         errors => console.log(errors)

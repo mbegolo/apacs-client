@@ -177,7 +177,7 @@ export class ExamService {
     nuovo.recordings = [""+filename];
     */
     this.activeExam.recordings = [""+filename];
-    console.log(this.activeExam, examid);
+    //console.log(this.activeExam, examid);
     return this.http.put(API_URL + '/exam/' + examid, this.activeExam);
   }
 
