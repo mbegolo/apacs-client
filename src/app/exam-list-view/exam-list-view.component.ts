@@ -68,7 +68,7 @@ export class ExamListViewComponent implements OnInit {
 
   ngOnInit() {
     this.refresh();
-    //console.log(this.patients);
+    this.examService.forceReload();
   }
 
   refresh() {

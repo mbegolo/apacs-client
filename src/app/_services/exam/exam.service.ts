@@ -110,7 +110,22 @@ export class ExamService {
       })
       //console.log("EXA service: ",this.activeExam);
     },
-    error => console.log(error));
+    error => console.log(error,id));
+  }
+
+  forceReload() {
+    this.getMyExamList().subscribe(response => {
+      var data = JSON.parse((<any>response)._body) as Exam[];
+      this.allMyExams = data;
+      var lastActive = this.activeExamId;
+      for (let e of this.allMyExams) {
+        var id = e.id;
+        this.setActive(id);
+      }
+      if (lastActive != undefined) this.setActive(lastActive);
+      else this.activeExamId = lastActive;
+    });
+
   }
 
   // Salva i dati in localstorage
@@ -225,7 +240,6 @@ export class ExamService {
   }
 
   calculateExamScore() {
-    //console.log(typeof this.activeExamVoices);
     var tot = 0;
     for (let v of this.activeExamVoices) {
       tot += v.punteggio;
