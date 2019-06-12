@@ -10,6 +10,9 @@ import { Router } from "@angular/router";
 })
 export class LoggedUserWrapperComponent implements OnInit {
 
+  public basic = false;
+  public logged = false;
+
   constructor(private router:Router, private userService: UserService) { }
 
   ngOnInit() {
@@ -22,6 +25,7 @@ export class LoggedUserWrapperComponent implements OnInit {
     if (!this.userService.isUserLogged()) {
       this.router.navigate(['login']);
     }
+    else this.logged = true;
   }
 
   logout() {

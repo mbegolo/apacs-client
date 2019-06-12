@@ -35,7 +35,7 @@
       <!--
       <router-outlet name="logged"></router-outlet>
     -->
-        <app-dashboard></app-dashboard>
+        <app-dashboard *ngIf="logged"></app-dashboard>
     </div>
 </div>
 

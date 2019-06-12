@@ -19,14 +19,15 @@ export class EditPatientComponent implements OnInit {
         private dataService: DataService,
         private formBuilder: FormBuilder) { }
 
-  private patientForm: FormGroup;
-  private activeExam: Exam;
-  private activePatient: Patient;
-  private loggedUser: User;
-  private show_sex: boolean;
-  private show_lat: boolean;
-  private submitted: boolean = true;
-  private formIsChanged: boolean = false;
+  public save_patient;
+  public patientForm: FormGroup;
+  public activeExam: Exam;
+  public activePatient: Patient;
+  public loggedUser: User;
+  public show_sex: boolean;
+  public show_lat: boolean;
+  public submitted: boolean = true;
+  public formIsChanged: boolean = false;
 
   ngOnInit() {
     

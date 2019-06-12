@@ -5,7 +5,7 @@
     <form clrForm clrLayout="vertical" [formGroup]="editUserForm" class="clr-form clr-form-horizontal">
       <clr-input-container class="form-group">
         <label for="user-username">Username:</label>
-        <input clrInput type="text" [value]="this.logged_user.username" placeholder="{{this.logged_user.username}}" formControlName="username" name="user-username" [ngClass]="{ 'is-invalid': f.username.errors }">
+        <input clrInput type="text" [value]="logged_user.username" placeholder="{{logged_user.username}}" formControlName="username" name="user-username" [ngClass]="{ 'is-invalid': f.username.errors }">
       </clr-input-container>
       <div class="errors" *ngIf="submitted && f.username.errors">
         <alert-message *ngIf="f.username.errors.required" msg="Il campo 'Username' è obbligatorio"></alert-message>

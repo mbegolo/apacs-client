@@ -24,7 +24,8 @@ export class InterviewComponent implements OnInit {
   private _examId = new Subject<string>();
   private recorder;
   private examData: any;
-  private loaded: boolean = false;
+  public loaded: boolean = false;
+  public reset_data;
   private palette: string[] = ["","","","",""];
   private enabled: boolean = false;
   private changesOccurred: boolean = false;

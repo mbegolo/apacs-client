@@ -12,10 +12,11 @@ import { Exam,ExamVoice} from '../_models';
 export class ExamResumeComponent implements OnInit {
 
   private exam;
-  private examData;
+  public examData;
   private patient;
-  private loaded: boolean = false;
-  private groups;
+  public loaded: boolean = false;
+  public groups;
+  public pdf_modal;
 
 
   constructor(private examService: ExamService, private patientService: PatientService) { }

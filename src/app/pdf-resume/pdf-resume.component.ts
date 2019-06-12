@@ -15,12 +15,13 @@ export class PdfResumeComponent implements OnInit {
 
   @Input() examData: any;
   @Input() groups: any;
-  private totalscore;
-  private nome;
-  private cognome;
-  private data;
-  private esaminatore;
-  private id;
+  public totalscore;
+  public nome;
+  public cognome;
+  public data;
+  public esaminatore;
+  public id;
+  public pdf_modal;
 
   constructor(private examService: ExamService, private patientService: PatientService) { }
 

@@ -9,10 +9,10 @@ import { ExamService, PatientService, DataService } from '../_services';
 })
 export class ExamNavbarComponent implements OnInit {
 
-  private exitModal: boolean;
-  private switchModal: boolean;
-  private desiredUrl: string;
-  private unstagedChanges: boolean = false;
+  public exitModal: boolean;
+  public switchModal: boolean;
+  public desiredUrl: string;
+  public unstagedChanges: boolean = false;
   private activePatient: boolean = false;
   private activeInterview: boolean = false;
   private activeResume: boolean = false;

@@ -49,18 +49,18 @@ class SurnameFilter implements ClrDatagridStringFilterInterface<Exam> {
 export class ExamListViewComponent implements OnInit {
 
   
-
-  private exams: Exam[];
-  private patients: Patient[] = [];
-  private total: number;
-  private dateFilter = new DateFilter();
-  private nameFilter = new NameFilter();
-  private surnameFilter = new SurnameFilter();
-  private loaded_data = false;
-  private defaultSort = ClrDatagridSortOrder.DESC;
-  private patientName: string = "";
-  private delete_exam: boolean = false;
-  private desiredDeleteId;
+  public loading;
+  public exams: Exam[];
+  public patients: Patient[] = [];
+  public total: number;
+  public dateFilter = new DateFilter();
+  public nameFilter = new NameFilter();
+  public surnameFilter = new SurnameFilter();
+  public loaded_data = false;
+  public defaultSort = ClrDatagridSortOrder.DESC;
+  public patientName: string = "";
+  public delete_exam: boolean = false;
+  public desiredDeleteId;
 
   constructor(private router:Router, private examService: ExamService, private patientService: PatientService) {
     

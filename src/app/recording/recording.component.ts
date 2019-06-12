@@ -20,7 +20,7 @@ export class RecordingComponent implements OnInit,  OnDestroy {
   private examId;
   private _startRecording = new Subject<string>();
   private _stopRecording = new Subject<string>();
-  private deleteAudioModal = false;
+  public deleteAudioModal = false;
   isRecording = false;
   isPaused = false;
   audioConverting = false;
@@ -29,6 +29,7 @@ export class RecordingComponent implements OnInit,  OnDestroy {
   blobUrl;
   blobName;
   blob;
+
 
   constructor(private audioRecordingService: AudioRecordingService, private sanitizer: DomSanitizer, private examService:ExamService) {
 

@@ -14,8 +14,9 @@ import { UserService } from '../_services';
 export class UserComponentComponent implements OnInit {
 
   public closeResult: string;
-  public logged_user: User;
+  public logged_user: User = new User();
   public presentation_name: string;
+  public editUserModal = false;
   editUserForm: FormGroup;
   submitted = false;
 
@@ -40,13 +41,16 @@ export class UserComponentComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.logged_user.username="";
     this.initForm();
     this.logged_user = this.userService.getLoggedUser() as User;
-    this.presentation_name = this.logged_user.username;
-    if (!(this.logged_user.name === "")) {
-      this.presentation_name = this.logged_user.name;
+    if (this.logged_user != undefined) {
+      this.presentation_name = this.logged_user.username;
+      if (!(this.logged_user.name === "")) {
+        this.presentation_name = this.logged_user.name;
+      }
+      this.initFormData();
     }
-    this.initFormData();
   }
 
   get f() { return this.editUserForm.controls; }

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:2403'
+  apiUrl: 'https://web.math.unipd.it/apacs'
 };

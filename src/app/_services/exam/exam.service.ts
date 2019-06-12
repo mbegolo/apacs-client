@@ -32,7 +32,9 @@ export class ExamService {
 
   // Restituisce tutti gli esami di un dato utente
   getMyExamList() {
-    var usr_id = (this.userService.getLoggedUser() as User).id;
+    var usr_id = "";
+    if (this.userService.getLoggedUser() != undefined)
+      usr_id = (this.userService.getLoggedUser() as User).id;
     return this.http.get(API_URL + '/exam/?user=' + usr_id);
   }
 

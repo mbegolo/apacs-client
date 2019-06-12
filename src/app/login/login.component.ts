@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   wrongCredential = false;
   missingCredential = false;
   otherError = false;
+  public newUserModal = false;
   error: string;
 
   constructor(private router:Router, private userService: UserService) { }
