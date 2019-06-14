@@ -17,3 +17,55 @@
 td {
   font-size: 120%;
 }
+
+.my-table-cell {
+  border-top: 1px solid #666;
+  border-right: 1px solid #666;
+  padding: 0.25rem 0.5rem;
+}
+
+.my-table {
+  border-bottom: 1px solid #666;
+  border-left: 1px solid #666;
+}
+
+.dati-clinici {
+  border: 1px solid #666;
+  padding: 0.5rem;
+  min-height: 4rem;
+}
+
+.my-table>.clr-row {
+  margin: 0 !important;
+}
+
+.text-divider{
+  margin: 2em 0;
+  padding: 1em;
+  line-height: 0;
+  text-align: center;
+}
+.text-divider>span{
+  display: inline-block;
+  background-color: #ffffff;
+  padding: 1em;
+  margin-top: -4rem;
+}
+.text-divider:before{
+  content: " ";
+  display: block;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #666;
+}
+
+.intestazione,
+.intestazione>div {
+  line-height: 1em;
+  vertical-align: middle;
+}
+
+.modal-footer,
+.modal-footer>span,
+.modal-footer>button {
+  vertical-align: middle;
+}

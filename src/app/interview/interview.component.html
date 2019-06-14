@@ -1,25 +1,24 @@
 <app-exam-navbar (saveEvent)="saveData()"></app-exam-navbar>
 <!-- Audio Controls -->
 
-<!--
-<div>
-  <span *ngIf="enabled" class="registration_on">
-    <clr-icon shape="microphone" class="is-inverse" size="36" title="Registrazione in corso"></clr-icon>
-  </span>
-  <span *ngIf="!enabled">
-    <clr-icon shape="microphone" size="36" title="Nessuna registrazione attiva"></clr-icon>
-  </span>
-  <button *ngIf="!enabled" (click)="startRecording()" class="btn btn-success-outline"><clr-icon shape="microphone"></clr-icon> Inizia registrazione</button>
-  <button *ngIf="enabled" (click)="stopRecording()" class="btn btn-warning-outline"><clr-icon shape="microphone"></clr-icon> Ferma registrazione</button>
-  <button (click)="saveData()" class="btn btn-primary"><clr-icon shape="floppy"></clr-icon> Salva dati</button>
-  <button (click)="reset_data = true" class="btn btn-warning-outline"><clr-icon shape="history"></clr-icon> Reset di tutti i dati</button>
-</div>
--->
+
 <div class="clr-row">
-  <div class="clr-col-8">
+
+  <div class="clr-col-6 interview-toolbar left">
     <app-recording></app-recording>
   </div>
-  <div class="clr-col-4" style="text-align: right;">
+
+  <div class="clr-col-6 interview-toolbar right">
+    <clr-toggle-container clrInline>
+      <label>Blocco pannello</label>
+      <clr-toggle-wrapper>
+        <label><clr-icon shape="lock"></clr-icon></label>
+      </clr-toggle-wrapper>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle name="options" value="option1" (click)="togglePanel()" />
+        <label><clr-icon shape="unlock"></clr-icon></label>
+      </clr-toggle-wrapper>
+    </clr-toggle-container>
     <button (click)="saveData()" class="btn btn-primary"><clr-icon shape="floppy"></clr-icon> Salva dati</button>
     <button (click)="reset_data = true" class="btn btn-warning-outline"><clr-icon shape="history"></clr-icon> Reset di tutti i dati</button>
   </div>

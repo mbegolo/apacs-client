@@ -1,21 +1,11 @@
 <header class="header header-4">
       <div class="branding">
-        <a class="nav-link">
-            <clr-icon shape="cursor-hand-click"></clr-icon>
-            <span class="title">Modalità intervista</span>
-        </a>
+        <span class="nav-link">
+            <clr-icon shape="bug"></clr-icon>
+            <span class="title">APACS - Valutazione</span>
+        </span>
       </div>
       <div class="header-nav">
-        <!--
-        <a [routerLink]="['/editpatient']" routerLinkActive="active" class="nav-link nav-text">Anagrafica</a>
-        <a [routerLink]="['/interview']" routerLinkActive="active" class="nav-link nav-text">Intervista</a>
-        <a [routerLink]="['/resume']" routerLinkActive="active" class="nav-link nav-text">Resume</a>
-        -->
-        <!--
-        <a [routerLink]="['/editpatient']" (click)="checkChanges()" routerLinkActive="active" class="nav-link nav-text">Anagrafica</a>
-        <a [routerLink]="['/interview']" (click)="checkChanges()" routerLinkActive="active" class="nav-link nav-text">Intervista</a>
-        <a [routerLink]="['/resume']" (click)="checkChanges()" routerLinkActive="active" class="nav-link nav-text">Resume</a>
-        -->
 
         <a href="javascript://" (click)="goTo('/editpatient')" [class.active]="isActive('/editpatient')" class="nav-link nav-text">Anagrafica</a>
         <a href="javascript://" (click)="goTo('/interview')" [class.active]="isActive('/interview')" class="nav-link nav-text">Intervista</a>
@@ -23,11 +13,13 @@
 
       </div>
       <div class="header-actions">
-        <a title="esci dalla modalità intervista" href="javascript://" class="nav-link nav-text" (click)="openModal()" >
-          <span>esci dalla modalità intervista</span>
+        <!--
+        <a title="Esci dalla valutazione" href="javascript://" class="nav-link nav-text" (click)="openModal()" >
+          <span>ESCI</span>
         </a>
-        <a title="esci dalla modalità intervista" href="javascript://" class="nav-link nav-text" (click)="openModal()" >
-          <clr-icon shape="times"></clr-icon> 
+      -->
+        <a style="margin-right: -2rem;" title="Esci dalla valutazione corrente" href="javascript://" class="nav-link nav-text" (click)="openModal()" >
+          <span class="exit-label" style="padding-right: 3rem;">ESCI</span> <clr-icon shape="times"></clr-icon> 
         </a>
       </div>
 
@@ -36,14 +28,12 @@
 <clr-modal [(clrModalOpen)]="exitModal">
     <h3 class="modal-title">Attenzione</h3>
     <div class="modal-body">
-        <p>Stai per uscire dalla modalità intervista. <span *ngIf="this.unstagedChanges">Le ultime modifiche non saranno salvate. Vuoi procedere?</span><span *ngIf="!this.unstagedChanges">Non ci sono modifiche da salvare.</span></p>
+        <p>Stai per uscire dalla valutazione. <span *ngIf="this.unstagedChanges">Le ultime modifiche non saranno salvate, e l'eventuale registrazione in corso sarà terminata. Vuoi procedere?</span></p>
     </div>
     <div class="modal-footer">
         <button *ngIf="this.unstagedChanges" type="button" class="btn btn-outline" (click)="closeModal()">No, annulla</button>
         <button *ngIf="this.unstagedChanges" type="button" class="btn btn-danger" (click)="exit()">Esci senza salvare</button>
         <button *ngIf="this.unstagedChanges" type="button" class="btn btn-primary" (click)="saveExit()"><clr-icon shape="floppy"></clr-icon> Salva ed esci</button>
-        <button *ngIf="!this.unstagedChanges" type="button" class="btn btn-outline" (click)="closeModal()">Annulla</button>
-        <button *ngIf="!this.unstagedChanges" type="button" class="btn btn-primary" (click)="exit()">Esci</button>
     </div>
 </clr-modal>
 

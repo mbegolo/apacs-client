@@ -21,6 +21,7 @@ export class RecordingComponent implements OnInit,  OnDestroy {
   private _startRecording = new Subject<string>();
   private _stopRecording = new Subject<string>();
   public deleteAudioModal = false;
+  public stopModal = false;
   isRecording = false;
   isPaused = false;
   audioConverting = false;
@@ -84,7 +85,7 @@ export class RecordingComponent implements OnInit,  OnDestroy {
     }
   }
 
-  pauseRecording() {    
+  pauseRecording() {
     if (this.isRecording) {
       this.isPaused = true;
       this.audioRecordingService.pauseRecording();
@@ -98,7 +99,7 @@ export class RecordingComponent implements OnInit,  OnDestroy {
     }
   }
 
-  stopRecording() {
+  public stopRecording() {
     if (this.isRecording) {
       this.audioRecordingService.stopRecording();
       this.examService.setActive(this.examService.getActiveExam().id);

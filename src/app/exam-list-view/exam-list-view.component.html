@@ -3,35 +3,35 @@
 </button>
 <clr-datagrid [clrDgLoading]="loading">
     <clr-dg-column>ID valutazione</clr-dg-column>
-    <clr-dg-column [clrDgField]="'patient.nome'">Nome Paziente
+    <clr-dg-column [clrDgField]="'patient.nome'">Nome Paz.
       <clr-dg-string-filter [clrDgStringFilter]="nameFilter"></clr-dg-string-filter>
     </clr-dg-column>
-    <clr-dg-column [clrDgField]="'patient.nome'">Cognome Paziente
+    <clr-dg-column [clrDgField]="'patient.nome'">Cognome Paz.
       <clr-dg-string-filter [clrDgStringFilter]="surnameFilter"></clr-dg-string-filter>
     </clr-dg-column>
     <clr-dg-column [clrDgField]="'date'" [clrDgSortOrder]="defaultSort">Data
       <clr-dg-string-filter [clrDgStringFilter]="dateFilter"></clr-dg-string-filter>
     </clr-dg-column>
     <clr-dg-column [clrDgField]="'score'">Punteggio</clr-dg-column>
-    <clr-dg-column>Azioni</clr-dg-column>
+    <clr-dg-column class="action-column">Azioni</clr-dg-column>
 
     <clr-dg-row *clrDgItems="let exam of exams; let i=index">
         <clr-dg-cell>{{exam.id}}</clr-dg-cell>
         <clr-dg-cell>{{exam.patient.nome}}</clr-dg-cell>
         <clr-dg-cell>{{exam.patient.cognome}}</clr-dg-cell>
         <clr-dg-cell>{{exam.date | date:"dd/MM/yyyy"}}</clr-dg-cell>
-        <clr-dg-cell>{{exam.score}}</clr-dg-cell>
-        <clr-dg-cell>
+        <clr-dg-cell class="center">{{exam.score}}</clr-dg-cell>
+        <clr-dg-cell class="action-column">
           <button class="btn btn-success-outline btn-sm" (click)="redirectExam(exam.id, exam.patient.id)" title="Visualizza resoconto e PDF">
             <clr-icon shape="file"></clr-icon> pdf
           </button>
-          <button class="btn btn-sm" (click)="editExam(exam.id, exam.patient.id)" title="Modifica questo esame">
+          <button class="btn btn-sm" (click)="editExam(exam.id, exam.patient.id)" title="Modifica questa valutazione">
             <clr-icon shape="pencil"></clr-icon> modifica
           </button>
           <!--
           <button class="btn btn-danger-outline btn-sm" (click)="delete_exam = true; new_id = exam.id" title="Elimina questo esame">
           -->
-          <button class="btn btn-danger-outline btn-sm" (click)="openDeleteModal(exam.id)" title="Elimina questo esame">
+          <button class="btn btn-danger-outline btn-sm" (click)="openDeleteModal(exam.id)" title="Elimina questa valutazione">
           <!--<button class="btn btn-danger-outline btn-sm" (click)="deleteExam(exam.id)">-->
             <clr-icon shape="trash"></clr-icon> elimina
           </button>
@@ -43,7 +43,7 @@
         <clr-dg-pagination #pagination [clrDgTotalItems]="total" [clrDgPageSize]="10">
             <clr-dg-page-size [clrPageSizeOptions]="[5,10,20,50,100]">Elementi per pagina</clr-dg-page-size>
             {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-            di {{pagination.totalItems}} esami.
+            di {{pagination.totalItems}} valutazioni.
         </clr-dg-pagination>
     </clr-dg-footer>
 </clr-datagrid>

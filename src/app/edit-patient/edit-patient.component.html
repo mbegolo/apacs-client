@@ -49,7 +49,7 @@
         </div>
 
         <div class="form_group">
-          <label>Sesso</label>
+          <label>* Sesso</label>
           <div class="clr-control-container clr-control-inline">
             <clr-radio-container clrInline>
               <clr-radio-wrapper>
@@ -80,7 +80,7 @@
         </div>
 
         <div class="form_group">
-          <label>Luogo di nascita</label>
+          <label>* Luogo di nascita</label>
           <input type="text" formControlName="luogonascita" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.luogonascita.errors }" />
         </div>
         <div class="errors" *ngIf="submitted && f.luogonascita.errors">
@@ -88,7 +88,7 @@
         </div>
 
         <div class="form_group">
-          <label>Professione</label>
+          <label>* Professione</label>
           <input type="text" formControlName="professione" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.professione.errors }" />
         </div>
         <div class="errors" *ngIf="submitted && f.professione.errors">
@@ -101,7 +101,7 @@
         <h2>Dati Clinici</h2>
 
         <div class="form_group">
-          <label>Lateralità</label>
+          <label>* Lateralità</label>
           <div class="clr-control-container clr-control-inline">
 
             <clr-radio-container clrInline>
@@ -121,7 +121,7 @@
         </div>
 
         <div class="form_group">
-          <label>Lingua</label>
+          <label>Lingua prinipale</label>
           <input type="text" formControlName="lingua" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lingua.errors }" />
         </div>
         <div class="errors" *ngIf="submitted && f.lingua.errors">
@@ -129,15 +129,15 @@
         </div>
 
         <div class="form_group">
-          <label>Scolarità</label>
-          <input type="number" formControlName="scolarita" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.scolarita.errors }" />
+          <label>* Scolarità</label>
+          <input type="number" max="30" formControlName="scolarita" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.scolarita.errors }" />
         </div>
         <div class="errors" *ngIf="submitted && f.scolarita.errors">
           <alert-message *ngIf="f.scolarita.errors.required" msg="Il campo 'Scolarità' è obbligatorio"></alert-message>
         </div>
 
         <div class="form_group">
-          <label>Diagnosi</label>
+          <label>* Diagnosi</label>
           <div>
             <clr-select-container>
               <label></label>
@@ -150,7 +150,6 @@
                 <option value="Sclerosi Laterale Amiotrofica" > Sclerosi Laterale Amiotrofica </option>
                 <option value="Trauma cranico" > Trauma cranico </option>
                 <option value="Non nota" > Non nota </option>
-                <option value="Multiple (specificare in &quot;Note&quot;)"> Multiple (specificare in "Note") </option>
                 <option value="Altro... (da riportare in &quot;Note&quot;)"> Altro... (da riportare in "Note") </option>
               </select>
             </clr-select-container>
@@ -168,10 +167,11 @@
         <textarea formControlName="altro" id="altro" ></textarea>
       </div>
     </div>
-
-    <button type="button" (click)="save_patient = true" class="btn btn-primary" [disabled]="!this.patientForm.valid">
-      <clr-icon shape="floppy"></clr-icon> Salva dati
-    </button>
+    <div style="text-align: right">
+      <button type="button" (click)="save_patient = true" class="btn btn-primary" [disabled]="!this.patientForm.valid">
+        <clr-icon shape="floppy"></clr-icon> Salva dati
+      </button>
+    </div>
 </form>
 
 <clr-modal [(clrModalOpen)]="save_patient" >

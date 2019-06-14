@@ -85,7 +85,8 @@ export class ExamNavbarComponent implements OnInit {
 
   openModal() {
     this.unstagedChanges = this.dataService.pendingChanges();
-    this.exitModal = true;
+    if (this.unstagedChanges) this.exitModal = true;
+    else this.exit();
   }
 
   closeModal() {

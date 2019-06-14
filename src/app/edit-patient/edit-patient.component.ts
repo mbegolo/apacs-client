@@ -38,15 +38,15 @@ export class EditPatientComponent implements OnInit {
     this.patientForm = this.formBuilder.group({
         nome: [this.activePatient.nome, Validators.required],
         cognome: [this.activePatient.cognome, Validators.required],
-        sesso: [this.activePatient.sesso],
+        sesso: [this.activePatient.sesso, Validators.required],
         eta: [this.activePatient.eta, Validators.min(10)],
-        lateralita: [this.activePatient.lateralita],
-        luogonascita: [this.activePatient.luogonascita],
-        professione: [this.activePatient.professione],
-        scolarita: [this.activePatient.scolarita],
+        lateralita: [this.activePatient.lateralita, Validators.required],
+        luogonascita: [this.activePatient.luogonascita, Validators.required],
+        professione: [this.activePatient.professione, Validators.required],
+        scolarita: [this.activePatient.scolarita, Validators.required],
         lingua: [this.activePatient.lingua],
         altro: [this.activePatient.altro],
-        diagnosi: [this.activePatient.diagnosi],
+        diagnosi: [this.activePatient.diagnosi, Validators.required],
         data: [(''+this.activeExam.date).substring(0,10)],
         esaminatore: [this.loggedUser.name+" "+this.loggedUser.surname]
     });

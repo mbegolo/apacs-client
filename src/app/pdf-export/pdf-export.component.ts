@@ -28,6 +28,7 @@ export class PdfExportComponent implements OnInit {
     var out = "";
     out += this.patientService.getActivePatient().nome+" ";
     out += this.patientService.getActivePatient().cognome+" - ";
+    console.log(this.patientService.getActivePatient());
     var d = (new Date(this.examService.getActiveExam().date));
     out += d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
     return out;

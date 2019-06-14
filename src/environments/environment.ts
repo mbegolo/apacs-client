@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   // URL of development API
-  //apiUrl: 'http://localhost:2403'
-  apiUrl: 'https://web.math.unipd.it/apacs'
+  apiUrl: 'http://localhost:2403'
+  //apiUrl: 'https://web.math.unipd.it/apacs'
 };
 
 /*

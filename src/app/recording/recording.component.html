@@ -1,41 +1,54 @@
-  <button title="Tempo di registrazione" class="btn btn-link" > {{recordedTime}} </button>
+  <button *ngIf="!blobUrl" title="Tempo di registrazione" class="btn btn-link no-cursor" > {{recordedTime}} </button>
 
-  <span class="recording-dot">
-    <clr-icon *ngIf="isRecording && !blobUrl" shape="circle" class="is-solid blink red"></clr-icon>
-    <clr-icon *ngIf="!(isRecording && !blobUrl)" shape="circle" class="is-solid"></clr-icon>
+  <span class="recording-dot" *ngIf="!blobUrl">
+    <clr-icon *ngIf="isRecording && !blobUrl && !isPaused" shape="circle" class="is-solid blink red" title="Registrazione in corso"></clr-icon>
+    <!--
+    <clr-icon *ngIf="!(isRecording && !blobUrl) && !isPaused" shape="circle" class="is-solid" title="Nessuna registrazione in corso"></clr-icon>
+    -->
+    <clr-icon *ngIf="isPaused" shape="circle" class="is-solid" title="Registrazione in pausa"></clr-icon>
   </span>
 
   <button title="Avvia nuova registrazione" class="btn" *ngIf="!isRecording && !blobUrl" (click)="startRecording()">
-      <clr-icon shape="microphone" class="is-solid"></clr-icon>
+      <clr-icon shape="circle" class="is-solid"></clr-icon> Rec
   </button>
+  <!--
   <button title="Avvia nuova registrazione" class="btn" disabled *ngIf="!(!isRecording && !blobUrl)" (click)="startRecording()">
       <clr-icon shape="microphone" class="is-solid"></clr-icon>
   </button>
+  -->
 
-  <button title="Termina registrazione corrente" class="btn" *ngIf="isRecording && !blobUrl" (click)="stopRecording()">
-      <clr-icon shape="microphone-mute"></clr-icon>
+  <button title="Termina registrazione corrente" class="btn btn-warning-outline" *ngIf="isRecording && !blobUrl" (click)="stopModal=true">
+      <clr-icon shape="stop" class="is-solid"></clr-icon> Termina registrazione
   </button>
+  <!--
   <button title="Termina registrazione corrente" class="btn" disabled *ngIf="!(isRecording && !blobUrl)" (click)="stopRecording()">
       <clr-icon shape="microphone-mute"></clr-icon>
   </button>
+  -->
 
   <button title="Riprendi la registrazione corrente" class="btn" *ngIf="isRecording && isPaused" (click)="resumeRecording()">
-      <clr-icon shape="play" class="is-solid"></clr-icon>
+      <clr-icon shape="play" class="is-solid"></clr-icon> riprendi
   </button>
+  <!--
   <button title="Riprendi la registrazione corrente" class="btn" disabled *ngIf="!(isRecording && isPaused)" (click)="resumeRecording()">
       <clr-icon shape="play" class="is-solid"></clr-icon>
   </button>
+-->
 
   <button title="Metti in pausa la registrazione corrente" class="btn" *ngIf="isRecording && !isPaused" (click)="pauseRecording()">
-      <clr-icon shape="pause" class="is-solid"></clr-icon>
+      <clr-icon shape="pause" class="is-solid"></clr-icon> pausa
   </button>
+  <!--
   <button title="Metti in pausa la registrazione corrente" class="btn" disabled *ngIf="!(isRecording && !isPaused)" (click)="pauseRecording()">
       <clr-icon shape="pause" class="is-solid"></clr-icon>
   </button>
+-->
+
 
   <button *ngIf="blobUrl" title="Elimina la registrazione corrente" class="btn btn-danger-outline" (click)="deleteAudioModal=true">
     <clr-icon shape="trash"></clr-icon>
   </button>
+
 
   <a *ngIf="blobUrl" title="Avvia il download del file audio con la registrazione corrente" [href]="blobUrl" [download]="blobName" class="btn btn-outline"><clr-icon shape="download"></clr-icon> File</a>
 
@@ -44,9 +57,11 @@
       <source type="audio/mp3" [src]="blobUrl" type="audio/webm">
     </audio>
   </span>
+  <!--
   <span *ngIf="!(blobUrl || isRecording || isPaused || audioConverting || audioUploading)" class="vertical-align-middle">
     <button title="Nessuna registrazione" class="btn btn-link" >Nessuna registrazione</button>
   </span>
+  -->
 
   <!--
   <button (click)="test()">GET audio</button>
@@ -87,7 +102,26 @@
         <button type="button" class="btn btn-outline" (click)="deleteAudioModal=false">Annulla</button>
         <button type="button" class="btn btn-warning" (click)="deleteRecordedData()"><clr-icon shape="trash"></clr-icon> Elimina file</button>
     </div>
-</clr-modal>
+  </clr-modal>
+
+  <clr-modal [(clrModalOpen)]="stopModal" [clrModalSize]="'lg'">
+    <h3 class="modal-title">Attenzione</h3>
+    <div class="modal-body">
+        <p>Stai per terminare questa registrazione. Una volta terminata <strong>non sarà possibile continuare</strong> su questa registrazione. Sei sicuro di voler procedere?</p>
+        <p>In alternativa, puoi mettere in pausa la registrazione per riprenderla più tardi.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="stopModal=false">Continua</button>
+        <button type="button" class="btn btn-outline" (click)="stopModal=false;pauseRecording()"><clr-icon shape="pause" class="is-solid"></clr-icon> Pausa</button>
+        <button type="button" class="btn btn-warning" (click)="stopModal=false;stopRecording()"><clr-icon shape="stop" class="is-solid"></clr-icon> Termina definitivamente</button>
+    </div>
+    <div class="modal-body">
+      
+    </div>
+    <div class="modal-footer">
+      
+    </div>
+  </clr-modal>
 
 
 

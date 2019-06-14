@@ -1,17 +1,88 @@
 <button title="Genera PDF" (click)="pdf_modal = true" class="btn btn-primary">
-  <clr-icon shape="file"></clr-icon>Genera PDF
+  <clr-icon shape="file"></clr-icon> Anteprima PDF
 </button>
+
 <clr-modal [(clrModalOpen)]="pdf_modal" [clrModalSize]="'xl'">
     <h3 class="modal-title">Ecco l'anteprima del tuo documento</h3>
     <div class="modal-body">
-        <div id="contentToConvert" class="clr-row"> 
-            <div class="clr-col-6">
-                <h4>Paziente: <strong>{{nome}} {{cognome}}</strong></h4>
-                <h5>ID valutazione: <strong>{{id}}</strong></h5>
+        <div id="content-page-1">
+            <div class="clr-row intestazione">
+                <div class="clr-col-11"><strong>{{nome}} {{cognome}}</strong> - {{data | date:"dd/MM/yyyy"}}</div>
+                <div class="clr-col-1 right">Pag. 2</div>
             </div>
-            <div class="clr-col-6">
-                <h4>Data valutazione: <strong>{{data | date:"dd/MM/yyyy"}}</strong></h4>
-                <h5>ID esaminatore: <strong>{{esaminatore}}</strong></h5>
+            <div class="clr-row">
+                <div class="clr-col-12">
+                    <h1>TEST APACS: Interview</h1>
+                    <p>Valutazione relativa al paziente <strong>{{nome}} {{cognome}}</strong> effettuata in data <strong>{{data | date:"dd/MM/yyyy"}}</strong></p>
+                </div>
+            </div>
+            <div>
+                <h2>Dati paziente</h2>
+                <div class="my-table">
+                    <div class="clr-row">
+                        <div class="my-table-cell clr-col-4">Nome: </div>
+                        <div class="my-table-cell clr-col-8">{{nome}}</div>
+                    </div>
+                    <div class="clr-row">
+                        <div class="my-table-cell clr-col-4">Cognome: </div>
+                        <div class="my-table-cell clr-col-8">{{cognome}}</div>
+                    </div>
+                    <div class="clr-row">
+                        <div class="my-table-cell clr-col-4">Sesso: </div>
+                        <div class="my-table-cell clr-col-8"><span *ngIf="sesso">M</span><span *ngIf="!sesso">F</span></div>
+                    </div>
+                    <div class="clr-row">
+                        <div class="my-table-cell clr-col-4">Età: </div>
+                        <div class="my-table-cell clr-col-8">{{eta}} anni</div>
+                    </div>
+                    <div class="clr-row">
+                        <div class="my-table-cell clr-col-4">Lateralità manuale: </div>
+                        <div class="my-table-cell clr-col-8">{{lateralita}}</div>
+                    </div>
+                    <div class="clr-row">
+                        <div class="my-table-cell clr-col-4">Luogo di nascita: </div>
+                        <div class="my-table-cell clr-col-8">{{luogonascita}}</div>
+                    </div>
+                    <div class="clr-row">
+                        <div class="my-table-cell clr-col-4">Scolarizzazione: </div>
+                        <div class="my-table-cell clr-col-8">{{scolarita}} anni</div>
+                    </div>
+                    <div class="clr-row">
+                        <div class="my-table-cell clr-col-4">Professione: </div>
+                        <div class="my-table-cell clr-col-8">{{professione}}</div>
+                    </div>
+                    <div class="clr-row">
+                        <div class="my-table-cell clr-col-4">Precedente diagnosi: </div>
+                        <div class="my-table-cell clr-col-8">{{diagnosi}}</div>
+                    </div>
+                </div>
+
+                <h2>Dati clinici</h2>
+                <div class="dati-clinici">
+                    <div class="clr-row">
+                        <div class="clr-col-12">{{altro}}</div>
+                    </div>
+                </div>
+
+                <div class="clr-row">
+                    <div class="clr-col-6">
+                        <h2>Data esame</h2>
+                        <div>{{data | date:"dd/MM/yyyy"}}</div>
+                    </div>
+                    <div class="clr-col-6">
+                        <h2>Esaminatore</h2>
+                        <div>{{nome_esaminatore}} [{{esaminatore}}]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="text-divider"><span><clr-icon shape="document" size="32"></clr-icon></span></h2>
+
+        <div id="content-page-2"> 
+            <div class="clr-row intestazione">
+                <div class="clr-col-11"><strong>{{nome}} {{cognome}}</strong> - {{data | date:"dd/MM/yyyy"}}</div>
+                <div class="clr-col-1 right">Pag. 2</div>
             </div>
             <table class="table">
                 <thead>
@@ -44,9 +115,12 @@
         </div> 
     </div>
     <div class="modal-footer">
+        <span *ngIf="generating_pdf">Generazione PDF in corso...</span>
+        <span *ngIf="generating_pdf" class="spinner spinner-inline"></span>
+
         <button type="button" class="btn btn-outline" (click)="pdf_modal = false" title="Annulla">Annulla</button>
         <button type="button" class="btn btn-primary" (click)="downloadPdf()" title="Scarica PDF">
-          <clr-icon shape="download"></clr-icon>Scarica PDF
+          <clr-icon shape="download"></clr-icon> Scarica PDF
         </button>
     </div>
 </clr-modal>

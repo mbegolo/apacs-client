@@ -127,5 +127,13 @@ export class InterviewComponent implements OnInit {
 
   stopRecording() {
     this.enabled = false;
+    this.recordingComponent.first.stopRecording();
+  }
+
+  togglePanel() {
+    this.changesOccurred = true;
+    this.dataService.setChanges(true);
+    if (this.enabled) this.enabled = false;
+    else this.enabled = true;
   }
 }
