@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 
 import { User, Exam, Patient } from '../_models';
 import { UserService, ExamService, PatientService } from '../_services';
+import { AudioRecordingService } from '../_services/audio-recording.service';
 
 class DateFilter implements ClrDatagridStringFilterInterface<Exam> {
   private asd = false;
@@ -62,19 +63,23 @@ export class ExamListViewComponent implements OnInit {
   public delete_exam: boolean = false;
   public desiredDeleteId;
 
-  constructor(private router:Router, private examService: ExamService, private patientService: PatientService) {
-    
-  }
+  constructor(private router:Router, 
+    private examService: ExamService, 
+    private patientService: PatientService,
+    private audioRecordingService: AudioRecordingService
+  ) { }
 
   ngOnInit() {
     this.refresh();
     this.examService.forceReload();
+    //this.examService.print();
   }
 
   refresh() {
     this.examService.getMyExamList().subscribe(data => {
       this.exams = JSON.parse((<any>data)._body);
       //this.patients = [];
+      //console.log(this.exams);
       var pat_id = "";
       this.total = this.exams.length;
       for (let exam of this.exams) {
@@ -89,10 +94,11 @@ export class ExamListViewComponent implements OnInit {
     //console.log(this.patients);
   }
 
+
   editExam(eid:string, pid:string) {
     this.examService.setActive(eid);
     this.patientService.setActive(pid);
-    //console.log(this.examService.getActiveExam(), this.patientService.getActivePatient());
+    //console.log("modifica: ",this.examService.getActiveExam(), this.patientService.getActivePatient());
     this.examService.getExam(eid).subscribe(_exam => {
       this.patientService.getPatient(pid).subscribe(_pat => {
         //this.router.navigate(['main',{ outlets: { logged: ['exam'] } }]);
@@ -100,6 +106,28 @@ export class ExamListViewComponent implements OnInit {
       });
     });
   }
+
+/*
+  editExam(eid:string, pid:string) {
+    console.log("want: ",eid,pid);
+    this.examService.setActive(eid, 'interview');
+    /*
+    this.patientService.setActive(pid);
+    console.log("want: ",eid,pid);
+    this.examService.getExam(eid).subscribe(exam_data => {
+      var _exam = JSON.parse((<any>exam_data)._body);
+      this.patientService.getPatient(_exam.patient.id).subscribe(pat_data => {
+        var _patient = JSON.parse((<any>pat_data)._body);
+        console.log("got : ",this.examService.getActiveExam().id);
+      })
+    });
+    */
+    /*
+    this.examService.setActive(eid, 'interview');
+    //this.patientService.setActive(pid);
+    console.log("want: ",eid,pid);
+    *//*
+  }*/
 
   redirectExam(eid:string, pid:string) {
     this.examService.setActive(eid);
@@ -114,7 +142,6 @@ export class ExamListViewComponent implements OnInit {
   }
 
   openDeleteModal(id) {
-
     this.delete_exam = true;
     this.desiredDeleteId = id;
     this.loadExamInfo(id);
@@ -129,14 +156,31 @@ export class ExamListViewComponent implements OnInit {
   }
 
   deleteExam(e) {
-    this.examService.deleteExam(e).subscribe(
-      response => {
-        this.examService.deleteExamData(e);
-        this.refresh();
-      },
-      errors => console.log(errors)
-    );
-    //console.log("elimina ",e);
+    this.examService.getExam(e).subscribe(_exam => {
+      var pid = JSON.parse((<any>_exam)._body).patient.id;
+      var recs = JSON.parse((<any>_exam)._body).recordings;
+      this.patientService.deletePatient(pid).subscribe(
+        data=>{},
+        errors => console.log("Errors: ", errors)
+      );
+      this.examService.deleteExam(e).subscribe(
+        response => {
+          //console.log(response);
+          this.examService.deleteExamData(e);
+          if (recs != undefined) {
+            var rid = recs[0];
+            this.audioRecordingService.deleteAudio(rid);
+          }
+          this.refresh();
+        },
+        errors => console.log("Errors: ", errors)
+      );
+      //console.log("elimina ",e);
+    });
+  }
+
+  deletePatient(p) {
+    this.patientService.deletePatient(p);
   }
 
   createNewExam() {
@@ -144,7 +188,7 @@ export class ExamListViewComponent implements OnInit {
     this.patientService.createNewPatient().subscribe(data => {
       var d = (JSON.parse((<any>data)._body));
       var pid = d.id;
-      this.patientService.saveOnLocal(d as Patient);
+      //this.patientService.saveOnLocal(d as Patient);
       this.examService.createNewExam(pid).subscribe( _exam => {
         var eid = (JSON.parse((<any>_exam)._body)).id;
         this.examService.loadAllVoices().subscribe(_voices => {

@@ -21,7 +21,14 @@ export class ExamService {
   public lastExams: Exam[];
   public last_exams_number = 5;
 
-  constructor(private userService: UserService, private http: Http) { }
+  constructor(private router:Router, 
+    private userService: UserService, 
+    private http: Http
+  ) {
+    var loc = this.loadFromLocal();
+    if (loc != undefined)
+      this.activeExamId = this.loadFromLocal().id;
+  }
 
   refresh() {
     this.getMyExamList().subscribe(response => {
@@ -95,7 +102,8 @@ export class ExamService {
   }
 
   // Imposta l'esame attivo
-  setActive(id: string, redirect:boolean = false) {
+  setActive(id: string, url:string = null) {
+    //console.log("SetActive ",id);
     this.activeExamId = id;
     this.getExam(id).subscribe(data => {
       this.activeExam = JSON.parse((<any>data)._body) as Exam;
@@ -107,7 +115,8 @@ export class ExamService {
           this.activeExamVoices = this.merge(d,v);
           //console.log(this.activeExamVoices);
           this.calculateExamScore();
-          //if (redirect) console.log(id);
+          if (url != null) 
+            this.router.navigate([url]);
         });
       })
       //console.log("EXA service: ",this.activeExam);
@@ -144,8 +153,8 @@ export class ExamService {
   }
 
   // Restituisce l'esame attivo
-  getActiveExam(): Exam {
-    this.loadFromLocal();
+  getActiveExam() {
+    if (this.activeExam == undefined) this.loadFromLocal();
     return this.activeExam;
   }
 
@@ -168,18 +177,21 @@ export class ExamService {
       var voices = (JSON.parse((<any>data)._body));
       for (let v of voices) {
         this.http.delete(API_URL + '/examdata/' + v.id).subscribe(
-          //response => console.log(response), 
+          response => {}, 
           errors => console.log(errors)
         );
       }
+      // TODO: Alert esame eliminato
     });
   }
+
 
   deleteExam(id: string) {
     return this.http.delete(API_URL + '/exam/' + id);
   }
 
   saveExam(e: Exam) {
+    //this.setActive(e.id);
     return this.http.post(API_URL + '/exam/' + e.id , e);
   }
 
@@ -199,10 +211,10 @@ export class ExamService {
   }
 
   loadActiveExam() {
-    this.loadFromLocal();
-    //console.log(this.activeExam.id);
-    return this.http.get(API_URL + '/examdata?examid=' + this.activeExam.id);
+    //console.log(this.activeExamId);
+    return this.http.get(API_URL + '/examdata?examid=' + this.activeExamId);
   }
+
 
   loadPalette() {
     return this.http.get(API_URL + '/examgroup');
@@ -252,11 +264,17 @@ export class ExamService {
     this.saveExam(this.activeExam).subscribe(exam => {
       this.activeExam = JSON.parse((<any>exam)._body) as Exam;
       //console.log(this.activeExam.score);
+      this.refresh();
     });
   }
 
   loadGroups() {
     return this.http.get(API_URL + '/examgroup/');
+  }
+
+  public print() {
+    if (this.activeExam != undefined) console.log(this.activeExam.id);
+    else console.log("Nessun esame selezionato");
   }
 
 }

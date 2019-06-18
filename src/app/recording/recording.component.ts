@@ -6,8 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import lame from 'lamejs';
 import { Buffer } from 'buffer';
-
-
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -22,6 +21,7 @@ export class RecordingComponent implements OnInit,  OnDestroy {
   private _stopRecording = new Subject<string>();
   public deleteAudioModal = false;
   public stopModal = false;
+  public stopAndExit = false;
   isRecording = false;
   isPaused = false;
   audioConverting = false;
@@ -32,7 +32,11 @@ export class RecordingComponent implements OnInit,  OnDestroy {
   blob;
 
 
-  constructor(private audioRecordingService: AudioRecordingService, private sanitizer: DomSanitizer, private examService:ExamService) {
+  constructor(private audioRecordingService: AudioRecordingService, 
+    private sanitizer: DomSanitizer, 
+    private examService:ExamService,
+    private router: Router
+  ) {
 
     this.audioRecordingService.recordingFailed().subscribe(() => {
       this.isRecording = false;
@@ -52,15 +56,16 @@ export class RecordingComponent implements OnInit,  OnDestroy {
 
     this.audioRecordingService.isUploading().subscribe(uploading => {
       this.audioUploading = uploading;
+      if (this.stopAndExit && !uploading) {
+        this.stopAndExit = false;
+        this.router.navigate(['']);
+      }
     });
   }
 
   ngOnInit() {
     this.getLastRecording();
-  }
-
-  hello() {
-    console.log("HELLO");
+    this.audioRecordingService.loadOptions();
   }
 
   startRecording() {
@@ -110,6 +115,7 @@ export class RecordingComponent implements OnInit,  OnDestroy {
   }
 
   deleteRecordedData() {
+    //this.examService.deleteRecordedData();
     var activeExam = this.examService.getActiveExam();
     if (activeExam.recordings != undefined) {
       var recordingId = (activeExam.recordings[0]);
@@ -147,7 +153,7 @@ export class RecordingComponent implements OnInit,  OnDestroy {
     if (recordings != undefined) {
       if (recordings[0] != undefined) {
         recordingId = recordings[0];
-        console.log("Recording ID: ",recordingId);
+        //console.log("Recording ID: ",recordingId);
         this.audioRecordingService.getRecording(recordingId).subscribe( data => {
           //console.log((<any>data)._body);
           var filename = (JSON.parse((<any>data)._body)).filename;
@@ -158,12 +164,6 @@ export class RecordingComponent implements OnInit,  OnDestroy {
         });
       }
     }
-  }
-
-  test() {
-    this.audioRecordingService.getAllRecordings().subscribe(data => {
-      console.log(JSON.parse( (<any>data)._body) );
-    });
   }
 
 }

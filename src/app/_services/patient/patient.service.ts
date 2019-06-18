@@ -72,4 +72,8 @@ export class PatientService {
   savePatient(p: Patient) {
     return this.http.post(API_URL + '/patient/' + p.id, p);
   }
+
+  deletePatient(pid: string) {
+    return this.http.delete(API_URL + '/patient/' + pid);
+  }
 }

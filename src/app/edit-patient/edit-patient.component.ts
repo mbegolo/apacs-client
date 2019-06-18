@@ -25,7 +25,9 @@ export class EditPatientComponent implements OnInit {
   public activePatient: Patient;
   public loggedUser: User;
   public show_sex: boolean;
-  public show_lat: boolean;
+  public left_handed: boolean;
+  public right_handed: boolean;
+  public both_handed: boolean;
   public submitted: boolean = true;
   public formIsChanged: boolean = false;
 
@@ -51,7 +53,9 @@ export class EditPatientComponent implements OnInit {
         esaminatore: [this.loggedUser.name+" "+this.loggedUser.surname]
     });
     this.show_sex =this.activePatient.sesso;
-    this.show_lat =this.activePatient.lateralita;
+    this.left_handed = this.activePatient.lateralita === 'l';
+    this.right_handed = this.activePatient.lateralita === 'r';
+    this.both_handed = this.activePatient.lateralita === 'b';
     //console.log(this.patientForm.controls);
     Object.keys(this.patientForm.controls).forEach(key => {
       //console.log(this.patientForm.controls[key]);
@@ -81,7 +85,10 @@ export class EditPatientComponent implements OnInit {
       new_pat.cognome = control.cognome.value;
       new_pat.sesso = (control.sesso.value == "true" || control.sesso.value == true);
       new_pat.eta = control.eta.value;
-      new_pat.lateralita = (control.lateralita.value == "true" || control.lateralita.value == true);
+      if (this.left_handed) new_pat.lateralita = 'l';
+      else if (this.right_handed) new_pat.lateralita = 'r';
+      else new_pat.lateralita = 'b';
+      //new_pat.lateralita = (control.lateralita.value == "true" || control.lateralita.value == true);
       new_pat.luogonascita = control.luogonascita.value;
       new_pat.professione = control.professione.value;
       new_pat.scolarita = control.scolarita.value;
@@ -133,6 +140,10 @@ export class EditPatientComponent implements OnInit {
     },
     error => console.log(error));
     //console.log(e,p);
+  }
+
+  print() {
+    console.log(this.patientForm);
   }
 
 }

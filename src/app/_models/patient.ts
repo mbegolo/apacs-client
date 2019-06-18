@@ -4,7 +4,7 @@ export class Patient {
   cognome: string;
   sesso: boolean;
   eta: number;
-  lateralita: boolean;
+  lateralita: string;
   luogonascita: string;
   professione: string;
   scolarita: number;
@@ -16,14 +16,14 @@ export class Patient {
   esame: string;
 
   constructor() {
-    this.nome = " ";
-    this.cognome = " ";
+    this.nome = "";
+    this.cognome = "";
     this.sesso = null;
-    this.eta =10;
+    this.eta = null;
     this.lateralita = null;
     this.luogonascita ="";
     this.professione ="";
-    this.scolarita =0;
+    this.scolarita = null;
     this.lingua ="";
     this.altro ="";
     this.diagnosi ="";

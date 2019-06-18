@@ -29,6 +29,8 @@ export class InterviewComponent implements OnInit {
   private palette: string[] = ["","","","",""];
   private enabled: boolean = false;
   private changesOccurred: boolean = false;
+  stopToSaveModal = false;
+  isRecording = false;
 
 
   //constructor(private  apiService:  APIService) { }
@@ -42,8 +44,8 @@ export class InterviewComponent implements OnInit {
     this.changesOccurred = false;
     this.loadData();
     this.loadPalette();
-    //this.startrecordingComponent();
-    //this.recordingComponent.first.hello();
+    //this.examService.print();
+    //console.log("get : ",this.examService.getActiveExam().id, (<any>this.examService.getActiveExam().patient).id);
   }
 
   ngAfterViewInit() {
@@ -69,6 +71,7 @@ export class InterviewComponent implements OnInit {
       data => {
         this.exam = this.examService.getActiveExam();
         this._examId.next(this.exam.id);
+        //console.log("load from interview", this.exam.id);
         var my_data = JSON.parse((<any>data)._body);
         this.examService.loadAllVoices().subscribe(_voices => {
           var my_voices = JSON.parse((<any>_voices)._body);
@@ -99,14 +102,21 @@ export class InterviewComponent implements OnInit {
     });
   }
 
+  wantToSave() {
+    if (this.recordingComponent.first.isRecording) this.stopToSaveModal = true;
+    else this.saveData();
+  }
+
   saveData() {
     this.stopRecording();
     this.children.forEach(it => {
       it.save();
     });
+    this.examService.calculateExamScore();
     this.changesOccurred = false;
     this.dataService.setChanges(false);
     this.loadData();
+    this.stopToSaveModal = false;
   }
 
   resetData() {
@@ -120,20 +130,32 @@ export class InterviewComponent implements OnInit {
   }
 
   startRecording() {
+    this.isRecording = true;
     this.enabled = true;
     this.changesOccurred = true;
-    this.dataService.setChanges(true);
+    //this.dataService.setChanges(true);
+  }
+
+  exitWhileRecording() {
+    this.recordingComponent.first.stopModal = true;
+    this.recordingComponent.first.stopAndExit = true;
   }
 
   stopRecording() {
+    this.isRecording = false;
     this.enabled = false;
     this.recordingComponent.first.stopRecording();
   }
 
   togglePanel() {
-    this.changesOccurred = true;
-    this.dataService.setChanges(true);
+    //this.changesOccurred = true;
+    //this.dataService.setChanges(true);
     if (this.enabled) this.enabled = false;
     else this.enabled = true;
+  }
+
+  editOccurred() {
+    if (this.enabled)
+      this.dataService.setChanges(true);
   }
 }

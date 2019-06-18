@@ -66,7 +66,7 @@ export class PdfResumeComponent implements OnInit {
     var out = "";
     out += this.patientService.getActivePatient().cognome+"_";
     out += this.patientService.getActivePatient().nome+"_";
-    console.log(this.patientService.getActivePatient());
+    //console.log(this.patientService.getActivePatient());
     var d = (new Date(this.examService.getActiveExam().date));
     out += d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear();
     return out;

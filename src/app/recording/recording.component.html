@@ -1,3 +1,4 @@
+<div class="recording-component-wrapper">
   <button *ngIf="!blobUrl" title="Tempo di registrazione" class="btn btn-link no-cursor" > {{recordedTime}} </button>
 
   <span class="recording-dot" *ngIf="!blobUrl">
@@ -104,15 +105,15 @@
     </div>
   </clr-modal>
 
-  <clr-modal [(clrModalOpen)]="stopModal" [clrModalSize]="'lg'">
+  <clr-modal [(clrModalOpen)]="stopModal" [clrModalSize]="'lg'" [clrModalClosable]="false">
     <h3 class="modal-title">Attenzione</h3>
     <div class="modal-body">
         <p>Stai per terminare questa registrazione. Una volta terminata <strong>non sarà possibile continuare</strong> su questa registrazione. Sei sicuro di voler procedere?</p>
         <p>In alternativa, puoi mettere in pausa la registrazione per riprenderla più tardi.</p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="stopModal=false">Continua</button>
-        <button type="button" class="btn btn-outline" (click)="stopModal=false;pauseRecording()"><clr-icon shape="pause" class="is-solid"></clr-icon> Pausa</button>
+        <button type="button" class="btn btn-outline" (click)="stopAndExit=false;stopModal=false">Continua</button>
+        <button type="button" class="btn btn-outline" (click)="stopAndExit=false;stopModal=false;pauseRecording()"><clr-icon shape="pause" class="is-solid"></clr-icon> Pausa</button>
         <button type="button" class="btn btn-warning" (click)="stopModal=false;stopRecording()"><clr-icon shape="stop" class="is-solid"></clr-icon> Termina definitivamente</button>
     </div>
     <div class="modal-body">
@@ -123,5 +124,13 @@
     </div>
   </clr-modal>
 
+  <clr-modal [(clrModalOpen)]="stopAndExit && !stopModal">
+    <h3 class="modal-title">Attenzione</h3>
+    <div class="modal-body">
+        <p>Sono in corso la compressione e l'upload sul server del file audio. Appena terminati sarai reindirizzato alla schermata iniziale.</p>
+    </div>
+  </clr-modal>
+
+</div>
 
 

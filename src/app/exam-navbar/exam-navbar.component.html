@@ -28,12 +28,12 @@
 <clr-modal [(clrModalOpen)]="exitModal">
     <h3 class="modal-title">Attenzione</h3>
     <div class="modal-body">
-        <p>Stai per uscire dalla valutazione. <span *ngIf="this.unstagedChanges">Le ultime modifiche non saranno salvate, e l'eventuale registrazione in corso sarà terminata. Vuoi procedere?</span></p>
+        <p>Stai per uscire dalla valutazione. <span>Le ultime modifiche non saranno salvate, e l'eventuale registrazione in corso sarà terminata. Vuoi procedere?</span></p>
     </div>
     <div class="modal-footer">
-        <button *ngIf="this.unstagedChanges" type="button" class="btn btn-outline" (click)="closeModal()">No, annulla</button>
-        <button *ngIf="this.unstagedChanges" type="button" class="btn btn-danger" (click)="exit()">Esci senza salvare</button>
-        <button *ngIf="this.unstagedChanges" type="button" class="btn btn-primary" (click)="saveExit()"><clr-icon shape="floppy"></clr-icon> Salva ed esci</button>
+        <button type="button" class="btn btn-outline" (click)="closeModal()">No, annulla</button>
+        <button type="button" class="btn btn-danger" (click)="exit()">Esci senza salvare</button>
+        <button type="button" class="btn btn-primary" (click)="saveExit()"><clr-icon shape="floppy"></clr-icon> Salva ed esci</button>
     </div>
 </clr-modal>
 
@@ -46,5 +46,15 @@
         <button type="button" class="btn btn-outline" (click)="closeSwitchModal()">Annulla</button>
         <button type="button" class="btn btn-danger" (click)="ignoreEdit()">Non salvare</button>
         <button type="button" class="btn btn-primary" (click)="saveMove()"><clr-icon shape="floppy"></clr-icon> Salva</button>
+    </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="warningModal">
+    <h3 class="modal-title">Attenzione</h3>
+    <div class="modal-body">
+        <p>&Egrave; in corso una registrazione. Prima di continuare devi interrompere la registrazione.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="warningModal=false">ok</button>
     </div>
 </clr-modal>

@@ -1,4 +1,5 @@
 <app-exam-navbar (saveEvent)="onSubmit()"></app-exam-navbar>
+<!--<button (click)="print()">TEST</button>-->
 
 <!--
   <button *ngIf="formIsChanged" type="button" class="btn btn-danger">CHANGED</button>
@@ -106,22 +107,26 @@
 
             <clr-radio-container clrInline>
               <clr-radio-wrapper>
-                <input clrRadio type="radio" id="lat-radio2" formControlName="lateralita" value="false" class="clr-radio" [checked]="!show_lat">
+                <input clrRadio type="radio" id="lat-radio2" formControlName="lateralita" value="l" class="clr-radio" [checked]="left_handed">
                 <label for="lat-radio2" class="clr-control-label">SX</label>
               </clr-radio-wrapper>
               <clr-radio-wrapper>
-                <input clrRadio type="radio" id="lat-radio1" formControlName="lateralita" value="true" class="clr-radio" [checked]="show_lat">
+                <input clrRadio type="radio" id="lat-radio1" formControlName="lateralita" value="r" class="clr-radio" [checked]="right_handed">
                 <label for="lat-radio1" class="clr-control-label">DX</label>
               </clr-radio-wrapper>
+              <clr-radio-wrapper>
+                <input clrRadio type="radio" id="lat-radio3" formControlName="lateralita" value="b" class="clr-radio" [checked]="both_handed">
+                <label for="lat-radio3" class="clr-control-label">Ambi</label>
+              </clr-radio-wrapper>
             </clr-radio-container>
-            <div class="clr-subtext-wrapper">
-              <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-            </div>
+          </div>
+          <div class="errors" *ngIf="submitted && f.lateralita.errors">
+            <alert-message *ngIf="f.lateralita.errors.required" msg="Il campo 'Lateralità' è obbligatorio"></alert-message>
           </div>
         </div>
 
         <div class="form_group">
-          <label>Lingua prinipale</label>
+          <label>Lingua principale</label>
           <input type="text" formControlName="lingua" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lingua.errors }" />
         </div>
         <div class="errors" *ngIf="submitted && f.lingua.errors">

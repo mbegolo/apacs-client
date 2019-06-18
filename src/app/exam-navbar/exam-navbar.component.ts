@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from "@angular/router";
 import { ExamService, PatientService, DataService } from '../_services';
+import { AudioRecordingService } from '../_services/audio-recording.service';
 
 @Component({
   selector: 'app-exam-navbar',
@@ -10,6 +11,7 @@ import { ExamService, PatientService, DataService } from '../_services';
 export class ExamNavbarComponent implements OnInit {
 
   public exitModal: boolean;
+  public warningModal: boolean = false;
   public switchModal: boolean;
   public desiredUrl: string;
   public unstagedChanges: boolean = false;
@@ -18,15 +20,23 @@ export class ExamNavbarComponent implements OnInit {
   private activeResume: boolean = false;
 
   @Output() saveEvent = new EventEmitter<string>();
+  @Output() exitWhileRecordingEvent = new EventEmitter<string>();
 
   constructor(
     private examService: ExamService, 
     private patientService: PatientService, 
     private dataService: DataService, 
-    private router: Router
+    private router: Router,
+    private recordingService: AudioRecordingService
   ) { }
 
   ngOnInit() { }
+
+  isRecording() {
+    var result = !(this.recordingService.recorder == null || this.recordingService.recorder == undefined);
+    //console.log("Recording? ", result);
+    return result;
+  }
 
   savePatient() {
     this.saveEvent.emit('savePatient');
@@ -34,6 +44,10 @@ export class ExamNavbarComponent implements OnInit {
 
   saveInterview() {
     this.saveEvent.emit('saveInterview');
+  }
+
+  exitWhileRecording() {
+    this.exitWhileRecordingEvent.emit('exitWhileRecording');
   }
 
   isActive(s: string) {
@@ -44,11 +58,10 @@ export class ExamNavbarComponent implements OnInit {
 
   goTo(url: string) {
     this.unstagedChanges = this.dataService.pendingChanges();
-    //var _url = window.location.href.split('/');
-    //var actualUrl = '/'+_url[_url.length-1];
     var actualUrl = this.getActualUrl;
     this.desiredUrl = url;
     if (this.unstagedChanges) this.openSwitchModal();
+    else if (this.isRecording())  this.warningModal = true;
     else this.navigateTo(this.desiredUrl);
   }
 
@@ -67,8 +80,7 @@ export class ExamNavbarComponent implements OnInit {
   }
 
   exit() {
-    this.examService.setActive(this.examService.activeExam.id);
-    this.router.navigate(['']);
+    this.examService.setActive(this.examService.activeExam.id, '');
   }
   
   saveExit() {
@@ -86,6 +98,7 @@ export class ExamNavbarComponent implements OnInit {
   openModal() {
     this.unstagedChanges = this.dataService.pendingChanges();
     if (this.unstagedChanges) this.exitModal = true;
+    else if (this.isRecording()) this.exitWhileRecording();
     else this.exit();
   }
 

@@ -1,4 +1,4 @@
-<app-exam-navbar (saveEvent)="saveData()"></app-exam-navbar>
+<app-exam-navbar (saveEvent)="saveData()" (exitWhileRecordingEvent)="exitWhileRecording()"></app-exam-navbar>
 <!-- Audio Controls -->
 
 
@@ -15,16 +15,19 @@
         <label><clr-icon shape="lock"></clr-icon></label>
       </clr-toggle-wrapper>
       <clr-toggle-wrapper>
+        <!--
         <input type="checkbox" clrToggle name="options" value="option1" (click)="togglePanel()" />
+        -->
+        <input type="checkbox" clrToggle name="options" value="option1" [(ngModel)]="enabled" />
         <label><clr-icon shape="unlock"></clr-icon></label>
       </clr-toggle-wrapper>
     </clr-toggle-container>
-    <button (click)="saveData()" class="btn btn-primary"><clr-icon shape="floppy"></clr-icon> Salva dati</button>
+    <button (click)="wantToSave()" class="btn btn-primary"><clr-icon shape="floppy"></clr-icon> Salva dati</button>
     <button (click)="reset_data = true" class="btn btn-warning-outline"><clr-icon shape="history"></clr-icon> Reset di tutti i dati</button>
   </div>
 </div>
 
-<div *ngIf="loaded" class="grid">
+<div *ngIf="loaded" class="grid" (click)="editOccurred()">
   <ul *ngFor="let c of examData; index as i" class="col" [ngStyle]="{'background-color': palette[i]}">
     <li *ngFor="let item of c" [ngClass]="{inactive: !enabled}" class="interview-component">
       <app-interview-item [itemid]="item.id" [active]="enabled"></app-interview-item>
@@ -43,12 +46,30 @@
 <clr-modal [(clrModalOpen)]="reset_data" >
     <h3 class="modal-title">Attenzione</h3>
     <div class="modal-body">
-        <p>Stai per resettare completamente i dati relativi a quest'intervista, l'azione non è reversibile. Sei sicuro?</p>
+        <p *ngIf="!isRecording">Stai per resettare completamente i dati relativi a quest'intervista, l'azione non è reversibile. Sei sicuro?</p>
+        <p *ngIf="isRecording">&Egrave; in corso una registrazione. Prima di resettare i dati, termina la registrazione corrente</p>
     </div>
-    <div class="modal-footer">
+    <div *ngIf="!isRecording" class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="reset_data = false">Annulla</button>
         <button type="button" class="btn btn-warning" (click)="resetData(); reset_data = false">
           <clr-icon shape="history"></clr-icon> Si, resetta i dati
+        </button>
+    </div>
+    <div *ngIf="isRecording" class="modal-footer">
+      <button type="button" class="btn btn-outline" (click)="reset_data = false">OK</button>
+    </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="stopToSaveModal" >
+    <h3 class="modal-title">Attenzione</h3>
+    <div class="modal-body">
+        <p>Una registrazione è in corso. Scegliendo salva, la registrazione terminerà e sarà salvata assieme a tutti i dati dell'intervista.</p>
+        <p>Per tornare all'intervista, scegliere ANNULLA.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="stopToSaveModal = false">Annulla</button>
+        <button type="button" class="btn btn-warning" (click)="saveData()">
+          <clr-icon shape="stop" class="is-solid"></clr-icon> Stop e salva
         </button>
     </div>
 </clr-modal>

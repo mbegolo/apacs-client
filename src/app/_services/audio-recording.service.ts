@@ -22,7 +22,7 @@ export class AudioRecordingService {
 
   private audioAPI = "http://localhost:9001";
   private stream;
-  private recorder;
+  public recorder;
   private interval;
   private startTime;
   private buffer;
@@ -40,10 +40,12 @@ export class AudioRecordingService {
     type: 'audio',
     mimeType: 'audio/webm',
     numberOfAudioChannels: 1,
-    bufferSize: 256,
-    sampleRate: 22050//, 
-    //desiredSampRate: 16000
+    bufferSize: 1024,
+    sampleRate: 44100//, 
+    //desiredSampRate: 22050
   }
+
+  private mp3options;
 
   getActiveExam() {
     return this.examService.getActiveExam();
@@ -67,6 +69,7 @@ export class AudioRecordingService {
 
   constructor(private http: Http, private sanitizer: DomSanitizer, private examService: ExamService) {
     this.activeExam = this.examService.getActiveExam();
+    this.loadOptions();
   }
 
   startRecording() {
@@ -181,7 +184,8 @@ export class AudioRecordingService {
 
   private convertAudio() {
     var mp3Data = [];
-    var mp3encoder = new lame.Mp3Encoder(1, 44100, 64); //mono 44.1khz encode to 128kbps
+    //var mp3encoder = new lame.Mp3Encoder(1, 44100, 64); //mono 44.1khz encode to 128kbps
+    var mp3encoder = new lame.Mp3Encoder(this.mp3options.channels, this.mp3options.rate, this.mp3options.kbps);
     //console.log(this.buffer);
     var samples = new Int16Array(this.buffer);
     //console.log(samples);
@@ -190,7 +194,7 @@ export class AudioRecordingService {
     mp3Tmp = mp3encoder.flush();
     mp3Data.push(mp3Tmp);
     //console.log(mp3Data)
-    this.blob = new Blob(mp3Data, {type: 'audio/mp3'});
+    this.blob = new Blob(mp3Data, {type: this.mp3options.type});
     //console.log(this.buffer);
     this.uploadAudio(this.blob,"audio_"+this.activeExam.id+".mp3",new Date());
     //var url = window.URL.createObjectURL(blob);
@@ -229,13 +233,6 @@ export class AudioRecordingService {
   getExamsRecording() {
     this.activeExam = this.examService.getActiveExam();
     return this.activeExam.recordings;
-    /*
-    var baseUrl = API_URL + '/uploads/';
-    if (this.activeExam.recordings != undefined)
-      return baseUrl + this.activeExam.recordings[0];
-    else return undefined;
-    */
-    //console.log(this.activeExam);
   }
 
   deleteAudio(rid) {
@@ -250,6 +247,18 @@ export class AudioRecordingService {
     xhr.responseType = 'blob';
     xhr.send();
     return xhr.onreadystatechange;
+  }
+
+  getRecordingOptions() {
+    return this.http.get(API_URL + '/options/');
+  }
+
+  loadOptions() {
+    this.getRecordingOptions().subscribe(data => {
+      var res = JSON.parse((<any>data)._body)[0].mp3options;
+      this.mp3options = res;
+      //console.log(this.mp3options);
+    });
   }
 
   getGeneral(url) {
