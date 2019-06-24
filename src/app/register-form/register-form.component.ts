@@ -68,10 +68,12 @@ export class RegisterFormComponent implements OnInit {
             this.userService.logUser(usr);
             this.router.navigate(['']);
           });
-        },
-        error => {
-          console.log(error);
         })
+      },
+      error => {
+        console.log(JSON.parse((<any>error)._body));
+        var msg = JSON.stringify(JSON.parse((<any>error)._body).errors);
+        alert(msg);
       });
     }
 }
