@@ -55,6 +55,12 @@ export class PdfResumeComponent implements OnInit {
     this.id = this.examService.getActiveExam().id;
     var usr = this.userService.getLoggedUser();
     this.nome_esaminatore = usr.name + " " + usr.surname;
+    this.examService.setActive(this.id);
+  }
+
+  openModal() {
+    this.pdf_modal = true;
+    this.totalscore = this.examService.getActiveExam().score;
   }
 
   downloadPdf() {

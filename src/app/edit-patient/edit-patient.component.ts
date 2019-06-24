@@ -28,7 +28,7 @@ export class EditPatientComponent implements OnInit {
   public left_handed: boolean;
   public right_handed: boolean;
   public both_handed: boolean;
-  public submitted: boolean = true;
+  public submitted: boolean = false;
   public formIsChanged: boolean = false;
 
   ngOnInit() {
@@ -41,7 +41,7 @@ export class EditPatientComponent implements OnInit {
         nome: [this.activePatient.nome, Validators.required],
         cognome: [this.activePatient.cognome, Validators.required],
         sesso: [this.activePatient.sesso, Validators.required],
-        eta: [this.activePatient.eta, Validators.min(10)],
+        eta: [this.activePatient.eta, Validators.required],
         lateralita: [this.activePatient.lateralita, Validators.required],
         luogonascita: [this.activePatient.luogonascita, Validators.required],
         professione: [this.activePatient.professione, Validators.required],
@@ -143,7 +143,7 @@ export class EditPatientComponent implements OnInit {
   }
 
   print() {
-    console.log(this.patientForm);
+    console.log(this.patientForm, Validators);
   }
 
 }

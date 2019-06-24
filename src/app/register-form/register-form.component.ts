@@ -66,7 +66,7 @@ export class RegisterFormComponent implements OnInit {
           this.userService.getUser(new_id).subscribe( answ => {
             var usr = JSON.parse((<any>answ)._body) as User;
             this.userService.logUser(usr);
-            this.router.navigate(['main',{ outlets: { logged: ['dashboard'] } }]);
+            this.router.navigate(['']);
           });
         },
         error => {

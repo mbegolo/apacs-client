@@ -37,7 +37,7 @@
             <label>* Nome</label>
             <input type="text" formControlName="nome" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nome.errors }" />
         </div>
-        <div class="errors" *ngIf="f.nome.errors">
+        <div class="errors" *ngIf="submitted && f.nome.errors">
           <alert-message *ngIf="f.nome.errors.required" msg="Il campo 'Nome' è obbligatorio"></alert-message>
         </div>
 
@@ -45,7 +45,7 @@
           <label>* Cognome</label>
           <input type="text" formControlName="cognome" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.cognome.errors }" />
         </div>
-        <div class="errors" *ngIf="f.cognome.errors">
+        <div class="errors" *ngIf="submitted && f.cognome.errors">
           <alert-message *ngIf="f.cognome.errors.required" msg="Il campo 'Cognome' è obbligatorio"></alert-message>
         </div>
 
@@ -75,7 +75,7 @@
           <label>* Età</label>
           <input type="number" formControlName="eta" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.eta.errors }" />
         </div>
-        <div class="errors" *ngIf="f.eta.errors">
+        <div class="errors" *ngIf="submitted && f.eta.errors">
           <alert-message *ngIf="f.eta.errors.required" msg="Il campo 'Età' è obbligatorio"></alert-message>
           <alert-message *ngIf="!f.eta.errors.required" msg="Devi inserire un'età di almeno 10 anni"></alert-message>
         </div>
@@ -173,20 +173,27 @@
       </div>
     </div>
     <div style="text-align: right">
-      <button type="button" (click)="save_patient = true" class="btn btn-primary" [disabled]="!this.patientForm.valid">
+      <!--
+        <button type="button" (click)="save_patient = true" class="btn btn-primary" [disabled]="!this.patientForm.valid">
+        -->
+        <button type="button" (click)="save_patient = true; submitted=true" class="btn btn-primary">
         <clr-icon shape="floppy"></clr-icon> Salva dati
       </button>
+      <button (click)="print()">TEST</button>
     </div>
 </form>
 
 <clr-modal [(clrModalOpen)]="save_patient" >
     <h3 class="modal-title">Attenzione</h3>
     <div class="modal-body">
-        <p>Stai per salvare i dati anagrafici relativi a questo paziente, l'azione non è reversibile. Sei sicuro?</p>
+        <p *ngIf="this.patientForm.valid">Stai per salvare i dati anagrafici relativi a questo paziente. Sei sicuro?</p>
+        <p *ngIf="!this.patientForm.valid">Il form contiene degli errori. Prima di poter salvare assicurati che tutti i campi siano corretti.</p>
+
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="save_patient = false">Annulla</button>
-        <button type="button" class="btn btn-primary" (click)="onSubmit(); save_patient = false">
+        <button *ngIf="!this.patientForm.valid" type="button" class="btn btn-outline" (click)="save_patient = false">Torna al form</button>
+        <button *ngIf="this.patientForm.valid" type="button" class="btn btn-outline" (click)="save_patient = false">Annulla</button>
+        <button *ngIf="this.patientForm.valid" type="button" class="btn btn-primary" (click)="onSubmit(); save_patient = false">
           <clr-icon shape="floppy"></clr-icon> Si, salva i dati
         </button>
     </div>
