@@ -39,7 +39,7 @@
     "font-awesome": "^4.7.0",
     "html2canvas": "^1.0.0-alpha.12",
     "jquery": "^3.4.1",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.5.1",
     "lamejs": "^1.2.0",
     "moment": "^2.24.0",
     "opus-recorder": "^6.1.1",
